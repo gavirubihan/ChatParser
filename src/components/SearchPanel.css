@@ -1,0 +1,191 @@
+.search-panel {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
+}
+
+.search-panel__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* =============================================
+   Input Group
+   ============================================= */
+.search-panel__input-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search-panel__input-group:focus-within {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.15);
+}
+
+.search-panel__search-icon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.search-panel__input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  min-width: 0;
+}
+
+.search-panel__input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.search-panel__clear-btn {
+  color: var(--text-tertiary);
+  padding: 2px;
+  border-radius: var(--radius-full);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  line-height: 0;
+}
+
+.search-panel__clear-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-3);
+}
+
+/* =============================================
+   Date Range
+   ============================================= */
+.search-panel__date-row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.search-panel__date-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+}
+
+.search-panel__date-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-panel__date-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  min-width: 0;
+  color-scheme: light dark;
+}
+
+/* =============================================
+   Results Row
+   ============================================= */
+.search-panel__results-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.search-panel__count {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.search-panel__hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  flex: 1;
+}
+
+.search-panel__nav {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.search-panel__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  transition: all var(--transition-fast);
+}
+
+.search-panel__nav-btn:hover:not(:disabled) {
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  background: rgba(0, 168, 132, 0.08);
+}
+
+.search-panel__nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.search-panel__reset-btn {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--brand-primary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.search-panel__reset-btn:hover {
+  background: rgba(0, 168, 132, 0.1);
+}
+
+.search-panel__close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  margin-left: auto;
+}
+
+.search-panel__close-btn:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .search-panel__date-row {
+    flex-direction: column;
+  }
+}
