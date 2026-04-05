@@ -51,8 +51,8 @@ const DASH = '[-\u2013\u2014\u2212]';
 // Date separator chars (slash, dot, hyphen)
 const DATE_SEP = '[\\/\\.\\-]';
 
-// Date part: 1-2 digits + sep + 1-2 digits + sep + 2-4 digits
-const DATE_PAT = `\\d{1,2}${DATE_SEP}\\d{1,2}${DATE_SEP}\\d{2,4}`;
+// Date part: 1-4 digits + sep + 1-2 digits + sep + 1-4 digits
+const DATE_PAT = `\\d{1,4}${DATE_SEP}\\d{1,2}${DATE_SEP}\\d{1,4}`;
 
 // Time part 24h: HH:MM or HH:MM:SS
 const TIME_24 = `\\d{1,2}:\\d{2}(?::\\d{2})?`;
@@ -132,30 +132,29 @@ function parseDate(datePart: string, timePart: string): Date {
 
   const a = parseInt(parts[0], 10);
   const b = parseInt(parts[1], 10);
-  let c = parseInt(parts[2], 10);
-
-  if (c < 100) c += 2000;
+  const c = parseInt(parts[2], 10);
 
   let day: number, month: number, year: number;
 
-  // Determine if format is YYYY/MM/DD
-  if (c > 31) {
-    // c is year (4-digit detected by size > 31)
-    // This shouldn't happen after our normalize, handled for safety
-    year = a; month = b; day = c;
+  if (a > 31) {
+    // YYYY/MM/DD
+    year = a;
+    month = b;
+    day = c;
   } else {
+    year = c < 100 ? c + 2000 : c;
     // WhatsApp uses DD/MM/YY or MM/DD/YY depending on locale
     // If 'a' is > 12, it must be day (DD/MM)
     // If 'b' is > 12, it must be day — meaning MM/DD impossible, use a=month, b=day → swap
     // Default: treat as DD/MM/YYYY (most common globally)
     if (a > 12) {
-      day = a; month = b; year = c;
+      day = a; month = b;
     } else if (b > 12) {
       // b is day → must be MM/DD/YYYY
-      month = a; day = b; year = c;
+      month = a; day = b;
     } else {
       // Ambiguous — default to DD/MM/YYYY (international standard for WhatsApp)
-      day = a; month = b; year = c;
+      day = a; month = b;
     }
   }
 
