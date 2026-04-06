@@ -62,19 +62,18 @@
 .theme-toggle__icon--sun {
   left: 7px;
   color: #f59e0b;
-  opacity: 1;
 }
 
 [data-theme="dark"] .theme-toggle__icon--sun {
-  opacity: 0;
+  opacity: 1;
+  color: white;
 }
 
 .theme-toggle__icon--moon {
   right: 7px;
-  color: white;
-  opacity: 0;
+  color: var(--text-tertiary);
 }
 
 [data-theme="dark"] .theme-toggle__icon--moon {
-  opacity: 1;
+  color: white;
 }

@@ -35,9 +35,6 @@ function getMimeType(fileName: string): string {
   return mimeMap[ext] ?? 'application/octet-stream';
 }
 
-// =============================================
-// Process Result
-// =============================================
 export interface ProcessResult {
   sessionId: string;
   session: ChatSession;

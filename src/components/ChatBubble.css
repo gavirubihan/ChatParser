@@ -123,13 +123,22 @@
   font-size: var(--font-size-base);
   line-height: 1.55;
   white-space: pre-wrap;
-  padding-right: 40px; /* space for timestamp */
+  padding-right: 40px;
+  /* space for timestamp */
 }
 
 .chat-bubble__text--deleted {
   font-style: italic;
   opacity: 0.75;
 }
+
+/* Caption below media */
+.chat-bubble__caption {
+  padding-right: 40px;
+  padding-top: 4px;
+  margin-top: 2px;
+}
+
 
 .chat-bubble__deleted-text {
   display: flex;
@@ -165,8 +174,8 @@
 }
 
 /* When text exists, footer overlaps the bottom right */
-.chat-bubble__text + .chat-bubble__footer,
-.chat-bubble__audio + .chat-bubble__footer {
+.chat-bubble__text+.chat-bubble__footer,
+.chat-bubble__audio+.chat-bubble__footer {
   margin-top: 0;
   position: relative;
 }
@@ -210,10 +219,8 @@
 .chat-bubble__image,
 .chat-bubble__video {
   display: block;
-  max-width: 260px;
-  max-height: 320px;
-  min-width: 120px;
-  min-height: 80px;
+  width: 240px;
+  height: 240px;
   object-fit: cover;
   border-radius: var(--radius-md);
   transition: filter var(--transition-fast);

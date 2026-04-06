@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ChatSession } from '../lib/storage';
 import { formatFileSize, formatDateShort } from '../lib/mediaUtils';
 import { ThemeToggle } from './ThemeToggle';
-import { getSenderColor } from './ChatBubble';
+import { getSenderColor } from '../lib/colorUtils';
 import { PrivacyModeToggle } from './PrivacyModeToggle';
 import './Sidebar.css';
 
@@ -67,8 +67,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="sidebar__header-top">
             <div className="sidebar__logo">
               <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-                <rect width="32" height="32" rx="8" fill="#00a884"/>
-                <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6zm0 18a7.975 7.975 0 0 1-4.08-1.12l-.29-.18-3.02.79.81-2.94-.19-.3A7.954 7.954 0 0 1 8 16c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" fill="white"/>
+                <rect width="32" height="32" rx="8" fill="#00a884" />
+                <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6zm0 18a7.975 7.975 0 0 1-4.08-1.12l-.29-.18-3.02.79.81-2.94-.19-.3A7.954 7.954 0 0 1 8 16c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" fill="white" />
               </svg>
               <span className="sidebar__logo-text">ChatVault</span>
             </div>
@@ -78,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Search box */}
           <div className="sidebar__search">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
             </svg>
             <input
               type="text"
@@ -95,7 +95,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="sidebar__sessions" role="list">
           {filtered.length === 0 && !searchQuery && (
             <div className="sidebar__empty">
-              <div className="sidebar__empty-icon">💬</div>
+              <div className="sidebar__empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
               <p>No chats yet</p>
               <p className="sidebar__empty-sub">Upload a WhatsApp export to get started</p>
             </div>
@@ -125,8 +129,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               >
                 {session.isGroup ? (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 ) : (
                   session.name.charAt(0).toUpperCase()
@@ -174,8 +178,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   aria-label={`Delete ${session.name}`}
                   title="Delete chat"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
                   </svg>
                 </button>
               )}

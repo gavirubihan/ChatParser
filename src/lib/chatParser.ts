@@ -99,18 +99,18 @@ const IOS_12H_SYS = new RegExp(
 // Media / content type patterns
 // =============================================
 const MEDIA_PATTERNS: { pattern: RegExp; type: MessageType }[] = [
-  { pattern: /\.(jpg|jpeg|png|webp|heic|heif)(\s|$)/i,           type: 'image' },
-  { pattern: /\.(mp4|mov|mkv|avi|3gp|m4v)(\s|$)/i,               type: 'video' },
-  { pattern: /\.(mp3|ogg|opus|m4a|aac|wav|amr)(\s|$)/i,          type: 'audio' },
-  { pattern: /\.(gif)(\s|$)/i,                                    type: 'gif' },
-  { pattern: /\.(vcf)(\s|$)/i,                                    type: 'contact' },
+  { pattern: /\.(jpg|jpeg|png|webp|heic|heif)(\s|$)/i, type: 'image' },
+  { pattern: /\.(mp4|mov|mkv|avi|3gp|m4v)(\s|$)/i, type: 'video' },
+  { pattern: /\.(mp3|ogg|opus|m4a|aac|wav|amr)(\s|$)/i, type: 'audio' },
+  { pattern: /\.(gif)(\s|$)/i, type: 'gif' },
+  { pattern: /\.(vcf)(\s|$)/i, type: 'contact' },
   { pattern: /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z)(\s|$)/i, type: 'document' },
 ];
 
 const ATTACHMENT_PLACEHOLDER = /<attached:\s*(.+?)>|(.+?)\s*\(file attached\)/i;
-const OMITTED_PLACEHOLDER    = /(image|video|audio|sticker|gif|document|voice message)\s+omitted/i;
-const DELETED_MSG            = /<this message was deleted>|this message was deleted|you deleted this message/i;
-const LOCATION_MSG           = /location:\s*https?:\/\//i;
+const OMITTED_PLACEHOLDER = /(image|video|audio|sticker|gif|document|voice message)\s+omitted/i;
+const DELETED_MSG = /<this message was deleted>|this message was deleted|you deleted this message/i;
+const LOCATION_MSG = /location:\s*https?:\/\//i;
 
 // =============================================
 // Clean a line: strip invisible chars & trim
@@ -197,11 +197,17 @@ function detectMessageType(content: string): { type: MessageType; fileName?: str
   const attachedMatch = c.match(ATTACHMENT_PLACEHOLDER);
   if (attachedMatch) {
     const fileName = (attachedMatch[1] || attachedMatch[2] || '').trim();
+
+    // WhatsApp uniquely names sticker exports "STK-..." (Android) or "...-STICKER-..." (iOS)
+    // Also, natively WhatsApp uses .webp strictly for stickers.
+    if (/(?:STICKER|STK-)/i.test(fileName) || /\.webp(\s|$)/i.test(fileName)) {
+      return { type: 'sticker', fileName };
+    }
+
     for (const { pattern, type } of MEDIA_PATTERNS) {
       if (pattern.test(fileName)) return { type, fileName };
     }
-    // Treat webp as sticker if standalone
-    if (/\.webp(\s|$)/i.test(fileName)) return { type: 'sticker', fileName };
+
     return { type: 'document', fileName };
   }
 

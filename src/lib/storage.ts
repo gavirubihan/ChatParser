@@ -32,7 +32,7 @@ interface CV_DB {
     };
   };
   media: {
-    key: string; // mediaKey = `${sessionId}::${fileName}`
+    key: string;
     value: {
       key: string;
       sessionId: string;
@@ -44,7 +44,7 @@ interface CV_DB {
 }
 
 const DB_NAME = 'chatvault';
-const DB_VERSION = 1;
+const DB_VERSION = 3;
 
 let dbInstance: IDBPDatabase<CV_DB> | null = null;
 
@@ -53,20 +53,15 @@ async function getDB(): Promise<IDBPDatabase<CV_DB>> {
 
   dbInstance = await openDB<CV_DB>(DB_NAME, DB_VERSION, {
     upgrade(db) {
-      // Sessions store
       if (!db.objectStoreNames.contains('sessions')) {
         db.createObjectStore('sessions', { keyPath: 'id' });
       }
-
-      // Messages store
       if (!db.objectStoreNames.contains('messages')) {
         const msgStore = db.createObjectStore('messages', { keyPath: 'id' });
         msgStore.createIndex('by-session', 'sessionId');
         msgStore.createIndex('by-session-timestamp', ['sessionId', 'timestamp']);
         msgStore.createIndex('by-sender', 'sender');
       }
-
-      // Media store
       if (!db.objectStoreNames.contains('media')) {
         db.createObjectStore('media', { keyPath: 'key' });
       }
@@ -141,7 +136,7 @@ export async function getMessages(sessionId: string): Promise<ChatMessage[]> {
   const db = await getDB();
   const msgs = await db.getAllFromIndex('messages', 'by-session', sessionId);
   return msgs.map(m => ({ ...m, timestamp: new Date(m.timestamp) }))
-             .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+    .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 }
 
 export async function searchMessages(

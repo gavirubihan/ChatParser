@@ -3,18 +3,50 @@
 // =============================================
 import { getMedia } from './storage';
 
-// Cache of mediaKey -> object URL
+// =============================================
+// Concurrency Queue — max 3 simultaneous IDB reads
+// Prevents the browser from stalling when many
+// images scroll into view at the same time on a large chat.
+// =============================================
+let _activeReads = 0;
+const _readQueue: (() => void)[] = [];
+const MAX_CONCURRENT_READS = 3;
+
+function acquireReadSlot(): Promise<void> {
+  return new Promise(resolve => {
+    if (_activeReads < MAX_CONCURRENT_READS) {
+      _activeReads++;
+      resolve();
+    } else {
+      _readQueue.push(() => { _activeReads++; resolve(); });
+    }
+  });
+}
+
+function releaseReadSlot(): void {
+  _activeReads--;
+  const next = _readQueue.shift();
+  if (next) next();
+}
+
+// =============================================
+// URL Cache — avoids re-reading blobs from IDB
+// =============================================
 const urlCache = new Map<string, string>();
 
 export async function getMediaUrl(mediaKey: string): Promise<string | null> {
   if (urlCache.has(mediaKey)) return urlCache.get(mediaKey)!;
 
-  const blob = await getMedia(mediaKey);
-  if (!blob) return null;
-
-  const url = URL.createObjectURL(blob);
-  urlCache.set(mediaKey, url);
-  return url;
+  await acquireReadSlot();
+  try {
+    const blob = await getMedia(mediaKey);
+    if (!blob) return null;
+    const url = URL.createObjectURL(blob);
+    urlCache.set(mediaKey, url);
+    return url;
+  } finally {
+    releaseReadSlot();
+  }
 }
 
 export function revokeMediaUrl(mediaKey: string): void {

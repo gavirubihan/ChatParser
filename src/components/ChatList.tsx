@@ -2,7 +2,8 @@ import { useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { ChatMessage } from '../lib/chatParser';
-import { ChatBubble, getSenderColor } from './ChatBubble';
+import { ChatBubble } from './ChatBubble';
+import { getSenderColor } from '../lib/colorUtils';
 import { DateSeparator } from './DateSeparator';
 import { formatDate } from '../lib/mediaUtils';
 import './ChatList.css';
@@ -43,7 +44,7 @@ interface ChatListProps {
   myName?: string; // The "own" sender — typically the last participant or set by heuristic
   searchQuery?: string;
   highlightedMessageId?: string;
-  onMediaClick?: (mediaKey: string, type: string) => void;
+  onMediaClick?: (mediaKey: string, type: string, url?: string | null) => void;
 }
 
 export interface ChatListHandle {
@@ -146,7 +147,7 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
         initialTopMostItemIndex={items.length - 1}
         followOutput="smooth"
         className="chat-list__scroller"
-        overscan={400}
+        overscan={200}
       />
     </div>
   );

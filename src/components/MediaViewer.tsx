@@ -1,45 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getMediaUrl } from '../lib/mediaUtils';
 import './MediaViewer.css';
 
 interface MediaViewerProps {
   mediaKey: string;
   type: string;
+  url?: string | null;
   onClose: () => void;
 }
 
-export const MediaViewer: React.FC<MediaViewerProps> = ({ mediaKey, type, onClose }) => {
-  const [url, setUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+export const MediaViewer: React.FC<MediaViewerProps> = ({ mediaKey, type, url: initialUrl, onClose }) => {
+  const [url, setUrl] = useState<string | null>(initialUrl ?? null);
+  const [loading, setLoading] = useState(!initialUrl);
+  const [closing, setClosing] = useState(false);
 
   useEffect(() => {
+    if (initialUrl) return;
     let active = true;
     getMediaUrl(mediaKey).then(u => {
       if (active) { setUrl(u); setLoading(false); }
     });
     return () => { active = false; };
-  }, [mediaKey]);
+  }, [mediaKey, initialUrl]);
+
+  const handleClose = useCallback(() => {
+    setClosing(true);
+  }, []);
+
+  const handleAnimationEnd = useCallback((e: React.AnimationEvent) => {
+    // Only respond to the outermost overlay animation ending
+    if (e.target === e.currentTarget && closing) onClose();
+  }, [closing, onClose]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') handleClose();
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [handleClose]);
 
   return (
     <div
-      className="media-viewer"
+      className={`media-viewer${closing ? ' media-viewer--closing' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label="Media viewer"
-      onClick={onClose}
+      onClick={handleClose}
+      onAnimationEnd={handleAnimationEnd}
     >
       <div className="media-viewer__content" onClick={e => e.stopPropagation()}>
-        <button className="media-viewer__close" onClick={onClose} aria-label="Close media viewer">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        <button className="media-viewer__close" onClick={handleClose} aria-label="Close media viewer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
 
@@ -56,7 +69,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ mediaKey, type, onClos
         )}
 
         {url && (type === 'image' || type === 'sticker' || type === 'gif') && (
-          <img src={url} alt="Media" className="media-viewer__image" />
+          <img src={url} alt="Media" className="media-viewer__image" decoding="async" />
         )}
 
         {url && type === 'video' && (
@@ -71,8 +84,8 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ mediaKey, type, onClos
             onClick={e => e.stopPropagation()}
             aria-label="Download media"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             Download
           </a>

@@ -11,7 +11,7 @@ import { useMessages, useAllSessions } from '../hooks/useChat';
 import { useSearch } from '../hooks/useSearch';
 import type { ProcessResult } from '../lib/zipHandler';
 
-import { getSenderColor } from '../components/ChatBubble';
+import { getSenderColor } from '../lib/colorUtils';
 import './ChatViewer.css';
 
 export const ChatViewer: React.FC = () => {
@@ -26,7 +26,7 @@ export const ChatViewer: React.FC = () => {
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [mediaViewer, setMediaViewer] = useState<{ mediaKey: string; type: string } | null>(null);
+  const [mediaViewer, setMediaViewer] = useState<{ mediaKey: string; type: string, url?: string | null } | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
 
 
@@ -69,8 +69,8 @@ export const ChatViewer: React.FC = () => {
     navigate(`/chat/${result.sessionId}`);
   }, [reloadSessions, navigate]);
 
-  const handleMediaClick = useCallback((mediaKey: string, type: string) => {
-    setMediaViewer({ mediaKey, type });
+  const handleMediaClick = useCallback((mediaKey: string, type: string, url?: string | null) => {
+    setMediaViewer({ mediaKey, type, url });
   }, []);
 
   const scrollToBottom = useCallback(() => {
@@ -267,6 +267,7 @@ export const ChatViewer: React.FC = () => {
         <MediaViewer
           mediaKey={mediaViewer.mediaKey}
           type={mediaViewer.type}
+          url={mediaViewer.url}
           onClose={() => setMediaViewer(null)}
         />
       )}
