@@ -46,7 +46,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     e.stopPropagation();
     onDelete(id);
     setConfirmDelete(null);
-    if (activeSessionId === id) navigate('/');
   };
 
   const cancelDelete = (e: React.MouseEvent) => {
