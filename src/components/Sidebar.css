@@ -346,3 +346,15 @@
 .sidebar__upload-btn:active {
   transform: translateY(0);
 }
+
+/* =============================================
+   Mobile/Touch Overrides
+   ============================================= */
+@media (hover: none) and (pointer: coarse),
+(max-width: 768px) {
+
+  /* Always show the delete button since mobile users cannot hover */
+  .sidebar__session-delete {
+    opacity: 0.8;
+  }
+}
