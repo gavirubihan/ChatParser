@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { ChatMessage } from '../lib/chatParser';
-import { getMediaUrl } from '../lib/mediaUtils';
+import { getMediaUrl, getCachedMediaUrl } from '../lib/mediaUtils';
 import { formatTime } from '../lib/mediaUtils';
 import './ChatBubble.css';
 
@@ -25,10 +25,14 @@ const MediaContent: React.FC<{
   message: ChatMessage;
   onMediaClick?: (mediaKey: string, type: string, url?: string | null) => void;
 }> = ({ message, onMediaClick }) => {
-  const [url, setUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const cachedUrl = message.mediaKey ? getCachedMediaUrl(message.mediaKey) : null;
+  const [url, setUrl] = useState<string | null>(cachedUrl);
+  const [loading, setLoading] = useState(!cachedUrl);
 
   useEffect(() => {
+    // Skip async fetch entirely if we synchronously hit the cache
+    if (cachedUrl) return;
+
     let active = true;
     if (message.mediaKey) {
       getMediaUrl(message.mediaKey).then(u => {
@@ -38,7 +42,7 @@ const MediaContent: React.FC<{
       setLoading(false);
     }
     return () => { active = false; };
-  }, [message.mediaKey]);
+  }, [message.mediaKey, cachedUrl]);
 
   const handleClick = () => {
     if (message.mediaKey && onMediaClick) {

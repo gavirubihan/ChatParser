@@ -145,7 +145,6 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
         totalCount={items.length}
         itemContent={renderItem}
         initialTopMostItemIndex={items.length - 1}
-        followOutput="smooth"
         className="chat-list__scroller"
         overscan={200}
       />

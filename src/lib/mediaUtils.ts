@@ -34,6 +34,10 @@ function releaseReadSlot(): void {
 // =============================================
 const urlCache = new Map<string, string>();
 
+export function getCachedMediaUrl(mediaKey: string): string | null {
+  return urlCache.get(mediaKey) ?? null;
+}
+
 export async function getMediaUrl(mediaKey: string): Promise<string | null> {
   if (urlCache.has(mediaKey)) return urlCache.get(mediaKey)!;
 
