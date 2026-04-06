@@ -110,7 +110,7 @@ export const ChatViewer: React.FC = () => {
                   <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6z" fill="var(--brand-primary)" opacity="0.5" />
                 </svg>
               </div>
-              <h1 className="chat-viewer__welcome-title">ChatVault</h1>
+              <h1 className="chat-viewer__welcome-title">ChatParser</h1>
               <p className="chat-viewer__welcome-sub">
                 {sessions.length === 0
                   ? 'Upload a WhatsApp chat export to get started.'

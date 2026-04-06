@@ -119,7 +119,7 @@ const FAQS = [
   },
   {
     q: "Is this tool free and open source?",
-    a: "Yes, ChatVault is completely free and 100% open source. You can inspect the codebase for complete peace of mind, or run it on your own hardware."
+    a: "Yes, ChatParser is completely free and 100% open source. You can inspect the codebase for complete peace of mind, or run it on your own hardware."
   }
 ];
 
@@ -153,14 +153,14 @@ export const Landing: React.FC = () => {
       {/* ===== NAV ===== */}
       <nav className="landing__nav" aria-label="Main navigation">
         <div className="landing__nav-inner">
-          <a href="/" className="landing__nav-logo" aria-label="ChatVault home">
+          <a href="/" className="landing__nav-logo" aria-label="ChatParser home">
             <div className="landing__nav-logo-icon">
               <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
                 <rect width="32" height="32" rx="8" fill="#00a884" />
                 <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6z" fill="white" />
               </svg>
             </div>
-            <span className="landing__nav-logo-text">ChatVault</span>
+            <span className="landing__nav-logo-text">Chat<span className="logo-gradient">Parser</span></span>
           </a>
 
           <div className="landing__nav-links">
@@ -221,13 +221,13 @@ export const Landing: React.FC = () => {
             <div className="landing__trust-badges animate-fade-in-up delay-400">
               <div className="landing__trust-badge">
                 <div className="landing__trust-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                 </div>
                 <span><strong>Secure:</strong> Only Store Data On Your Device</span>
               </div>
               <div className="landing__trust-badge">
                 <div className="landing__trust-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
                 </div>
                 <span><strong>Transparent:</strong> 100% Open Source</span>
               </div>
@@ -352,7 +352,7 @@ export const Landing: React.FC = () => {
             <h2 id="faq-title" className="landing__section-title">Frequently Asked Questions</h2>
             <div className="landing__faq-list">
               {FAQS.map((faq, i) => (
-                <details key={i} className={`landing__faq-item animate-fade-in-up delay-${Math.min((i+1) * 100, 500)}`}>
+                <details key={i} className={`landing__faq-item animate-fade-in-up delay-${Math.min((i + 1) * 100, 500)}`}>
                   <summary className="landing__faq-q">
                     {faq.q}
                     <span className="landing__faq-icon">+</span>
@@ -389,10 +389,10 @@ export const Landing: React.FC = () => {
               <rect width="32" height="32" rx="8" fill="#00a884" />
               <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6z" fill="white" />
             </svg>
-            <span>ChatVault</span>
+            <span>Chat<span className="logo-gradient">Parser</span></span>
           </div>
           <p className="landing__footer-copy">
-            © {new Date().getFullYear()} ChatVault · Built for privacy · All data stays on your device
+            © {new Date().getFullYear()} ChatParser · Built for privacy · All data stays on your device
           </p>
         </div>
       </footer>

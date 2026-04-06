@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'WhatsApp Chat Export Viewer',
-        short_name: 'Chat Viewer',
+        name: 'ChatParser',
+        short_name: 'ChatParser',
         description: 'A local, performant viewer for WhatsApp chat exports.',
         theme_color: '#00a884',
         background_color: '#ffffff',

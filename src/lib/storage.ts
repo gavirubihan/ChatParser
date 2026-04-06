@@ -43,7 +43,7 @@ interface CV_DB {
   };
 }
 
-const DB_NAME = 'chatvault';
+const DB_NAME = 'chatparser';
 const DB_VERSION = 3;
 
 let dbInstance: IDBPDatabase<CV_DB> | null = null;

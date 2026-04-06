@@ -1,5 +1,5 @@
 /* =============================================
-   ChatVault Design System
+   ChatParser Design System
    ============================================= */
 
 /* Google Fonts */
@@ -427,4 +427,15 @@ ul, ol {
 
 [data-theme="dark"] .glass-strong {
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* =============================================
+   Logo Gradient
+   ============================================= */
+.logo-gradient {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }

@@ -10,8 +10,8 @@ import { deleteAllData } from './storage';
 
 export type StorageMode = 'persistent' | 'session';
 
-const PREF_KEY = 'chatVault_storageMode';
-const SESSION_FLAG = 'chatVault_tabActive'; // set in sessionStorage; survives refresh, clears on close
+const PREF_KEY = 'chatParser_storageMode';
+const SESSION_FLAG = 'chatParser_tabActive'; // set in sessionStorage; survives refresh, clears on close
 
 // =============================================
 // Get / Set user preference

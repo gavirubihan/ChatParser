@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 type Theme = 'light' | 'dark';
 
-const STORAGE_KEY = 'chatvault-theme';
+const STORAGE_KEY = 'chatparser-theme';
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
