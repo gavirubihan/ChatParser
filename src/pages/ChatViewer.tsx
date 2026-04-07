@@ -163,7 +163,7 @@ export const ChatViewer: React.FC = () => {
               <div className="chat-viewer__welcome-icon" aria-hidden="true">
                 <img src="/chatparser.svg" alt="ChatParser Logo" width="100" height="100" style={{ borderRadius: '20px' }} />
               </div>
-              <h1 className="chat-viewer__welcome-title">ChatParser</h1>
+              <h1 className="chat-viewer__welcome-title">Chat<span className="logo-gradient">Parser</span></h1>
               <p className="chat-viewer__welcome-sub">
                 {sessions.length === 0
                   ? 'Upload a WhatsApp chat export to get started.'
