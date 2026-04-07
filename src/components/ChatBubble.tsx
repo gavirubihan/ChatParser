@@ -196,7 +196,8 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = ({
 }) => {
   const isSystem = message.type === 'system';
   const isDeleted = message.type === 'deleted';
-  const isMedia = ['image', 'video', 'audio', 'sticker', 'gif', 'document', 'contact', 'location'].includes(message.type);
+  const isMedia = ['image', 'video', 'sticker', 'gif', 'document', 'contact', 'location'].includes(message.type);
+  const isAudio = message.type === 'audio';
   const hasText = message.type === 'text' || isDeleted;
 
   // Extract caption: text that accompanies a media attachment
@@ -240,7 +241,7 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = ({
         )}
 
         {/* Content */}
-        {isMedia ? (
+        {isMedia || isAudio ? (
           <>
             <MediaContent message={message} onMediaClick={onMediaClick} />
             {caption && (
