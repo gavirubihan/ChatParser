@@ -1,14 +1,20 @@
 import { useState, useMemo, useCallback } from 'react';
-import type { ChatMessage } from '../lib/chatParser';
+import type { ChatMessage, MessageType } from '../lib/chatParser';
 
 export interface SearchState {
   query: string;
   fromDate: string;
   toDate: string;
+  type: MessageType | 'all';
 }
 
 export function useSearch(messages: ChatMessage[]) {
-  const [search, setSearch] = useState<SearchState>({ query: '', fromDate: '', toDate: '' });
+  const [search, setSearch] = useState<SearchState>({ 
+    query: '', 
+    fromDate: '', 
+    toDate: '',
+    type: 'all'
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -16,21 +22,23 @@ export function useSearch(messages: ChatMessage[]) {
     const q = search.query.toLowerCase().trim();
     const from = search.fromDate ? new Date(search.fromDate) : null;
     const to = search.toDate ? new Date(search.toDate + 'T23:59:59') : null;
+    const type = search.type;
 
-    if (!q && !from && !to) return messages;
+    if (!q && !from && !to && type === 'all') return messages;
 
     return messages.filter(msg => {
       const textMatch = q ? msg.content.toLowerCase().includes(q) : true;
       const fromMatch = from ? msg.timestamp >= from : true;
       const toMatch = to ? msg.timestamp <= to : true;
-      return textMatch && fromMatch && toMatch;
+      const typeMatch = type !== 'all' ? msg.type === type : true;
+      return textMatch && fromMatch && toMatch && typeMatch;
     });
   }, [messages, search]);
 
-  const isFiltered = search.query !== '' || search.fromDate !== '' || search.toDate !== '';
+  const isFiltered = search.query !== '' || search.fromDate !== '' || search.toDate !== '' || search.type !== 'all';
 
   const clearSearch = useCallback(() => {
-    setSearch({ query: '', fromDate: '', toDate: '' });
+    setSearch({ query: '', fromDate: '', toDate: '', type: 'all' });
     setCurrentIndex(0);
   }, []);
 

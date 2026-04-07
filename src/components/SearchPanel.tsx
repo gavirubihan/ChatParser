@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import type { SearchState } from '../hooks/useSearch';
+import type { MessageType } from '../lib/chatParser';
 import './SearchPanel.css';
 
 interface SearchPanelProps {
@@ -13,6 +14,44 @@ interface SearchPanelProps {
   onClear: () => void;
   onClose: () => void;
 }
+
+const FILTER_TYPES: { type: MessageType | 'all'; label: string; icon: React.ReactNode }[] = [
+  { 
+    type: 'all', 
+    label: 'All', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/></svg> 
+  },
+  { 
+    type: 'image', 
+    label: 'Images', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> 
+  },
+  { 
+    type: 'video', 
+    label: 'Videos', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg> 
+  },
+  { 
+    type: 'audio', 
+    label: 'Voice', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/></svg> 
+  },
+  { 
+    type: 'document', 
+    label: 'Docs', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> 
+  },
+  { 
+    type: 'sticker', 
+    label: 'Stickers', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/></svg> 
+  },
+  { 
+    type: 'location', 
+    label: 'Places', 
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> 
+  },
+];
 
 export const SearchPanel: React.FC<SearchPanelProps> = ({
   search,
@@ -68,6 +107,20 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
               </svg>
             </button>
           )}
+        </div>
+
+        {/* Filter Chips */}
+        <div className="search-panel__filters">
+          {FILTER_TYPES.map(filter => (
+            <button
+              key={filter.type}
+              className={`search-panel__filter-chip ${search.type === filter.type ? 'search-panel__filter-chip--active' : ''}`}
+              onClick={() => onSearchChange({ ...search, type: filter.type })}
+            >
+              {filter.icon}
+              <span>{filter.label}</span>
+            </button>
+          ))}
         </div>
 
         {/* Date range */}

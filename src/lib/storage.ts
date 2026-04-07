@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 import type { IDBPDatabase } from 'idb';
-import type { ChatMessage } from './chatParser';
+import type { ChatMessage, MessageType } from './chatParser';
 
 // =============================================
 // Database Schema
@@ -142,6 +142,7 @@ export async function getMessages(sessionId: string): Promise<ChatMessage[]> {
 export async function searchMessages(
   sessionId: string,
   query: string,
+  type: MessageType | 'all' = 'all',
   fromDate?: Date,
   toDate?: Date
 ): Promise<ChatMessage[]> {
@@ -152,7 +153,8 @@ export async function searchMessages(
     const matchesText = q ? msg.content.toLowerCase().includes(q) : true;
     const matchesFrom = fromDate ? msg.timestamp >= fromDate : true;
     const matchesTo = toDate ? msg.timestamp <= toDate : true;
-    return matchesText && matchesFrom && matchesTo;
+    const matchesType = type !== 'all' ? msg.type === type : true;
+    return matchesText && matchesFrom && matchesTo && matchesType;
   });
 }
 
