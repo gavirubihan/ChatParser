@@ -210,8 +210,7 @@ export const Landing: React.FC = () => {
             </div>
 
             <h1 id="hero-title" className="landing__hero-title animate-fade-in-up delay-100">
-              View Exported WhatsApp
-              <span className="landing__hero-gradient"> Chats</span>
+              View Exported <span className="landing__whatsapp-gradient">WhatsApp Chats</span>
               <br />In A Better Way
             </h1>
 
@@ -275,8 +274,15 @@ export const Landing: React.FC = () => {
                   <span className="landing__mockup-name">Amara & Jake</span>
                   <span className="landing__mockup-status">2 participants · 1,247 messages</span>
                 </div>
-                <div className="landing__mockup-dots">
-                  <span /><span /><span />
+                <div className="landing__mockup-actions">
+                  <div className="landing__mockup-search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+                    </svg>
+                  </div>
+                  <div className="landing__mockup-dots" aria-hidden="true">
+                    <span /><span /><span />
+                  </div>
                 </div>
               </div>
               <div className="landing__mockup-chat">
