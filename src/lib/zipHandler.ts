@@ -252,7 +252,13 @@ export async function processFile(
   onProgress?: (progress: number) => void
 ): Promise<ProcessResult> {
   const name = file.name.toLowerCase();
-  if (name.endsWith('.zip')) {
+
+  // Sniff the file type using magic bytes (PK for ZIP)
+  const buffer = await file.slice(0, 2).arrayBuffer();
+  const view = new Uint8Array(buffer);
+  const isZipContent = view[0] === 0x50 && view[1] === 0x4B; // 'PK' header
+
+  if (name.endsWith('.zip') || isZipContent) {
     return processZipFile(file, onProgress);
   } else if (name.endsWith('.txt')) {
     onProgress?.(50);
@@ -260,6 +266,14 @@ export async function processFile(
     onProgress?.(100);
     return result;
   } else {
-    throw new Error('Unsupported file type. Please upload a .txt or .zip WhatsApp export file.');
+    // If it's not a zip, try processing it as a txt anyway if it's small/readable
+    try {
+      onProgress?.(50);
+      const result = await processTxtFile(file);
+      onProgress?.(100);
+      return result;
+    } catch {
+      throw new Error('Unsupported file type. Please upload a .txt or .zip WhatsApp export file.');
+    }
   }
 }
