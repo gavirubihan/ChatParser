@@ -16,6 +16,8 @@ export default defineConfig({
         theme_color: '#00a884',
         background_color: '#ffffff',
         display: 'standalone',
+        id: '/chat',
+        start_url: '/chat',
         icons: [
           {
             src: '/pwa-192x192.png',
