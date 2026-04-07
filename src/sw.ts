@@ -25,19 +25,7 @@ self.addEventListener('fetch', (event) => {
       (async () => {
         try {
           const formData = await event.request.formData();
-          
-          // Try to get the file from the expected field name first
-          let chatFile = formData.get('chat_export');
-          
-          // If not found, look for any File object in the formData (more robust)
-          if (!(chatFile instanceof File)) {
-            for (const value of formData.values()) {
-              if (value instanceof File) {
-                chatFile = value;
-                break;
-              }
-            }
-          }
+          const chatFile = formData.get('chat_export');
 
           if (chatFile instanceof File) {
             // Open a cache and store the file
@@ -46,7 +34,7 @@ self.addEventListener('fetch', (event) => {
             // Create a response that includes the original filename in a header
             const response = new Response(chatFile);
             const headers = new Headers(response.headers);
-            headers.set('x-file-name', encodeURIComponent(chatFile.name || 'shared_chat'));
+            headers.set('x-file-name', encodeURIComponent(chatFile.name));
             
             await cache.put('/shared-file', new Response(chatFile, { headers }));
             
