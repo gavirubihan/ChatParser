@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ChatList } from '../components/ChatList';
 import type { ChatListHandle } from '../components/ChatList';
 import { Sidebar } from '../components/Sidebar';
@@ -9,7 +9,7 @@ import { UploadZone } from '../components/UploadZone';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { useMessages, useAllSessions } from '../hooks/useChat';
 import { useSearch } from '../hooks/useSearch';
-import type { ProcessResult } from '../lib/zipHandler';
+import { processFile, type ProcessResult } from '../lib/zipHandler';
 
 import { getSenderColor } from '../lib/colorUtils';
 import './ChatViewer.css';
@@ -17,6 +17,7 @@ import './ChatViewer.css';
 export const ChatViewer: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Data
   const { sessions, loading: sessionsLoading, reload: reloadSessions, removeSession } = useAllSessions();
@@ -28,10 +29,61 @@ export const ChatViewer: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mediaViewer, setMediaViewer] = useState<{ mediaKey: string; type: string, url?: string | null } | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [isProcessingShared, setIsProcessingShared] = useState(false);
+  const [shareProgress, setShareProgress] = useState(0);
+  const isHandlingShareRef = useRef(false);
 
 
   // Refs
   const chatListRef = useRef<ChatListHandle>(null);
+
+  // Handle shared file from PWA Share Target
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('share') === 'true' && !isHandlingShareRef.current) {
+      isHandlingShareRef.current = true;
+      const handleSharedFile = async () => {
+        setIsProcessingShared(true);
+        setShareProgress(0);
+        try {
+          const cache = await caches.open('shared-files');
+          const response = await cache.match('/shared-file');
+          if (response) {
+            // First clean up from cache immediately to prevent duplicate runs
+            await cache.delete('/shared-file');
+            
+            const blob = await response.blob();
+            
+            // Recover original filename from custom header
+            const encodedName = response.headers.get('x-file-name');
+            let fileName = encodedName ? decodeURIComponent(encodedName) : 'shared_chat.zip';
+            
+            // Ensure filename has an extension
+            if (!fileName.includes('.')) {
+              const isZip = blob.type.includes('zip') || blob.type.includes('octet-stream');
+              fileName += isZip ? '.zip' : '.txt';
+            }
+            
+            const file = new File([blob], fileName, { type: blob.type });
+            const result = await processFile(file, (p) => setShareProgress(p));
+            await reloadSessions();
+            
+            // Navigate to the new chat and REMOVE the ?share=true from history
+            navigate(`/chat/${result.sessionId}`, { replace: true });
+          }
+        } catch (error) {
+          console.error('Failed to process shared file:', error);
+          alert('Failed to process the shared chat file.');
+          // If error, also clear it
+          navigate('/chat', { replace: true });
+        } finally {
+          setIsProcessingShared(false);
+          setShareProgress(0);
+        }
+      };
+      handleSharedFile();
+    }
+  }, [location.search, navigate, reloadSessions]);
 
   // Search
   const {
@@ -77,11 +129,15 @@ export const ChatViewer: React.FC = () => {
     chatListRef.current?.scrollToBottom();
   }, []);
 
-  if (sessionsLoading) {
+  if (sessionsLoading || isProcessingShared) {
     return (
       <div className="chat-viewer__loading-screen">
         <div className="chat-viewer__loading-spinner" />
-        <p>Loading your chats…</p>
+        <p>
+          {isProcessingShared 
+            ? `Processing shared chat… ${shareProgress > 0 ? `${shareProgress}%` : ''}` 
+            : 'Loading your chats…'}
+        </p>
       </div>
     );
   }

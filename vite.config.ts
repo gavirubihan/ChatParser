@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       registerType: 'autoUpdate',
       includeAssets: ['chatparser.svg', 'favicon.svg', 'apple-touch-icon.png'],
       manifest: {
@@ -18,6 +21,19 @@ export default defineConfig({
         display: 'standalone',
         id: '/chat',
         start_url: '/chat',
+        share_target: {
+          action: '/chat',
+          method: 'POST',
+          enctype: 'multipart/form-data',
+          params: {
+            files: [
+              {
+                name: 'chat_export',
+                accept: ['.txt', '.zip', 'text/plain', 'application/zip', 'application/x-zip-compressed']
+              }
+            ]
+          }
+        },
         icons: [
           {
             src: '/pwa-192x192.png',
