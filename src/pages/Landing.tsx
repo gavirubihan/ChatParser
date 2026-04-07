@@ -25,7 +25,7 @@ const FEATURES = [
       </svg>
     ),
     title: 'Smart Search',
-    desc: 'Search messages by keyword and filter by date range. Navigate results instantly with Prev / Next.',
+    desc: 'Search by keyword, filter by date, or instantly isolate media types like Images, Voice, and Documents.',
     color: '#3b82f6',
   },
   {
@@ -121,6 +121,18 @@ const FAQS = [
   {
     q: "Is this tool free and open source?",
     a: "Yes, ChatParser is completely free and 100% open source. You can inspect the codebase for complete peace of mind, or run it on your own hardware."
+  },
+  {
+    q: "How do I export a WhatsApp chat history?",
+    a: "Open WhatsApp, go to the chat you want to export, tap the 'More' menu (three dots or name), choose 'Export Chat', and select 'Include Media' to generate a ZIP file that you can upload here."
+  },
+  {
+    q: "Does ChatParser work offline?",
+    a: "Yes! Once the app is loaded, you can disconnect from the internet. All chat parsing and media rendering happen locally on your computer. Your privacy is guaranteed."
+  },
+  {
+    q: "Is there a limit on the message count?",
+    a: "No, ChatParser is built with high-performance virtualization. Whether your chat has 100 messages or 100,000, it will load smoothly and quickly without slowing down your browser."
   }
 ];
 
