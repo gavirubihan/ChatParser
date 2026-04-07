@@ -56,22 +56,15 @@ export const ChatViewer: React.FC = () => {
             
             // Recover original filename from custom header
             const encodedName = response.headers.get('x-file-name');
-            let fileName = encodedName ? decodeURIComponent(encodedName) : 'shared_chat';
+            let fileName = encodedName ? decodeURIComponent(encodedName) : 'shared_chat.zip';
             
-            // Sniff the file type using magic bytes (PK for ZIP)
-            const buffer = await blob.slice(0, 2).arrayBuffer();
-            const view = new Uint8Array(buffer);
-            const isZipContent = view[0] === 0x50 && view[1] === 0x4B; // 'PK' header
-            
-            // Ensure filename has an extension based on content if missing
+            // Ensure filename has an extension
             if (!fileName.includes('.')) {
-              fileName += isZipContent ? '.zip' : '.txt';
-            } else if (fileName.endsWith('.zip') && !isZipContent) {
-              // Sometimes WhatsApp shares a .txt but the system might mislabel it
-              // This is rare but good to handle
+              const isZip = blob.type.includes('zip') || blob.type.includes('octet-stream');
+              fileName += isZip ? '.zip' : '.txt';
             }
             
-            const file = new File([blob], fileName, { type: isZipContent ? 'application/zip' : 'text/plain' });
+            const file = new File([blob], fileName, { type: blob.type });
             const result = await processFile(file, (p) => setShareProgress(p));
             await reloadSessions();
             
