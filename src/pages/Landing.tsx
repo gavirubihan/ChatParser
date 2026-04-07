@@ -155,10 +155,7 @@ export const Landing: React.FC = () => {
         <div className="landing__nav-inner">
           <a href="/" className="landing__nav-logo" aria-label="ChatParser home">
             <div className="landing__nav-logo-icon">
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                <rect width="32" height="32" rx="8" fill="#00a884" />
-                <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6z" fill="white" />
-              </svg>
+              <img src="/chatparser.svg" alt="ChatParser Logo" width="32" height="32" style={{ borderRadius: '8px' }} />
             </div>
             <span className="landing__nav-logo-text">Chat<span className="logo-gradient">Parser</span></span>
           </a>
@@ -385,10 +382,7 @@ export const Landing: React.FC = () => {
       <footer className="landing__footer">
         <div className="landing__footer-inner">
           <div className="landing__footer-logo">
-            <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="8" fill="#00a884" />
-              <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6z" fill="white" />
-            </svg>
+            <img src="/chatparser.svg" alt="ChatParser Logo" width="20" height="20" style={{ borderRadius: '5px' }} />
             <span>Chat<span className="logo-gradient">Parser</span></span>
           </div>
           <p className="landing__footer-copy">

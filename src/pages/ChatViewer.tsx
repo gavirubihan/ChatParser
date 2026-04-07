@@ -105,10 +105,7 @@ export const ChatViewer: React.FC = () => {
           <div className="chat-viewer__welcome">
             <div className="chat-viewer__welcome-content">
               <div className="chat-viewer__welcome-icon" aria-hidden="true">
-                <svg width="80" height="80" viewBox="0 0 32 32" fill="none">
-                  <rect width="32" height="32" rx="8" fill="var(--brand-primary)" opacity="0.15" />
-                  <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6z" fill="var(--brand-primary)" opacity="0.5" />
-                </svg>
+                <img src="/chatparser.svg" alt="ChatParser Logo" width="100" height="100" style={{ borderRadius: '20px' }} />
               </div>
               <h1 className="chat-viewer__welcome-title">ChatParser</h1>
               <p className="chat-viewer__welcome-sub">

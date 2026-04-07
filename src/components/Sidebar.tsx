@@ -65,13 +65,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="sidebar__header">
           <div className="sidebar__header-top">
             <div className="sidebar__logo">
-              <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-                <rect width="32" height="32" rx="8" fill="#00a884" />
-                <path d="M16 6C10.477 6 6 10.477 6 16c0 1.854.506 3.591 1.39 5.085L6 26l5.09-1.33A9.954 9.954 0 0 0 16 26c5.523 0 10-4.477 10-10S21.523 6 16 6zm0 18a7.975 7.975 0 0 1-4.08-1.12l-.29-.18-3.02.79.81-2.94-.19-.3A7.954 7.954 0 0 1 8 16c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" fill="white" />
-              </svg>
-              <span className="sidebar__logo-text">ChatParser</span>
+              <img src="/chatparser.svg" alt="ChatParser Logo" width="32" height="32" style={{ borderRadius: '8px' }} />
+              <span className="sidebar__logo-text">Chat<span className="logo-gradient">Parser</span></span>
             </div>
-            <ThemeToggle />
+            <div className="sidebar__header-actions">
+              <ThemeToggle />
+              <button
+                className="sidebar__close-btn"
+                onClick={onClose}
+                aria-label="Close sidebar"
+                id="close-sidebar-btn"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Search box */}

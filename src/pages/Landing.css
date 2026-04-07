@@ -49,7 +49,7 @@
 }
 
 .landing__nav-logo-text {
-  font-size: var(--font-size-lg);
+  font-size: 1.45rem;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.3px;

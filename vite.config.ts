@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['chatparser.svg', 'favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'ChatParser',
         short_name: 'ChatParser',
