@@ -307,8 +307,46 @@
   box-shadow: 0 8px 32px rgba(0, 168, 132, 0.5);
 }
 
-.landing__cta-btn:active {
+.landing__cta-btn:active,
+.landing__demo-btn:active {
   transform: translateY(0);
+}
+
+.landing__demo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.landing__demo-btn:hover:not(:disabled) {
+  background: var(--bg-surface-2);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.landing__demo-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.landing__demo-loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 .landing__cta-btn--large {

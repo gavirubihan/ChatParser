@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { ChatSession } from '../lib/storage';
 import { formatFileSize, formatDateShort } from '../lib/mediaUtils';
 import { ThemeToggle } from './ThemeToggle';
@@ -64,10 +64,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Header */}
         <div className="sidebar__header">
           <div className="sidebar__header-top">
-            <div className="sidebar__logo">
+            <Link to="/" className="sidebar__logo" aria-label="ChatParser home">
               <img src="/chatparser.svg" alt="ChatParser Logo" width="32" height="32" style={{ borderRadius: '8px' }} />
               <span className="sidebar__logo-text">Chat<span className="logo-gradient">Parser</span></span>
-            </div>
+            </Link>
             <div className="sidebar__header-actions">
               <ThemeToggle />
               <button

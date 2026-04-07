@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UploadZone } from '../components/UploadZone';
 import { ThemeToggle } from '../components/ThemeToggle';
 import type { ProcessResult } from '../lib/zipHandler';
+import { createSampleChat } from '../lib/sampleData';
 import './Landing.css';
 
 // Feature cards data
@@ -139,13 +140,34 @@ const faqSchema = {
 export const Landing: React.FC = () => {
   const navigate = useNavigate();
   const uploadRef = useRef<HTMLDivElement>(null);
+  const howRef = useRef<HTMLDivElement>(null);
+  const [isGeneratingDemo, setIsGeneratingDemo] = React.useState(false);
 
   const handleUploadSuccess = (result: ProcessResult) => {
     navigate(`/chat/${result.sessionId}`);
   };
 
+  const handleTryDemo = async () => {
+    setIsGeneratingDemo(true);
+    try {
+      const sessionId = await createSampleChat();
+      setTimeout(() => {
+        navigate(`/chat/${sessionId}`);
+      }, 500);
+    } catch (error) {
+      console.error('Failed to create demo chat', error);
+      alert('Failed to generate demo chat. Please try again.');
+    } finally {
+      setIsGeneratingDemo(false);
+    }
+  };
+
   const scrollToUpload = () => {
     uploadRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const scrollToHow = () => {
+    howRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -163,9 +185,7 @@ export const Landing: React.FC = () => {
           <div className="landing__nav-links">
             <a href="/" className="landing__nav-link active">Home</a>
             <a href="/chat" className="landing__nav-link">Chats</a>
-            <button className="landing__nav-link" onClick={() => {
-              document.getElementById('features-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}>About</button>
+            <button className="landing__nav-link" onClick={scrollToHow}>About</button>
           </div>
 
           <div className="landing__nav-actions">
@@ -209,7 +229,22 @@ export const Landing: React.FC = () => {
                 </svg>
                 Upload Chat Now
               </button>
-              <button className="landing__secondary-btn" onClick={scrollToUpload}>
+              <button
+                className="landing__demo-btn"
+                onClick={handleTryDemo}
+                disabled={isGeneratingDemo}
+              >
+                {isGeneratingDemo ? (
+                  <span className="landing__demo-loader" />
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="M12 8v4M12 16h.01" />
+                  </svg>
+                )}
+                {isGeneratingDemo ? 'Generating Demo...' : 'Try Sample Chat'}
+              </button>
+              <button className="landing__secondary-btn" onClick={scrollToHow}>
                 See How It Works ↓
               </button>
             </div>
@@ -323,7 +358,7 @@ export const Landing: React.FC = () => {
         </section>
 
         {/* ===== HOW IT WORKS ===== */}
-        <section className="landing__how" aria-labelledby="how-title">
+        <section className="landing__how" aria-labelledby="how-title" ref={howRef}>
           <div className="landing__section-inner">
             <div className="landing__section-label">How It Works</div>
             <h2 id="how-title" className="landing__section-title">Three Simple Steps</h2>
