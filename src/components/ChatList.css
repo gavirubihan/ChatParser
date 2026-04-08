@@ -3,11 +3,14 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  /* Force GPU compositing layer to avoid full-page repaints during scroll */
+  transform: translateZ(0);
 }
 
 .chat-list__scroller {
   flex: 1;
   height: 100%;
+  will-change: scroll-position;
 }
 
 /* Padding for message groups */

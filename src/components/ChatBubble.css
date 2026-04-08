@@ -7,7 +7,6 @@
   align-items: flex-end;
   gap: var(--space-2);
   padding: 2px var(--space-4);
-  animation: bubbleIn 0.2s ease both;
   max-width: 100%;
 }
 
@@ -218,12 +217,13 @@
 
 .chat-bubble__image,
 .chat-bubble__video {
-  display: block;
+  display: block; /* removes inline baseline gap */
   width: 240px;
   height: 240px;
   object-fit: cover;
   border-radius: var(--radius-md);
   transition: filter var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .chat-bubble__media-btn:hover .chat-bubble__image,
@@ -359,6 +359,9 @@
    Placeholder / Unavailable
    ============================================= */
 .chat-bubble__media-placeholder {
+  width: 240px;
+  height: 240px;
+  flex-shrink: 0;
   border-radius: var(--radius-md);
 }
 

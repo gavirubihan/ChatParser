@@ -1,4 +1,4 @@
-import { useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useCallback, useMemo, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { ChatMessage } from '../lib/chatParser';
@@ -6,14 +6,22 @@ import { ChatBubble } from './ChatBubble';
 import { getSenderColor } from '../lib/colorUtils';
 import { DateSeparator } from './DateSeparator';
 import { formatDate } from '../lib/mediaUtils';
+import { AdsterraAd } from './AdsterraAd';
 import './ChatList.css';
+
+// =============================================
+// Configuration
+// =============================================
+const AD_URL = '//pl29091668.profitablecpmratenetwork.com/d14f475c77442691aa60c75ce0608193/invoke.js'; // Add your Adsterra 1:1 Ad URL here (e.g., //domain.com/key/invoke.js)
+const AD_INTERVAL = 40; // Every 40 messages
 
 // =============================================
 // List Item Types
 // =============================================
 type ListItem =
   | { kind: 'date'; label: string; key: string }
-  | { kind: 'message'; message: ChatMessage; key: string };
+  | { kind: 'message'; message: ChatMessage; key: string }
+  | { kind: 'ad'; key: string; side: 'left' | 'right' };
 
 // =============================================
 // Build Flat Item List (insert date separators)
@@ -21,6 +29,7 @@ type ListItem =
 function buildItems(messages: ChatMessage[]): ListItem[] {
   const items: ListItem[] = [];
   let lastDateLabel = '';
+  let msgCounter = 0;
 
   for (const msg of messages) {
     const label = formatDate(msg.timestamp);
@@ -29,6 +38,17 @@ function buildItems(messages: ChatMessage[]): ListItem[] {
       lastDateLabel = label;
     }
     items.push({ kind: 'message', message: msg, key: msg.id });
+    msgCounter++;
+
+    // Inject ad every AD_INTERVAL messages
+    if (msgCounter % AD_INTERVAL === 0) {
+      const adIndex = Math.floor(msgCounter / AD_INTERVAL);
+      items.push({
+        kind: 'ad',
+        key: `ad-${msg.id}`,
+        side: adIndex % 2 === 0 ? 'right' : 'left'
+      });
+    }
   }
 
   return items;
@@ -79,8 +99,24 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
   onMediaClick,
 }, ref) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
-  const items = buildItems(messages);
-  const ownSender = inferOwnSender(participants);
+  // Memoize so Virtuoso's itemContent prop stays stable between renders
+  const items = useMemo(() => buildItems(messages), [messages]);
+  const ownSender = useMemo(() => inferOwnSender(participants), [participants]);
+
+  // Double rAF: wait for Virtuoso's initial render (frame 1) AND its
+  // internal scroll-to-bottom correction (frame 2) before revealing.
+  // Single rAF fires too early — Virtuoso hasn't finished jumping yet.
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let id2: number;
+    const id1 = requestAnimationFrame(() => {
+      id2 = requestAnimationFrame(() => setReady(true));
+    });
+    return () => {
+      cancelAnimationFrame(id1);
+      cancelAnimationFrame(id2);
+    };
+  }, []);
 
   useImperativeHandle(ref, () => ({
     scrollToBottom() {
@@ -100,6 +136,10 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
 
     if (item.kind === 'date') {
       return <DateSeparator key={item.key} label={item.label} />;
+    }
+
+    if (item.kind === 'ad') {
+      return <AdsterraAd adUrl={AD_URL} side={item.side} key={item.key} />;
     }
 
     const { message } = item;
@@ -151,8 +191,11 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
         totalCount={items.length}
         itemContent={renderItem}
         initialTopMostItemIndex={items.length - 1}
+        defaultItemHeight={72}
         className="chat-list__scroller"
-        overscan={800}
+        increaseViewportBy={{ top: 800, bottom: 800 }}
+        followOutput={false}
+        style={{ opacity: ready ? 1 : 0 }}
       />
     </div>
   );

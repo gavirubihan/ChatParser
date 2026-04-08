@@ -1,0 +1,101 @@
+/* =============================================
+   Ad Bubble — mirrors ChatBubble layout exactly
+   ============================================= */
+
+/* Outer row wrapper — same as .chat-bubble__wrapper */
+.ad-bubble__wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 2px 16px;
+  max-width: 100%;
+  /* Reserve space so the wrapper never collapses during iframe reload */
+  min-height: 290px;
+  contain: layout;
+}
+
+.ad-bubble__wrapper--own {
+  flex-direction: row-reverse;
+}
+
+/* =============================================
+   Avatar circle — left side only, same as .chat-bubble__avatar
+   ============================================= */
+.ad-bubble__avatar {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+  /* Distinct color for the "Ad" avatar */
+  background: linear-gradient(135deg, #00a884, #00796b);
+  letter-spacing: 0.5px;
+}
+
+/* =============================================
+   Bubble shell — same as .chat-bubble
+   ============================================= */
+.ad-bubble {
+  position: relative;
+  max-width: min(440px, 72vw);
+  border-radius: var(--radius-lg);
+  /* No extra padding — the iframe IS the content */
+  padding: 6px 6px 4px;
+  box-shadow: var(--shadow-bubble);
+  overflow: hidden;
+}
+
+/* incoming side — matches .chat-bubble--other */
+.ad-bubble--other {
+  background: var(--bg-bubble-in);
+  color: var(--text-bubble-in);
+  border-bottom-left-radius: 2px;
+}
+
+/* outgoing side — matches .chat-bubble--own */
+.ad-bubble--own {
+  background: var(--bg-bubble-out);
+  color: var(--text-bubble-out);
+  border-bottom-right-radius: 2px;
+}
+
+[data-theme='dark'] .ad-bubble {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* =============================================
+   "Sponsored" label — styled like .chat-bubble__sender
+   ============================================= */
+.ad-bubble__label {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  padding: 0 2px;
+  color: var(--brand-primary, #00a884);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =============================================
+   iframe — fills space like a media attachment
+   same dimensions as .chat-bubble__image (240×240)
+   ============================================= */
+.ad-bubble__frame {
+  display: block;
+  width: 250px;
+  height: 250px;
+  min-height: 250px; /* Stable height before iframe srcdoc loads — prevents Virtuoso reflow */
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}

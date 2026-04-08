@@ -24,7 +24,7 @@ function highlightText(text: string, query: string): React.ReactNode {
 const MediaContent: React.FC<{
   message: ChatMessage;
   onMediaClick?: (mediaKey: string, type: string, url?: string | null) => void;
-}> = ({ message, onMediaClick }) => {
+}> = React.memo(({ message, onMediaClick }) => {
   const cachedUrl = message.mediaKey ? getCachedMediaUrl(message.mediaKey) : null;
   const [url, setUrl] = useState<string | null>(cachedUrl);
   const [loading, setLoading] = useState(!cachedUrl);
@@ -51,7 +51,12 @@ const MediaContent: React.FC<{
   };
 
   if (message.type === 'image') {
-    if (loading) return <div className="chat-bubble__media-placeholder skeleton" style={{ width: '240px', height: '240px' }} />;
+    if (loading) return (
+      <div
+        className="chat-bubble__media-placeholder skeleton"
+        style={{ width: '240px', height: '240px', flexShrink: 0 }}
+      />
+    );
     if (!url) return (
       <div className="chat-bubble__media-unavailable">
         <span className="chat-bubble__media-icon">🖼️</span>
@@ -71,7 +76,12 @@ const MediaContent: React.FC<{
   }
 
   if (message.type === 'video') {
-    if (loading) return <div className="chat-bubble__media-placeholder skeleton" style={{ width: '240px', height: '240px' }} />;
+    if (loading) return (
+      <div
+        className="chat-bubble__media-placeholder skeleton"
+        style={{ width: '240px', height: '240px', flexShrink: 0 }}
+      />
+    );
     if (!url) return (
       <div className="chat-bubble__media-unavailable">
         <span className="chat-bubble__media-icon">🎥</span>
@@ -112,13 +122,23 @@ const MediaContent: React.FC<{
   }
 
   if (message.type === 'sticker') {
-    if (loading) return <div className="chat-bubble__media-placeholder skeleton" style={{ width: '120px', height: '120px' }} />;
+    if (loading) return (
+      <div
+        className="chat-bubble__media-placeholder skeleton"
+        style={{ width: '120px', height: '120px', flexShrink: 0 }}
+      />
+    );
     if (!url) return <div className="chat-bubble__media-unavailable"><span>🎭 Sticker</span></div>;
     return <img src={url} alt="Sticker" className="chat-bubble__sticker" />;
   }
 
   if (message.type === 'gif') {
-    if (loading) return <div className="chat-bubble__media-placeholder skeleton" style={{ width: '240px', height: '240px' }} />;
+    if (loading) return (
+      <div
+        className="chat-bubble__media-placeholder skeleton"
+        style={{ width: '240px', height: '240px', flexShrink: 0 }}
+      />
+    );
     if (!url) return <div className="chat-bubble__media-unavailable"><span>🎞️ GIF</span></div>;
     return (
       <button className="chat-bubble__media-btn" onClick={handleClick} aria-label="Open GIF">
@@ -168,7 +188,8 @@ const MediaContent: React.FC<{
   }
 
   return null;
-};
+});
+MediaContent.displayName = 'MediaContent';
 
 // =============================================
 // Chat Bubble
@@ -184,7 +205,7 @@ interface ChatBubbleInnerProps {
   senderColor?: string;
 }
 
-export const ChatBubble: React.FC<ChatBubbleInnerProps> = ({
+export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
   message,
   isOwn,
   showSender,
@@ -279,6 +300,8 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ChatBubble.displayName = 'ChatBubble';
 
 export { getSenderColor };
