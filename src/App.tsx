@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Landing } from './pages/Landing';
 import { ChatViewer } from './pages/ChatViewer';
+import { Privacy } from './pages/Privacy';
+import { About } from './pages/About';
+import { CookieConsent } from './components/CookieConsent';
+import { ScrollToTop } from './components/ScrollToTop';
 import { useTheme } from './hooks/useTheme';
 import { enforcePrivacyModeOnStartup } from './lib/privacyMode';
 
@@ -48,8 +52,12 @@ const App: React.FC = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/chat" element={<ChatViewer />} />
           <Route path="/chat/:sessionId" element={<ChatViewer />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/about" element={<About />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <CookieConsent />
+        <ScrollToTop />
       </ThemeInitializer>
     </BrowserRouter>
   );

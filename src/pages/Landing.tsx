@@ -207,7 +207,8 @@ export const Landing: React.FC = () => {
           <div className="landing__nav-links">
             <a href="/" className="landing__nav-link active">Home</a>
             <a href="/chat" className="landing__nav-link">Chats</a>
-            <button className="landing__nav-link" onClick={scrollToHow}>About</button>
+            <a href="/privacy" className="landing__nav-link">Privacy</a>
+            <a onClick={() => navigate('/about')} className="landing__nav-link">About</a>
           </div>
 
           <div className="landing__nav-actions">
@@ -444,12 +445,47 @@ export const Landing: React.FC = () => {
       {/* ===== FOOTER ===== */}
       <footer className="landing__footer">
         <div className="landing__footer-inner">
-          <div className="landing__footer-logo">
-            <img src="/chatparser.svg" alt="ChatParser Logo" width="20" height="20" style={{ borderRadius: '5px' }} />
-            <span>Chat<span className="logo-gradient">Parser</span></span>
+          <div className="landing__footer-brand">
+            <div className="landing__footer-logo">
+              <img src="/chatparser.svg" alt="ChatParser Logo" width="24" height="24" style={{ borderRadius: '6px' }} />
+              <span>Chat<span className="logo-gradient">Parser</span></span>
+            </div>
+            <p className="landing__footer-tagline">
+              The world's most private and beautiful WhatsApp chat export viewer.
+            </p>
           </div>
+
+          <div className="landing__footer-col">
+            <h4 className="landing__footer-col-title">Quick Links</h4>
+            <div className="landing__footer-links">
+              <a onClick={() => navigate('/')} className="landing__footer-link">Home</a>
+              <a onClick={() => navigate('/chat')} className="landing__footer-link">Chats</a>
+              <a onClick={() => navigate('/about')} className="landing__footer-link">About</a>
+              <a onClick={() => navigate('/privacy')} className="landing__footer-link">Privacy Policy</a>
+              <a href="https://github.com/gavirubihan/WhatsApp-chat-export-viewer" target="_blank" rel="noopener noreferrer" className="landing__footer-link">Source Code</a>
+            </div>
+          </div>
+
+          <div className="landing__footer-col">
+            <h4 className="landing__footer-col-title">Settings</h4>
+            <div className="landing__footer-links">
+              <button 
+                className="landing__footer-settings-btn"
+                onClick={() => window.dispatchEvent(new CustomEvent('chatparser:show-cookie-consent'))}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5" />
+                  <circle cx="12" cy="12" r="1" />
+                </svg>
+                Cookie Settings
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="landing__footer-bottom">
           <p className="landing__footer-copy">
-            © {new Date().getFullYear()} ChatParser · Built for privacy · All data stays on your device
+            © {new Date().getFullYear()} ChatParser · Built for privacy · No data ever leaves your device
           </p>
         </div>
       </footer>

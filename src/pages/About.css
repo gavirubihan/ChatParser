@@ -1,0 +1,160 @@
+/* =============================================
+   About Page Styles
+   ============================================= */
+
+.about {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-base);
+}
+
+.about__main {
+  flex: 1;
+}
+
+/* Hero Section */
+.about__hero {
+  padding: var(--space-16) var(--space-6) var(--space-12);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.about__hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.about__hero-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+  letter-spacing: -1.5px;
+}
+
+.about__hero-subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Shared Section Styles */
+.about__section {
+  padding: var(--space-16) var(--space-6);
+}
+
+.about__section-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    text-align: center;
+  }
+}
+
+.about__label {
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--brand-primary);
+  margin-bottom: var(--space-4);
+}
+
+.about__title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+  line-height: 1.2;
+}
+
+.about__text {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--space-6);
+}
+
+/* Feature Circles/Icons */
+.about__feature-display {
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-10);
+  border: 1px solid var(--border-default);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.about__feature-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.about__feature-icon {
+  color: var(--brand-primary);
+  margin-bottom: var(--space-1);
+}
+
+.about__feature-name {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.about__feature-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Tech Info Card */
+.about__tech-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-xl);
+}
+
+/* CTA Section */
+.about__cta {
+  background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-surface-2) 100%);
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.about__cta-title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+}
+
+.about__cta-text {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-8);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -1,0 +1,107 @@
+.privacy-page {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.privacy-page__content {
+  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 120px var(--space-6) 80px;
+}
+
+.privacy-page__header {
+  margin-bottom: var(--space-12);
+  text-align: center;
+}
+
+.privacy-page__title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
+}
+
+.privacy-page__last-updated {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.privacy-page__section {
+  margin-bottom: var(--space-12);
+}
+
+.privacy-page__section-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-6);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.privacy-page__section-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 24px;
+  background: var(--brand-primary);
+  border-radius: 2px;
+}
+
+.privacy-page__text {
+  font-size: var(--font-size-lg);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.privacy-page__list {
+  margin-bottom: var(--space-6);
+  padding-left: var(--space-6);
+}
+
+.privacy-page__list-item {
+  font-size: var(--font-size-lg);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  list-style-type: disc;
+}
+
+.privacy-page__card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.privacy-page__card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-primary-light);
+}
+
+.privacy-page__highlight {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .privacy-page__content {
+    padding-top: 100px;
+  }
+  
+  .privacy-page__title {
+    font-size: 2.25rem;
+  }
+}
