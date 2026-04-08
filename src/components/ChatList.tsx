@@ -1,6 +1,5 @@
-import { useRef, useCallback, useMemo, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { Virtuoso } from 'react-virtuoso';
-import type { VirtuosoHandle } from 'react-virtuoso';
+import { useRef, useMemo, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { VList, type VListHandle } from 'virtua';
 import type { ChatMessage } from '../lib/chatParser';
 import { ChatBubble } from './ChatBubble';
 import { getSenderColor } from '../lib/colorUtils';
@@ -12,7 +11,7 @@ import './ChatList.css';
 // =============================================
 // Configuration
 // =============================================
-const AD_URL = '//pl29091668.profitablecpmratenetwork.com/d14f475c77442691aa60c75ce0608193/invoke.js'; // Add your Adsterra 1:1 Ad URL here (e.g., //domain.com/key/invoke.js)
+const AD_URL = '//pl29091668.profitablecpmratenetwork.com/d14f475c77442691aa60c75ce0608193/invoke.js';
 const AD_INTERVAL = 40; // Every 40 messages
 
 // =============================================
@@ -61,7 +60,7 @@ interface ChatListProps {
   messages: ChatMessage[];
   participants: string[];
   isGroup: boolean;
-  myName?: string; // The "own" sender — typically the last participant or set by heuristic
+  myName?: string;
   searchQuery?: string;
   highlightedMessageId?: string;
   onMediaClick?: (mediaKey: string, type: string, url?: string | null) => void;
@@ -74,16 +73,12 @@ export interface ChatListHandle {
 
 // =============================================
 // Determine "own" sender heuristically
-// In WhatsApp exports, the last unique participant is typically "you"
-// (Some exports use "You" explicitly)
 // =============================================
 function inferOwnSender(participants: string[]): string {
-  // WhatsApp sometimes uses "You" or the user's own name last
   const youVariants = ['you', 'yo', 'ich', 'moi', 'eu'];
   for (const p of participants) {
     if (youVariants.includes(p.toLowerCase())) return p;
   }
-  // Heuristic: last participant in the list
   return participants[participants.length - 1] ?? '';
 }
 
@@ -98,42 +93,34 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
   highlightedMessageId,
   onMediaClick,
 }, ref) => {
-  const virtuosoRef = useRef<VirtuosoHandle>(null);
-  // Memoize so Virtuoso's itemContent prop stays stable between renders
+  const virtuosoRef = useRef<VListHandle>(null);
+
+  // Items in chronological order (oldest first, newest last = bottom)
   const items = useMemo(() => buildItems(messages), [messages]);
   const ownSender = useMemo(() => inferOwnSender(participants), [participants]);
 
-  // Double rAF: wait for Virtuoso's initial render (frame 1) AND its
-  // internal scroll-to-bottom correction (frame 2) before revealing.
-  // Single rAF fires too early — Virtuoso hasn't finished jumping yet.
-  const [ready, setReady] = useState(false);
+  // Scroll to bottom on initial mount
   useEffect(() => {
-    let id2: number;
-    const id1 = requestAnimationFrame(() => {
-      id2 = requestAnimationFrame(() => setReady(true));
-    });
-    return () => {
-      cancelAnimationFrame(id1);
-      cancelAnimationFrame(id2);
-    };
-  }, []);
+    if (items.length > 0) {
+      virtuosoRef.current?.scrollToIndex(items.length - 1, { align: 'end' });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally run only once on mount
 
   useImperativeHandle(ref, () => ({
     scrollToBottom() {
-      virtuosoRef.current?.scrollToIndex({ index: items.length - 1, behavior: 'smooth' });
+      // Newest message is at the end of the array
+      virtuosoRef.current?.scrollToIndex(items.length - 1, { align: 'end', smooth: true });
     },
     scrollToMessage(messageId: string) {
-      const idx = items.findIndex(item => item.kind === 'message' && item.message.id === messageId);
+      const idx = items.findIndex(x => x.kind === 'message' && x.message.id === messageId);
       if (idx !== -1) {
-        virtuosoRef.current?.scrollToIndex({ index: idx, behavior: 'smooth', align: 'center' });
+        virtuosoRef.current?.scrollToIndex(idx, { align: 'center', smooth: true });
       }
     },
   }), [items]);
 
-  const renderItem = useCallback((index: number) => {
-    const item = items[index];
-    if (!item) return null;
-
+  const renderItem = (item: ListItem, index: number) => {
     if (item.kind === 'date') {
       return <DateSeparator key={item.key} label={item.label} />;
     }
@@ -145,7 +132,6 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
     const { message } = item;
     const isOwn = message.sender === ownSender;
 
-    // Show sender name chip only when sender changes from previous message
     const prevItem = items[index - 1];
     const showSender = isGroup && !isOwn && (
       prevItem?.kind === 'date' ||
@@ -154,19 +140,20 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
     );
 
     return (
-      <ChatBubble
-        key={message.id}
-        message={message}
-        isOwn={isOwn}
-        showSender={showSender}
-        isGroup={isGroup}
-        searchQuery={searchQuery}
-        isHighlighted={message.id === highlightedMessageId}
-        onMediaClick={onMediaClick}
-        senderColor={getSenderColor(message.sender)}
-      />
+      <div key={message.id} id={`msg-${message.id}`}>
+        <ChatBubble
+          message={message}
+          isOwn={isOwn}
+          showSender={showSender}
+          isGroup={isGroup}
+          searchQuery={searchQuery}
+          isHighlighted={message.id === highlightedMessageId}
+          onMediaClick={onMediaClick}
+          senderColor={getSenderColor(message.sender)}
+        />
+      </div>
     );
-  }, [items, ownSender, isGroup, searchQuery, highlightedMessageId, onMediaClick]);
+  };
 
   if (messages.length === 0) {
     return (
@@ -186,17 +173,13 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
 
   return (
     <div className="chat-list">
-      <Virtuoso
+      <VList
         ref={virtuosoRef}
-        totalCount={items.length}
-        itemContent={renderItem}
-        initialTopMostItemIndex={items.length - 1}
-        defaultItemHeight={72}
-        className="chat-list__scroller"
-        increaseViewportBy={{ top: 800, bottom: 800 }}
-        followOutput={false}
-        style={{ opacity: ready ? 1 : 0 }}
-      />
+        style={{ height: '100%', overflowX: 'hidden' }}
+        shift={true}
+      >
+        {items.map((item, index) => renderItem(item, index))}
+      </VList>
     </div>
   );
 });
