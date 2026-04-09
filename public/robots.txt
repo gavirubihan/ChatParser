@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /chat/
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://chatparser.vercel.app/sitemap.xml
