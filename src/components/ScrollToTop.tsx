@@ -6,6 +6,11 @@ export const ScrollToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { pathname } = useLocation();
 
+  // Auto-scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   // Button should NOT be visible on chat pages
   const isChatPage = pathname.startsWith('/chat');
 

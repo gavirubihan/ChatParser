@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './CookieConsent.css';
 
 const COOKIE_CONSENT_KEY = 'chatparser_cookie_consent';
 
 export const CookieConsent: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const navigate = useNavigate();
-
   useEffect(() => {
     // Check if user has already made a choice
     const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
@@ -33,7 +31,7 @@ export const CookieConsent: React.FC = () => {
   const handleChoice = (choice: 'accepted' | 'declined') => {
     localStorage.setItem(COOKIE_CONSENT_KEY, choice);
     setIsVisible(false);
-    
+
     // In a real scenario, you would trigger the enabling/disabling 
     // of Google Analytics or MS Clarity here.
     console.log(`User choice: ${choice}`);
@@ -57,18 +55,18 @@ export const CookieConsent: React.FC = () => {
             Cookie Preferences
           </h3>
           <p className="cookie-consent__text">
-            We use cookies to improve your experience, analyze site usage, and support development through advertising. 
-            View our <a onClick={() => navigate('/privacy')} className="cookie-consent__link" style={{ cursor: 'pointer' }}>Privacy Policy</a> for more details.
+            We use cookies to improve your experience, analyze site usage, and support development through advertising.
+            View our <Link to="/privacy" className="cookie-consent__link">Privacy Policy</Link> for more details.
           </p>
         </div>
         <div className="cookie-consent__actions">
-          <button 
+          <button
             className="cookie-consent__btn cookie-consent__btn--decline"
             onClick={() => handleChoice('declined')}
           >
             Decline
           </button>
-          <button 
+          <button
             className="cookie-consent__btn cookie-consent__btn--accept"
             onClick={() => handleChoice('accepted')}
           >

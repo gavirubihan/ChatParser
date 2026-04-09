@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ThemeToggle } from '../components/ThemeToggle';
 import './About.css';
 
@@ -11,18 +11,18 @@ export const About: React.FC = () => {
       {/* ===== NAV ===== */}
       <nav className="landing__nav" aria-label="Main navigation">
         <div className="landing__nav-inner">
-          <div className="landing__nav-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          <Link to="/" className="landing__nav-logo">
             <div className="landing__nav-logo-icon">
               <img src="/chatparser.svg" alt="ChatParser Logo" width="32" height="32" style={{ borderRadius: '8px' }} />
             </div>
             <span className="landing__nav-logo-text">Chat<span className="logo-gradient">Parser</span></span>
-          </div>
+          </Link>
 
           <div className="landing__nav-links">
-            <a onClick={() => navigate('/')} className="landing__nav-link" style={{ cursor: 'pointer' }}>Home</a>
-            <a onClick={() => navigate('/chat')} className="landing__nav-link" style={{ cursor: 'pointer' }}>Chats</a>
-            <a onClick={() => navigate('/privacy')} className="landing__nav-link" style={{ cursor: 'pointer' }}>Privacy</a>
-            <a className="landing__nav-link active">About</a>
+            <Link to="/" className="landing__nav-link">Home</Link>
+            <Link to="/chat" className="landing__nav-link">Chats</Link>
+            <Link to="/privacy" className="landing__nav-link">Privacy</Link>
+            <Link to="/about" className="landing__nav-link active">About</Link>
           </div>
 
           <div className="landing__nav-actions">
@@ -154,10 +154,10 @@ export const About: React.FC = () => {
       <footer className="landing__footer">
         <div className="landing__footer-inner">
           <div className="landing__footer-brand">
-            <div className="landing__footer-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+            <Link to="/" className="landing__footer-logo">
               <img src="/chatparser.svg" alt="ChatParser Logo" width="24" height="24" style={{ borderRadius: '6px' }} />
               <span>Chat<span className="logo-gradient">Parser</span></span>
-            </div>
+            </Link>
             <p className="landing__footer-tagline">
               The world's most private and beautiful WhatsApp chat export viewer.
             </p>
@@ -166,10 +166,10 @@ export const About: React.FC = () => {
           <div className="landing__footer-col">
             <h4 className="landing__footer-col-title">Quick Links</h4>
             <div className="landing__footer-links">
-              <a onClick={() => navigate('/')} className="landing__footer-link">Home</a>
-              <a onClick={() => navigate('/chat')} className="landing__footer-link">Chats</a>
-              <a className="landing__footer-link active">About</a>
-              <a onClick={() => navigate('/privacy')} className="landing__footer-link">Privacy Policy</a>
+              <Link to="/" className="landing__footer-link">Home</Link>
+              <Link to="/chat" className="landing__footer-link">Chats</Link>
+              <Link to="/about" className="landing__footer-link">About</Link>
+              <Link to="/privacy" className="landing__footer-link">Privacy Policy</Link>
               <a href="https://github.com/gavirubihan/WhatsApp-chat-export-viewer" target="_blank" rel="noopener noreferrer" className="landing__footer-link">Source Code</a>
             </div>
           </div>
