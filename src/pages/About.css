@@ -31,7 +31,7 @@
 }
 
 .about__hero-title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 900;
   color: var(--text-primary);
   line-height: 1.1;
@@ -80,6 +80,7 @@
   margin-bottom: var(--space-4);
 }
 
+
 .about__title {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: 800;
@@ -99,12 +100,21 @@
 .about__feature-display {
   background: var(--bg-surface-2);
   border-radius: var(--radius-2xl);
-  padding: var(--space-10);
+  padding: var(--space-8);
   border: 1px solid var(--border-default);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-6);
 }
+
+@media (max-width: 560px) {
+  .about__feature-display {
+    grid-template-columns: 1fr;
+    padding: var(--space-6);
+    gap: var(--space-5);
+  }
+}
+
 
 .about__feature-item {
   display: flex;

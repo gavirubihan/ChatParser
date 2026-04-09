@@ -122,7 +122,7 @@
 
 @media (max-width: 480px) {
   .landing__nav-links {
-    gap: var(--space-5);
+    gap: var(--space-3);
   }
 
   .landing__nav-link {
@@ -247,7 +247,7 @@
 
 /* Hero title */
 .landing__hero-title {
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
   font-weight: 900;
   line-height: 1.1;
   color: var(--text-primary);
@@ -1067,7 +1067,7 @@
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: var(--space-10);
   text-align: left;
 }
