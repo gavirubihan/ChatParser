@@ -11,7 +11,11 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Privacy-100%25_Local%20(Zero--Server)-00a884?style=for-the-badge&logo=shield" alt="Privacy Badge" />
   <img src="https://img.shields.io/badge/Framework-React_19-61DAFB?style=for-the-badge&logo=react" alt="React Badge" />
+  <img src="https://img.shields.io/badge/Language-TypeScript-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript Badge" />
+  <img src="https://img.shields.io/badge/Build-Vite_8-646CFF?style=for-the-badge&logo=vite" alt="Vite Badge" />
+  <img src="https://img.shields.io/badge/App-PWA_Ready-00a884?style=for-the-badge&logo=pwa" alt="PWA Badge" />
   <img src="https://img.shields.io/badge/Performance-60_FPS_Virtual_Scrolling-8b5cf6?style=for-the-badge&logo=lightning" alt="Performance Badge" />
+  <img src="https://img.shields.io/badge/Deployment-Vercel-000000?style=for-the-badge&logo=vercel" alt="Vercel Badge" />
 </p>
 
 ---
