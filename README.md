@@ -72,7 +72,7 @@ Want to run ChatParser on your own hardware?
 
 ```bash
 # Clone the repository
-git clone https://github.com/gavirubihan/WhatsApp-chat-export-viewer.git
+git clone https://github.com/gavirubihan/ChatParser.git
 
 # Install dependencies
 npm install
@@ -91,5 +91,5 @@ npm run build
 </p>
 
 <p align="center">
-  © 2024 ChatParser · <a href="https://whatsapp-chat-export-viewer.vercel.app">Live Demo</a>
+  © 2024 ChatParser · <a href="https://chatparser.vercel.app">Live Site</a>
 </p>
