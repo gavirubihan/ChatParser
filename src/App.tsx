@@ -4,6 +4,7 @@ import { Landing } from './pages/Landing';
 import { ChatViewer } from './pages/ChatViewer';
 import { Privacy } from './pages/Privacy';
 import { About } from './pages/About';
+import { NotFound } from './pages/NotFound';
 import { CookieConsent } from './components/CookieConsent';
 import { ScrollToTop } from './components/ScrollToTop';
 import { useTheme } from './hooks/useTheme';
@@ -54,7 +55,7 @@ const App: React.FC = () => {
           <Route path="/chat/:sessionId" element={<ChatViewer />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/about" element={<About />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <CookieConsent />
         <ScrollToTop />
