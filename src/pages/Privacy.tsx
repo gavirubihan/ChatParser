@@ -124,7 +124,7 @@ export const Privacy: React.FC = () => {
               <span>Chat<span className="logo-gradient">Parser</span></span>
             </Link>
             <p className="landing__footer-tagline">
-              The world's most private and beautiful WhatsApp chat export viewer.
+              A private and seamless way to view WhatsApp chat exports.
             </p>
           </div>
 

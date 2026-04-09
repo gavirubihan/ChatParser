@@ -5,7 +5,7 @@
 <h1 align="center">ChatParser</h1>
 
 <p align="center">
-  <strong>The world's most private and beautiful WhatsApp chat export viewer.</strong>
+  <strong>A private and seamless way to view WhatsApp chat exports.</strong>
 </p>
 
 <p align="center">

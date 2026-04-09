@@ -15,7 +15,7 @@ export default defineConfig({
       manifest: {
         name: 'ChatParser',
         short_name: 'ChatParser',
-        description: 'A local, performant viewer for WhatsApp chat exports.',
+        description: 'A private and seamless way to view WhatsApp chat exports.',
         theme_color: '#00a884',
         background_color: '#ffffff',
         display: 'standalone',
