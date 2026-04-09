@@ -91,5 +91,5 @@ npm run build
 </p>
 
 <p align="center">
-  © 2024 ChatParser · <a href="https://chatparser.vercel.app">Live Site</a>
+  © 2024 ChatParser · <a href="https://chatparser.online">Live Site</a>
 </p>

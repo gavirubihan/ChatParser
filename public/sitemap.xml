@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core Landing Page -->
   <url>
-    <loc>https://chatparser.vercel.app/</loc>
+    <loc>https://chatparser.online/</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
@@ -10,7 +10,7 @@
   
   <!-- About Page -->
   <url>
-    <loc>https://chatparser.vercel.app/about</loc>
+    <loc>https://chatparser.online/about</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -18,7 +18,7 @@
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://chatparser.vercel.app/privacy</loc>
+    <loc>https://chatparser.online/privacy</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -26,7 +26,7 @@
 
   <!-- Chat Viewer Entry -->
   <url>
-    <loc>https://chatparser.vercel.app/chat</loc>
+    <loc>https://chatparser.online/chat</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
