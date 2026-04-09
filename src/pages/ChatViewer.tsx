@@ -20,7 +20,7 @@ export const ChatViewer: React.FC = () => {
   const location = useLocation();
 
   // Data
-  const { sessions, loading: sessionsLoading, reload: reloadSessions, removeSession } = useAllSessions();
+  const { sessions, loading: sessionsLoading, reload: reloadSessions, removeSession, isDeleting, deleteProgress } = useAllSessions();
   const { messages, loading: messagesLoading } = useMessages(sessionId ?? null);
   const currentSession = sessions.find(s => s.id === sessionId);
 
@@ -129,14 +129,16 @@ export const ChatViewer: React.FC = () => {
     chatListRef.current?.scrollToBottom();
   }, []);
 
-  if (sessionsLoading || isProcessingShared) {
+  if (sessionsLoading || isProcessingShared || isDeleting) {
     return (
       <div className="chat-viewer__loading-screen">
         <div className="chat-viewer__loading-spinner" />
         <p>
           {isProcessingShared 
-            ? `Processing shared chat… ${shareProgress > 0 ? `${shareProgress}%` : ''}` 
-            : 'Loading your chats…'}
+            ? <>Processing shared chat… <strong>{shareProgress > 0 ? `${shareProgress}%` : ''}</strong></>
+            : isDeleting
+              ? <>Deleting chat… <strong>{deleteProgress > 0 ? `${deleteProgress}%` : ''}</strong></>
+              : 'Loading your chats…'}
         </p>
       </div>
     );

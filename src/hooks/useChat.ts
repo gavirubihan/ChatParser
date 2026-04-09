@@ -9,6 +9,8 @@ import type { ChatMessage } from '../lib/chatParser';
 export function useAllSessions() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteProgress, setDeleteProgress] = useState(0);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -23,11 +25,18 @@ export function useAllSessions() {
   useEffect(() => { load(); }, [load]);
 
   const removeSession = useCallback(async (id: string) => {
-    await deleteSession(id);
-    setSessions(prev => prev.filter(s => s.id !== id));
+    setIsDeleting(true);
+    setDeleteProgress(0);
+    try {
+      await deleteSession(id, (p) => setDeleteProgress(p));
+      setSessions(prev => prev.filter(s => s.id !== id));
+    } finally {
+      setIsDeleting(false);
+      setDeleteProgress(0);
+    }
   }, []);
 
-  return { sessions, loading, reload: load, removeSession };
+  return { sessions, loading, isDeleting, deleteProgress, reload: load, removeSession };
 }
 
 // =============================================

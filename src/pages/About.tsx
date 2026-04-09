@@ -42,8 +42,8 @@ export const About: React.FC = () => {
               <span className="landing__whatsapp-gradient">privately.</span>
             </h1>
             <p className="about__hero-subtitle animate-fade-in-up delay-100">
-              ChatParser was built to solve a simple problem: WhatsApp chat exports are hard to read and easy to lose. 
-              We provide a beautiful, high-performance, and 100% private way to preserve your digital conversations.
+              WhatsApp provides a convenient way to export and share your chat history, but lacks a built-in tool to actually view and navigate those exports.
+              <strong>ChatParser was built to bridge that gap</strong>—bringing your raw conversations back to life in a beautiful, readable, and 100% private format.
             </p>
           </div>
         </section>
@@ -56,11 +56,11 @@ export const About: React.FC = () => {
                 <div className="about__label">The Privacy Pillar</div>
                 <h2 className="about__title">Your Data, Your Device. Always.</h2>
                 <p className="about__text">
-                  Unlike other tools, ChatParser uses a <strong>Zero-Server Architecture</strong>. This means that when you "upload" a chat, 
+                  Unlike other tools, ChatParser uses a <strong>Zero-Server Architecture</strong>. This means that when you "upload" a chat,
                   nothing actually leaves your computer.
                 </p>
                 <p className="about__text">
-                  Our parsing engine runs entirely within your browser's memory. We don't have a backend database for your chats 
+                  Our parsing engine runs entirely within your browser's memory. We don't have a backend database for your chats
                   because your privacy isn't just a policy—it's built into the code.
                 </p>
               </div>
@@ -72,7 +72,7 @@ export const About: React.FC = () => {
                 </div>
                 <h3 style={{ marginBottom: '12px' }}>Client-Side Only</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>
-                  We leverage modern Web APIs to process large ZIP files and text logs instantly without ever touching a network. 
+                  We leverage modern Web APIs to process large ZIP files and text logs instantly without ever touching a network.
                   Even if you disconnect your internet, ChatParser keeps working.
                 </p>
               </div>
@@ -88,41 +88,49 @@ export const About: React.FC = () => {
                 <div className="about__label">Engineering</div>
                 <h2 className="about__title">High Performance for High Memory.</h2>
                 <p className="about__text">
-                  Digital lifetimes are long. Some of the chats we support contain over 500,000 messages and thousands of media files. 
+                  Digital lifetimes are long. Some of the chats we support contain over 500,000 messages and thousands of media files.
                 </p>
                 <p className="about__text">
-                  We use advanced <strong>Virtual List rendering</strong> and <strong>Concurrent Processing</strong> to ensure that 
+                  We use advanced <strong>Virtual List rendering</strong> and <strong>Concurrent Processing</strong> to ensure that
                   scrolling through a 10-year-old conversation feels as smooth as a fresh one. No lag, no crashing, just speed.
                 </p>
               </div>
               <div className="about__feature-display animate-scale-in">
                 <div className="about__feature-item">
                   <div className="about__feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />
+                    </svg>
                   </div>
                   <div className="about__feature-name">60 FPS Scrolling</div>
-                  <div className="about__feature-desc">Virtualization handles massive lists with ease.</div>
+                  <div className="about__feature-desc">Virtualization handles massive lists with ease</div>
                 </div>
                 <div className="about__feature-item">
                   <div className="about__feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+                    </svg>
                   </div>
                   <div className="about__feature-name">Media Rendering</div>
-                  <div className="about__feature-desc">Native support for ALL WhatsApp media types.</div>
+                  <div className="about__feature-desc">Native support for ALL WhatsApp media types</div>
                 </div>
                 <div className="about__feature-item">
                   <div className="about__feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 2v6h-6M3 12a9 9 0 0115-6.7L21 8M3 22v-6h6M21 12a9 9 0 01-15 6.7L3 16"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5V19A9 3 0 0 0 21 19V5" /><path d="M3 12A9 3 0 0 0 21 12" />
+                    </svg>
                   </div>
                   <div className="about__feature-name">Local Storage</div>
-                  <div className="about__feature-desc">IndexedDB saves your sessions locally for later.</div>
+                  <div className="about__feature-desc">IndexedDB saves your sessions locally for later</div>
                 </div>
                 <div className="about__feature-item">
                   <div className="about__feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
+                    </svg>
                   </div>
                   <div className="about__feature-name">Open Source</div>
-                  <div className="about__feature-desc">Fully transparent code for total peace of mind.</div>
+                  <div className="about__feature-desc">Fully transparent code for total peace of mind</div>
                 </div>
               </div>
             </div>
@@ -169,7 +177,7 @@ export const About: React.FC = () => {
           <div className="landing__footer-col">
             <h4 className="landing__footer-col-title">Settings</h4>
             <div className="landing__footer-links">
-              <button 
+              <button
                 className="landing__footer-settings-btn"
                 onClick={() => window.dispatchEvent(new CustomEvent('chatparser:show-cookie-consent'))}
               >

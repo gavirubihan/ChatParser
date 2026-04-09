@@ -90,26 +90,49 @@ export async function saveSession(session: ChatSession): Promise<void> {
   await db.put('sessions', session);
 }
 
-export async function deleteSession(id: string): Promise<void> {
+export async function deleteSession(id: string, onProgress?: (progress: number) => void): Promise<void> {
   const db = await getDB();
   const tx = db.transaction(['sessions', 'messages', 'media'], 'readwrite');
 
-  // Delete session
-  await tx.objectStore('sessions').delete(id);
-
-  // Delete all messages
+  // Delete session - get keys first to report progress
   const msgIndex = tx.objectStore('messages').index('by-session');
   const msgKeys = await msgIndex.getAllKeys(id);
-  for (const key of msgKeys) {
-    await tx.objectStore('messages').delete(key);
-  }
 
-  // Delete all media (prefix-based)
+  // For media, we have to iterate all keys since there's no index
   const mediaStore = tx.objectStore('media');
   const allMediaKeys = await mediaStore.getAllKeys();
-  for (const key of allMediaKeys) {
-    if (String(key).startsWith(`${id}::`)) {
-      await mediaStore.delete(key);
+  const mediaKeysToDelete = allMediaKeys.filter(key => String(key).startsWith(`${id}::`));
+
+  const totalItems = 1 + msgKeys.length + mediaKeysToDelete.length;
+  let processed = 0;
+
+  const report = (count: number) => {
+    processed += count;
+    if (onProgress) {
+      onProgress(Math.round((processed / totalItems) * 100));
+    }
+  };
+
+  // 1. Delete session record
+  await tx.objectStore('sessions').delete(id);
+  report(1);
+
+  // 2. Delete all messages
+  for (let i = 0; i < msgKeys.length; i++) {
+    await tx.objectStore('messages').delete(msgKeys[i]);
+    // Report every 200 messages or at the end
+    if (i % 200 === 0 || i === msgKeys.length - 1) {
+      onProgress?.(Math.round(((1 + i + 1) / totalItems) * 100));
+    }
+  }
+  processed += msgKeys.length;
+
+  // 3. Delete all media
+  for (let i = 0; i < mediaKeysToDelete.length; i++) {
+    await mediaStore.delete(mediaKeysToDelete[i]);
+    // Report every 20 media items or at the end
+    if (i % 20 === 0 || i === mediaKeysToDelete.length - 1) {
+      onProgress?.(Math.round(((processed + i + 1) / totalItems) * 100));
     }
   }
 

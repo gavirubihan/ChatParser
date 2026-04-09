@@ -143,6 +143,10 @@ const FAQS = [
   {
     q: "Is there a limit on the message count?",
     a: "No, ChatParser is built with high-performance virtualization. Whether your chat has 100 messages or 100,000, it will load smoothly and quickly without slowing down your browser."
+  },
+  {
+    q: "Why was ChatParser created?",
+    a: "WhatsApp allows you to export your chat history into raw text or ZIP files, but it doesn't provide a built-in way to actually read or search those exports. We created ChatParser to provide a beautiful, intuitive, and private way to relive your memories without needing a server."
   }
 ];
 
@@ -238,8 +242,8 @@ export const Landing: React.FC = () => {
             </h1>
 
             <p className="landing__hero-subtitle animate-fade-in-up delay-200">
-              Upload your exported WhatsApp chats from Android or iOS and view them in a beautiful, feature-rich interface.
-              Search messages, view media, and navigate easily — all privately on your device.
+              WhatsApp lets you export and share your chat history, but provides no easy way to view it. 
+              <strong>ChatParser fills that gap.</strong> Upload your Android or iOS exports and view them in a beautiful, feature-rich interface—all privately on your device.
             </p>
 
             <div className="landing__hero-actions animate-fade-in-up delay-300">
