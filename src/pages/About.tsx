@@ -170,7 +170,7 @@ export const About: React.FC = () => {
               <Link to="/chat" className="landing__footer-link">Chats</Link>
               <Link to="/about" className="landing__footer-link">About</Link>
               <Link to="/privacy" className="landing__footer-link">Privacy Policy</Link>
-              <a href="https://github.com/gavirubihan/WhatsApp-chat-export-viewer" target="_blank" rel="noopener noreferrer" className="landing__footer-link">Source Code</a>
+              <a href="https://github.com/gavirubihan/ChatParser" target="_blank" rel="noopener noreferrer" className="landing__footer-link">Source Code</a>
             </div>
           </div>
 

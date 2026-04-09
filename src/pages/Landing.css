@@ -416,6 +416,16 @@
 .landing__trust-badge:hover {
   transform: translateY(-2px);
   border-color: var(--brand-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.landing__trust-badge--link {
+  text-decoration: none;
+  transition: all var(--transition-base);
+}
+
+.landing__trust-badge--link:hover {
+  background: var(--bg-surface-2);
 }
 
 .landing__trust-icon {

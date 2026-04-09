@@ -11,7 +11,7 @@ import './ChatList.css';
 // =============================================
 // Configuration
 // =============================================
-const AD_URL = '//pl29091668.profitablecpmratenetwork.com/d14f475c77442691aa60c75ce0608193/invoke.js';
+const AD_URL = import.meta.env.VITE_ADSTERRA_URL;
 const AD_INTERVAL = 40; // Every 40 messages
 
 // =============================================
