@@ -7,7 +7,6 @@
     "dev": "vite",
     "prebuild": "node scripts/update-sitemap.js",
     "build": "tsc -b && vite build",
-    "postbuild": "node scripts/indexnow.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
