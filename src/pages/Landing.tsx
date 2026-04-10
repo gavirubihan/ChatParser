@@ -239,13 +239,12 @@ export const Landing: React.FC = () => {
             </div>
 
             <h1 id="hero-title" className="landing__hero-title animate-fade-in-up delay-100">
-              View Exported <span className="landing__whatsapp-gradient">WhatsApp Chats</span>
-              <br />In A Better Way
+              Secure <span className="landing__whatsapp-gradient">WhatsApp Chat Export Viewer</span>
+              <br />Fast, Free & Private
             </h1>
 
             <p className="landing__hero-subtitle animate-fade-in-up delay-200">
-              WhatsApp lets you export and share your chat history, but provides no easy way to view it.
-              <strong>ChatParser fills that gap.</strong> Upload your Android or iOS exports and view them in a beautiful, feature-rich interface—all privately on your device.
+              Wondering <strong>how to read WhatsApp exported chat</strong> files? ChatParser is a <strong>private WhatsApp chat viewer online</strong> that turns messy `.txt` and `.zip` backups into a beautiful, familiar interface. Securely <strong>open WhatsApp exported chat files</strong> directly in your local browser—with full media support and absolutely zero cloud uploads.
             </p>
 
             <div className="landing__hero-actions animate-fade-in-up delay-300">
