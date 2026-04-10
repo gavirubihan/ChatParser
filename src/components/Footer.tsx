@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
 
       <div className="landing__footer-bottom">
         <p className="landing__footer-copy">
-          © {new Date().getFullYear()} ChatParser · Built for privacy · No data ever leaves your device
+          © {new Date().getFullYear()} ChatParser · Owned by <a href="https://neovise.me" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>neovise.me</a> · Built for privacy · No data ever leaves your device
         </p>
       </div>
     </footer>

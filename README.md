@@ -95,5 +95,5 @@ npm run build
 </p>
 
 <p align="center">
-  © 2024 ChatParser · <a href="https://chatparser.online">Live Site</a>
+  © 2024 ChatParser · Owned by <a href="https://neovise.me">neovise.me</a> · <a href="https://chatparser.online">Live Site</a>
 </p>

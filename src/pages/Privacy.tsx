@@ -35,10 +35,10 @@ export const Privacy: React.FC = () => {
 
       <main className="privacy-page__content">
         <header className="privacy-page__header">
-          <span className="privacy-page__last-updated">Last Updated: April 8, 2026</span>
+          <span className="privacy-page__last-updated">Last Updated: April 10, 2026</span>
           <h1 className="privacy-page__title">Privacy Policy</h1>
           <p className="privacy-page__text">
-            At ChatParser, your privacy is our core value. This policy explains how we handle your data and what services we use to improve your experience.
+            At ChatParser (owned by <a href="https://neovise.me" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>neovise.me</a>), your privacy is our core value. This policy explains how we handle your data and what services we use to improve your experience.
           </p>
         </header>
 
