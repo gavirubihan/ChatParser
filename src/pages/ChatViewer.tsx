@@ -29,9 +29,9 @@ export const ChatViewer: React.FC = () => {
     if (currentSession) {
       document.title = `Viewing Chat with ${currentSession.name} | ChatParser`;
     } else {
-      document.title = 'Chat Viewer | ChatParser';
+      document.title = 'Whatsapp Chat Export Viewer | ChatParser';
     }
-    
+
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.setAttribute('content', 'Securely view and search your WhatsApp chat exports. Private, local-first chat viewing with full media support.');
