@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { Footer } from '../components/Footer';
@@ -7,6 +7,13 @@ import './Privacy.css';
 
 export const Privacy: React.FC = () => {
   // (Scroll to top now handled globally by ScrollToTop component in App.tsx)
+  useEffect(() => {
+    document.title = 'Privacy Policy | ChatParser';
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute('content', 'Read our Privacy Policy. ChatParser is a private WhatsApp chat viewer that processes all your data locally in your browser without any cloud uploads.');
+    }
+  }, []);
 
   return (
     <div className="privacy-page">

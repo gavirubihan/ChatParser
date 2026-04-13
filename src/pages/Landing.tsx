@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UploadZone } from '../components/UploadZone';
 import { ThemeToggle } from '../components/ThemeToggle';
@@ -170,6 +170,14 @@ export const Landing: React.FC = () => {
   const uploadRef = useRef<HTMLDivElement>(null);
   const howRef = useRef<HTMLDivElement>(null);
   const [isGeneratingDemo, setIsGeneratingDemo] = React.useState(false);
+
+  useEffect(() => {
+    document.title = 'WhatsApp Chat Viewer Online (Free & Private) | ChatParser';
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute('content', 'Free WhatsApp chat viewer to open exported chats instantly. Upload .txt or .zip files and explore your chat history privately in your browser.');
+    }
+  }, []);
 
   const handleUploadSuccess = (result: ProcessResult) => {
     navigate(`/chat/${result.sessionId}`);

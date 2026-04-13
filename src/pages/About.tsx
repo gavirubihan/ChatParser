@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { Footer } from '../components/Footer';
@@ -7,6 +7,14 @@ import './About.css';
 
 export const About: React.FC = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = 'About Us | ChatParser';
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute('content', 'Learn more about ChatParser, the mission behind our private WhatsApp viewer, and how we handle massive chat exports with high performance.');
+    }
+  }, []);
 
   return (
     <div className="about">
