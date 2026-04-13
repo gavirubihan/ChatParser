@@ -23,7 +23,9 @@
 ## 📸 Preview
 
 <p align="center">
-  <img src="public/chatparser_preview.webp" width="100%" alt="ChatParser Preview" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2)" />
+  <img src="public/chatparser_preview.webp" width="100%" alt="ChatParser Landing Preview" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 16px;" />
+  <br /><br />
+  <img src="public/chatparser_chat_preview.webp" width="100%" alt="ChatParser Interface Preview" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2)" />
 </p>
 
 ---
