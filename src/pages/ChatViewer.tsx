@@ -26,11 +26,7 @@ export const ChatViewer: React.FC = () => {
   const currentSession = sessions.find(s => s.id === sessionId);
 
   useEffect(() => {
-    if (currentSession) {
-      document.title = `Viewing Chat with ${currentSession.name} | ChatParser`;
-    } else {
-      document.title = 'Whatsapp Chat Export Viewer | ChatParser';
-    }
+    document.title = 'WhatsApp Chat Viewer | ChatParser';
 
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
