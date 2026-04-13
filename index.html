@@ -63,6 +63,30 @@
 
   <!-- PWA Manifest (Explicit for some browsers) -->
   <link rel="manifest" href="/manifest.webmanifest" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ChatParser",
+      "url": "https://chatparser.online",
+      "description": "Free WhatsApp chat viewer to open exported chats instantly. Upload .txt or .zip files and explore your chat history privately in your browser.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "neovise.me",
+        "url": "https://neovise.me"
+      }
+    }
+  </script>
 </head>
 
 <body>
