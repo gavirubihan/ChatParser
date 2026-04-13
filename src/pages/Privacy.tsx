@@ -80,11 +80,10 @@ export const Privacy: React.FC = () => {
         <section className="privacy-page__section">
           <h2 className="privacy-page__section-title">3. Advertising Services</h2>
           <div className="privacy-page__card">
-            <h3 className="privacy-page__section-title" style={{ fontSize: 'var(--font-size-xl)' }}>Adsterra</h3>
             <p className="privacy-page__text">
-              To keep ChatParser free and support development, we display advertisements provided by Adsterra. These ads are served through an iframe and may collect cookies or other identifiers to provide relevant advertising.
+              Currently, we do not use any advertising networks on ChatParser. This feature will be added in the future.
               <br /><br />
-              <strong className="privacy-page__highlight">Important:</strong> Adsterra does not have access to your chat data, as all chat processing occurs in a separate local environment.
+              <strong className="privacy-page__highlight">100% Privacy Saved:</strong> We guarantee your privacy is 100% secure. Any future advertising integration will never be able to access your chat data, as all chat processing occurs strictly within your local device.
             </p>
           </div>
         </section>

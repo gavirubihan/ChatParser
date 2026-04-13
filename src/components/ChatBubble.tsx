@@ -235,7 +235,7 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
   if (isSystem) {
     return (
       <div className="chat-bubble__system-wrapper">
-        <div className="chat-bubble__system">{message.content}</div>
+        <div className="chat-bubble__system" data-clarity-mask="True">{message.content}</div>
       </div>
     );
   }
@@ -253,7 +253,10 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
         </div>
       )}
 
-      <div className={`chat-bubble${isOwn ? ' chat-bubble--own' : ' chat-bubble--other'}${isDeleted ? ' chat-bubble--deleted' : ''}${isMedia && !hasText && !caption ? ' chat-bubble--media-only' : ''}`}>
+      <div 
+        className={`chat-bubble${isOwn ? ' chat-bubble--own' : ' chat-bubble--other'}${isDeleted ? ' chat-bubble--deleted' : ''}${isMedia && !hasText && !caption ? ' chat-bubble--media-only' : ''}`}
+        data-clarity-mask="True"
+      >
         {/* Sender name in group */}
         {showSender && (
           <div className="chat-bubble__sender" style={{ color: senderColor ?? getSenderColor(message.sender) }}>
