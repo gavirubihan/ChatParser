@@ -7,6 +7,7 @@ import { About } from './pages/About';
 import { NotFound } from './pages/NotFound';
 import { CookieConsent } from './components/CookieConsent';
 import { ScrollToTop } from './components/ScrollToTop';
+import { DynamicBreadcrumbs } from './components/DynamicBreadcrumbs';
 import { useTheme } from './hooks/useTheme';
 import { enforcePrivacyModeOnStartup } from './lib/privacyMode';
 
@@ -59,6 +60,7 @@ const App: React.FC = () => {
         </Routes>
         <CookieConsent />
         <ScrollToTop />
+        <DynamicBreadcrumbs />
       </ThemeInitializer>
     </BrowserRouter>
   );
