@@ -15,6 +15,12 @@
   --brand-primary-light: #25d366;
   --brand-accent: #34b7f1;
 
+  /* Status Colors */
+  --status-error: #ef4444;
+  --status-success: #22c55e;
+  --status-warning: #f59e0b;
+  --status-info: #3b82f6;
+
   /* Backgrounds */
   --bg-base: #f0f2f5;
   --bg-surface: #ffffff;
@@ -157,6 +163,12 @@
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+
+  /* Status Colors (Dark) */
+  --status-error: #ff6b6b;
+  --status-success: #4ade80;
+  --status-warning: #fbbf24;
+  --status-info: #60a5fa;
 }
 
 /* =============================================

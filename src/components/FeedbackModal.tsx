@@ -18,7 +18,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim()) return;
+    if (!message.trim() || (type === 'Bug' && !email.trim())) return;
 
     setStatus('submitting');
     setErrorMessage('');
@@ -120,15 +120,23 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ onClose }) => {
               </div>
 
               <div className="feedback-modal__group">
-                <label className="feedback-modal__label">Email (Optional)</label>
+                <label className="feedback-modal__label">
+                  Email {type === 'Bug' && <span style={{ color: 'var(--status-error)' }}>*</span>}
+                  {type !== 'Bug' && ' (Optional)'}
+                </label>
                 <input
                   type="email"
                   className="feedback-modal__input"
                   placeholder="your@email.com"
+                  required={type === 'Bug'}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                 />
-                <span className="feedback-modal__hint">Only if you'd like us to follow up with you.</span>
+                <span className="feedback-modal__hint">
+                  {type === 'Bug' 
+                    ? 'Required so we can follow up with you about this bug.' 
+                    : "Only if you'd like us to follow up with you."}
+                </span>
               </div>
 
               {status === 'error' && (
@@ -141,7 +149,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ onClose }) => {
                 <button
                   type="submit"
                   className="feedback-modal__submit"
-                  disabled={status === 'submitting' || !message.trim()}
+                  disabled={status === 'submitting' || !message.trim() || (type === 'Bug' && !email.trim())}
                 >
                   {status === 'submitting' ? (
                     <>
