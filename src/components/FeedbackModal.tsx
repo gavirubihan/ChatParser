@@ -14,9 +14,9 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ onClose }) => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
+  const web3FormsKey = import.meta.env.VITE_WEB3FORMS_KEY;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message.trim() || (type === 'Bug' && !email.trim())) return;
 
@@ -24,25 +24,26 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ onClose }) => {
     setErrorMessage('');
 
     try {
-      const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
+      const formData = new FormData();
+      formData.append('access_key', web3FormsKey);
+      formData.append('subject', `ChatParser Feedback: ${type}`);
+      formData.append('from_name', 'ChatParser Feedback');
+      formData.append('type', type);
+      formData.append('message', message);
+      formData.append('email', email || 'not provided');
+      formData.append('page_url', window.location.href);
+
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          type,
-          message,
-          email,
-          url: window.location.href,
-        })
+        body: formData,
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         setStatus('success');
       } else {
-        const data = await response.json();
-        throw new Error(data.error || 'Something went wrong');
+        throw new Error(result.message || 'Submission failed');
       }
     } catch (err) {
       console.error('Feedback submission error:', err);
@@ -133,10 +134,29 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ onClose }) => {
                   onChange={e => setEmail(e.target.value)}
                 />
                 <span className="feedback-modal__hint">
-                  {type === 'Bug' 
-                    ? 'Required so we can follow up with you about this bug.' 
+                  {type === 'Bug'
+                    ? 'Required so we can follow up with you about this bug.'
                     : "Only if you'd like us to follow up with you."}
                 </span>
+              </div>
+
+              <div className="feedback-modal__group">
+                <div className="feedback-modal__email-cta">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <span>
+                    Have a sample chat export? Email it directly to{' '}
+                    <a
+                      href="mailto:contact@chatparser.online?subject=Sample%20Chat%20Export%20Submission"
+                      className="feedback-modal__email-link"
+                    >
+                      contact@chatparser.online
+                    </a>
+                  </span>
+                </div>
               </div>
 
               {status === 'error' && (

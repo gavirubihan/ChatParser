@@ -10,6 +10,7 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { DynamicBreadcrumbs } from './components/DynamicBreadcrumbs';
 import { useTheme } from './hooks/useTheme';
 import { enforcePrivacyModeOnStartup } from './lib/privacyMode';
+import { FeedbackModal } from './components/FeedbackModal';
 
 const ThemeInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme } = useTheme();
@@ -23,10 +24,18 @@ const ThemeInitializer: React.FC<{ children: React.ReactNode }> = ({ children })
 
 const App: React.FC = () => {
   const [ready, setReady] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   // On first load: enforce privacy/session mode (wipe data if session mode + fresh tab)
   useEffect(() => {
     enforcePrivacyModeOnStartup().finally(() => setReady(true));
+  }, []);
+
+  // Listener for global feedback modal trigger
+  useEffect(() => {
+    const handleOpenFeedback = () => setShowFeedbackModal(true);
+    window.addEventListener('chatparser:open-feedback', handleOpenFeedback);
+    return () => window.removeEventListener('chatparser:open-feedback', handleOpenFeedback);
   }, []);
 
   // Show nothing (or a tiny spinner) while the async startup runs
@@ -61,6 +70,9 @@ const App: React.FC = () => {
         <CookieConsent />
         <ScrollToTop />
         <DynamicBreadcrumbs />
+        {showFeedbackModal && (
+          <FeedbackModal onClose={() => setShowFeedbackModal(false)} />
+        )}
       </ThemeInitializer>
     </BrowserRouter>
   );

@@ -7,7 +7,6 @@ import { SearchPanel } from '../components/SearchPanel';
 import { MediaViewer } from '../components/MediaViewer';
 import { UploadZone } from '../components/UploadZone';
 import { ThemeToggle } from '../components/ThemeToggle';
-import { FeedbackModal } from '../components/FeedbackModal';
 import { useMessages, useAllSessions } from '../hooks/useChat';
 import { useSearch } from '../hooks/useSearch';
 import { processFile, type ProcessResult } from '../lib/zipHandler';
@@ -39,7 +38,6 @@ export const ChatViewer: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mediaViewer, setMediaViewer] = useState<{ mediaKey: string; type: string, url?: string | null } | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [isProcessingShared, setIsProcessingShared] = useState(false);
   const [shareProgress, setShareProgress] = useState(0);
   const isHandlingShareRef = useRef(false);
@@ -269,7 +267,7 @@ export const ChatViewer: React.FC = () => {
                 </button>
                 <button
                   className="chat-viewer__action-btn"
-                  onClick={() => setShowFeedbackModal(true)}
+                  onClick={() => window.dispatchEvent(new CustomEvent('chatparser:open-feedback'))}
                   aria-label="Give feedback"
                   title="Give feedback"
                   id="feedback-toggle-btn"
@@ -392,10 +390,7 @@ export const ChatViewer: React.FC = () => {
         </div>
       )}
 
-      {/* Feedback Modal */}
-      {showFeedbackModal && (
-        <FeedbackModal onClose={() => setShowFeedbackModal(false)} />
-      )}
+      {/* Upload Modal */}
     </div>
   );
 };

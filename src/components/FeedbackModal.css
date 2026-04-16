@@ -20,6 +20,9 @@
   border-radius: var(--radius-xl);
   width: 100%;
   max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
   box-shadow: var(--shadow-xl);
   border: 1px solid var(--border-default);
   overflow: hidden;
@@ -61,6 +64,8 @@
 
 .feedback-modal__body {
   padding: var(--space-6);
+  overflow-y: auto;
+  flex: 1;
 }
 
 .feedback-modal__form {
@@ -196,6 +201,37 @@
 .feedback-modal__submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Sample File Email CTA */
+.feedback-modal__email-cta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface-2);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.feedback-modal__email-cta svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--text-tertiary);
+}
+
+.feedback-modal__email-link {
+  color: var(--brand-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  transition: opacity var(--transition-fast);
+}
+
+.feedback-modal__email-link:hover {
+  opacity: 0.8;
 }
 
 /* Success State */
