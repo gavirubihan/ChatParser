@@ -2,26 +2,43 @@
 
 > A private and seamless way to view WhatsApp chat exports.
 
-ChatParser is a free, 100% private, browser-based tool for parsing and viewing WhatsApp chat exports (TXT or ZIP).
+ChatParser is a free, 100% private, browser-based tool for parsing and viewing 
+WhatsApp chat exports (TXT or ZIP).
 
 ## Core Philosophy
-We transform raw WhatsApp exports into a premium, interactive experience that feels like the original app. 
+We transform raw WhatsApp exports into a premium, interactive experience that 
+feels like the original app.
 
-IMPORTANT (Zero-Server Architecture): ChatParser operates entirely locally. Your chat data never leaves your device. All parsing, media rendering, and database storage (IndexedDB) occur within your browser's memory. No chat data is ever uploaded to any external server.
+IMPORTANT (Zero-Server Architecture): ChatParser operates entirely locally. 
+Your chat data never leaves your device. All parsing, media rendering, and 
+database storage (IndexedDB) occur within your browser's memory. No chat data 
+is ever uploaded to any external server.
+
+## Who It's For
+Anyone who has exported a WhatsApp chat and wants to view, search, or revisit 
+their messages without installing software or trusting a third-party server.
 
 ## Features
 - 100% Private: Local-first architecture ensures complete data privacy.
 - High Performance: Handles 500k+ messages with 60FPS virtual scrolling.
 - Full Media Support: Native playback for images, videos, audio, and documents.
 - Smart Search: Filter by date, message type, or instant text search.
-- PWA Ready: Installable on phone or desktop, with Share Target API integration (send chat exports directly to the app).
+- PWA Ready: Installable on phone or desktop, with Share Target API integration.
 - Offline Capable: Works entirely offline once loaded.
+
+## Limitations
+- Only supports WhatsApp export format (.txt or .zip)
+- Does not support WhatsApp backup files (.crypt12, .crypt14, msgstore.db)
+- Media files must be exported from WhatsApp as a ZIP to appear in the viewer
 
 ## How It Works
 1. Export: Open any chat in WhatsApp → Menu → More → Export Chat.
 2. Include Media: Choose "Include Media" to generate a ZIP file (recommended).
 3. Upload: Drag & drop your `.zip` or `.txt` file into ChatParser.
 4. Relive: Browse your memories in a beautiful, high-speed interface.
+
+## Supported Locales
+Supports WhatsApp exports from all regions including 12h and 24h timestamp formats.
 
 ## Tech Stack
 - Frontend: React 19, TypeScript
@@ -36,4 +53,6 @@ IMPORTANT (Zero-Server Architecture): ChatParser operates entirely locally. Your
 - Open Source: https://github.com/gavirubihan/ChatParser
 
 ## Legal & Authorship
-© 2026 ChatParser. Owned by neovise.me.
+© 2026 ChatParser. A product by Neovise (https://neovise.me).
+
+Last Updated: April 2026
