@@ -2,7 +2,7 @@
 
 > A private and seamless way to view WhatsApp chat exports.
 
-ChatParser is a free, 100% private, browser-based tool for parsing and viewing 
+ChatParser is a free, 100% private, open-source, browser-based tool for parsing and viewing 
 WhatsApp chat exports (TXT or ZIP).
 
 ## Core Philosophy
