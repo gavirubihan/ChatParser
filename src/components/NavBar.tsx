@@ -55,6 +55,7 @@ export const NavBar: React.FC = () => {
             <Link to="/chat" className={`navbar__link ${location.pathname.startsWith('/chat') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Chats</Link>
             <Link to="/privacy" className={`navbar__link ${location.pathname === '/privacy' ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Privacy</Link>
             <Link to="/about" className={`navbar__link ${location.pathname === '/about' ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>About</Link>
+            <Link to="/contact" className={`navbar__link ${location.pathname === '/contact' ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Contact</Link>
           </div>
 
           <div className="navbar__divider" aria-hidden="true" />

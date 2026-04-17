@@ -1,0 +1,181 @@
+.contact-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+.contact-page__main {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* === HERO === */
+.contact-page__hero {
+  position: relative;
+  overflow: hidden;
+  padding: 110px var(--space-6) var(--space-12);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .contact-page__hero {
+    padding-top: 85px;
+  }
+}
+
+.contact-page__hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* === SECTION === */
+.contact-page__section {
+  padding: var(--space-12) var(--space-6);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-page__section-inner {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.contact-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-8);
+  align-items: flex-start;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .contact-page__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* === INFO CARDS === */
+.contact-page__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.contact-page__info-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.contact-page__info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+.contact-page__info-card--alt {
+  background: color-mix(in srgb, var(--brand-primary) 5%, transparent);
+  border-color: transparent;
+}
+
+.contact-page__icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-xl);
+  background: rgba(0, 168, 132, 0.1);
+  color: var(--brand-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.contact-page__info-card h3 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin: 0 0 var(--space-2) 0;
+  color: var(--text-primary);
+}
+
+.contact-page__info-card p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  margin: 0 0 var(--space-4) 0;
+}
+
+.contact-page__email-link {
+  display: inline-block;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--brand-primary);
+  text-decoration: none;
+  background: var(--bg-surface-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-strong);
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.contact-page__email-link:hover {
+  background: var(--brand-primary);
+  color: white;
+  border-color: var(--brand-primary);
+  box-shadow: 0 4px 12px rgba(0, 168, 132, 0.2);
+}
+
+/* === FORM CONTAINER (GLASS) === */
+.contact-page__form-container {
+  border-radius: var(--radius-2xl);
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(0, 168, 132, 0.5) 0%, rgba(255, 255, 255, 0.1) 100%);
+  box-shadow: var(--shadow-xl);
+}
+
+[data-theme="dark"] .contact-page__form-container {
+  background: linear-gradient(135deg, rgba(0, 168, 132, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+.contact-page__form-glass {
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: calc(var(--radius-2xl) - 2px);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .contact-page__form-glass {
+  background: rgba(22, 22, 24, 0.9);
+}
+
+.contact-page__form-glass h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  margin: 0 0 var(--space-6) 0;
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  .contact-page__form-glass {
+    padding: var(--space-5);
+  }
+}

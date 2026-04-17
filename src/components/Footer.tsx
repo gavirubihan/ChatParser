@@ -22,6 +22,7 @@ export const Footer: React.FC = () => {
             <Link to="/chat" className="landing__footer-link">Chats</Link>
             <Link to="/about" className="landing__footer-link">About</Link>
             <Link to="/privacy" className="landing__footer-link">Privacy Policy</Link>
+            <Link to="/contact" className="landing__footer-link">Contact Us</Link>
           </div>
         </div>
 
