@@ -8,7 +8,6 @@ import { Contact } from './pages/Contact';
 import { NotFound } from './pages/NotFound';
 import { CookieConsent } from './components/CookieConsent';
 import { ScrollToTop } from './components/ScrollToTop';
-import { DynamicBreadcrumbs } from './components/DynamicBreadcrumbs';
 import { useTheme } from './hooks/useTheme';
 import { enforcePrivacyModeOnStartup } from './lib/privacyMode';
 import { FeedbackModal } from './components/FeedbackModal';
@@ -71,7 +70,6 @@ const App: React.FC = () => {
         </Routes>
         <CookieConsent />
         <ScrollToTop />
-        <DynamicBreadcrumbs />
         {showFeedbackModal && (
           <FeedbackModal onClose={() => setShowFeedbackModal(false)} />
         )}
