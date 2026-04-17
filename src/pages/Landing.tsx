@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UploadZone } from '../components/UploadZone';
-import { ThemeToggle } from '../components/ThemeToggle';
+import { NavBar } from '../components/NavBar';
 import type { ProcessResult } from '../lib/zipHandler';
 import { createSampleChat } from '../lib/sampleData';
 import { Footer } from '../components/Footer';
@@ -209,27 +209,7 @@ export const Landing: React.FC = () => {
   return (
     <div className="landing">
       {/* ===== NAV ===== */}
-      <nav className="landing__nav" aria-label="Main navigation">
-        <div className="landing__nav-inner">
-          <Link to="/" className="landing__nav-logo" aria-label="ChatParser home">
-            <div className="landing__nav-logo-icon">
-              <img src="/chatparser.svg" alt="ChatParser Logo" width="32" height="32" style={{ borderRadius: '8px' }} />
-            </div>
-            <span className="landing__nav-logo-text">Chat<span className="logo-gradient">Parser</span></span>
-          </Link>
-
-          <div className="landing__nav-links">
-            <Link to="/" className="landing__nav-link active">Home</Link>
-            <Link to="/chat" className="landing__nav-link">Chats</Link>
-            <Link to="/privacy" className="landing__nav-link">Privacy</Link>
-            <Link to="/about" className="landing__nav-link">About</Link>
-          </div>
-
-          <div className="landing__nav-actions">
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
+      <NavBar />
 
       <main>
         {/* ===== HERO ===== */}
@@ -239,7 +219,8 @@ export const Landing: React.FC = () => {
           <div className="landing__blob landing__blob--2" aria-hidden="true" />
           <div className="landing__blob landing__blob--3" aria-hidden="true" />
 
-          <div className="landing__hero-content">
+          <div className="landing__hero-inner">
+            <div className="landing__hero-content">
             {/* Badge */}
             <div className="landing__badge animate-fade-in-up">
               <span className="landing__badge-dot" />
@@ -354,6 +335,7 @@ export const Landing: React.FC = () => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </section>
 

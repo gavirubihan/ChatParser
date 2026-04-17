@@ -10,7 +10,7 @@
   flex: 1;
   max-width: 800px;
   margin: 0 auto;
-  padding: 120px var(--space-6) 80px;
+  padding: 110px var(--space-6) 80px;
 }
 
 .privacy-page__header {
@@ -98,7 +98,7 @@
 
 @media (max-width: 768px) {
   .privacy-page__content {
-    padding-top: 100px;
+    padding-top: 85px;
   }
   
   .privacy-page__title {

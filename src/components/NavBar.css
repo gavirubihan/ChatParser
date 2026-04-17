@@ -1,0 +1,364 @@
+/* ============================================================
+   NavBar — Professional Glassmorphism
+   ============================================================ */
+
+/* ── Wrapper ── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  padding: 14px var(--space-6) 0;
+  pointer-events: none;
+  /* pass through empty edge areas */
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar--hidden {
+  transform: translateY(-130%);
+}
+
+/* ── Pill container ── */
+.navbar__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  /* symmetric left/right spacing */
+  pointer-events: auto;
+
+  /* Glass layers */
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+
+  /* Border — bright top + left edge gives the "lifted glass" feel */
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  border-top-color: rgba(255, 255, 255, 0.75);
+  border-left-color: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+
+  /* Brand-tinted shadow for depth */
+  box-shadow:
+    0 2px 8px rgba(0, 168, 132, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Slight glow on hover — feel alive */
+.navbar__inner:hover {
+  box-shadow:
+    0 2px 8px rgba(0, 168, 132, 0.10),
+    0 12px 32px rgba(0, 0, 0, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Dark mode pill */
+[data-theme="dark"] .navbar__inner {
+  background: rgba(18, 18, 20, 0.72);
+  border-color: rgba(255, 255, 255, 0.07);
+  border-top-color: rgba(255, 255, 255, 0.14);
+  border-left-color: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 2px 8px rgba(0, 168, 132, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .navbar__inner:hover {
+  box-shadow:
+    0 2px 8px rgba(0, 168, 132, 0.14),
+    0 12px 40px rgba(0, 0, 0, 0.60),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Logo ── */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  z-index: 2;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.navbar__logo:hover {
+  opacity: 0.80;
+}
+
+.navbar__logo-icon {
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.navbar__logo-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+}
+
+/* Brand gradient on "Parser" part */
+.navbar__logo-text .logo-gradient {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   Nav links
+   ============================================================ */
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* tight→ use pill bg instead of gaps */
+}
+
+.navbar__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+}
+
+.navbar__link:hover {
+  color: var(--text-primary);
+  background: rgba(0, 168, 132, 0.07);
+}
+
+[data-theme="dark"] .navbar__link:hover {
+  background: rgba(0, 168, 132, 0.12);
+}
+
+/* Active state — filled pill */
+.navbar__link.active {
+  color: var(--brand-primary);
+  background: rgba(0, 168, 132, 0.10);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .navbar__link.active {
+  color: var(--brand-primary-light);
+  background: rgba(37, 211, 102, 0.12);
+}
+
+/* Underline dot indicator for active link */
+.navbar__link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+[data-theme="dark"] .navbar__link.active::after {
+  background: var(--brand-primary-light);
+}
+
+/* ── Desktop menu row ── */
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+  /* push links + actions to the right */
+  gap: 0;
+}
+
+/* ── Actions (theme toggle, etc.) ── */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-left: 8px;
+}
+
+/* ── Divider between links and actions ── */
+.navbar__divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border-subtle);
+  opacity: 0.6;
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ── Burger button ── */
+.navbar__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 168, 132, 0.08);
+  border: 1px solid rgba(0, 168, 132, 0.15);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar__burger:hover {
+  background: rgba(0, 168, 132, 0.15);
+  border-color: rgba(0, 168, 132, 0.30);
+}
+
+.navbar__burger span {
+  width: 18px;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+/* X animation */
+.navbar__burger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar__burger--open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.navbar__burger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ============================================================
+   Mobile dropdown panel
+   ============================================================ */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px var(--space-4) 0;
+  }
+
+  .navbar__inner {
+    padding: 0 10px;
+    /* symmetric on mobile too */
+    height: 54px;
+  }
+
+  .navbar__burger {
+    display: flex;
+  }
+
+  /* Mobile: collapse menu into an animated glass drawer */
+  .navbar__menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: var(--space-4);
+    right: var(--space-4);
+    flex: unset;
+    justify-content: unset;
+
+    /* Glass panel */
+    background: rgba(248, 250, 249, 0.96);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.60);
+    border-top-color: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow:
+      0 4px 16px rgba(0, 168, 132, 0.08),
+      0 20px 48px rgba(0, 0, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+    flex-direction: column;
+    padding: 20px 16px 18px;
+    gap: 6px;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.97);
+    transform-origin: top center;
+    transition:
+      opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0.28s;
+    z-index: 1000;
+  }
+
+  [data-theme="dark"] .navbar__menu {
+    background: rgba(22, 24, 26, 0.96);
+    border-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 4px 16px rgba(0, 168, 132, 0.10),
+      0 20px 48px rgba(0, 0, 0, 0.60),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .navbar__menu--open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .navbar__links {
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+  }
+
+  .navbar__link {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 11px 16px;
+    justify-content: center;
+    border-radius: 14px;
+  }
+
+  /* Active on mobile — no dot, just filled background */
+  .navbar__link.active::after {
+    display: none;
+  }
+
+  .navbar__divider {
+    display: none;
+  }
+
+  .navbar__actions {
+    width: 100%;
+    justify-content: center;
+    padding-left: 0;
+    padding-top: 14px;
+    margin-top: 6px;
+    border-top: 1px solid var(--border-subtle);
+  }
+}

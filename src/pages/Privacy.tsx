@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ThemeToggle } from '../components/ThemeToggle';
+import { NavBar } from '../components/NavBar';
 import { Footer } from '../components/Footer';
 import './Privacy.css';
 
@@ -18,27 +18,7 @@ export const Privacy: React.FC = () => {
   return (
     <div className="privacy-page">
       {/* NAV (reused from Landing for consistency) */}
-      <nav className="landing__nav" aria-label="Main navigation" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
-        <div className="landing__nav-inner">
-          <Link to="/" className="landing__nav-logo">
-            <div className="landing__nav-logo-icon">
-              <img src="/chatparser.svg" alt="ChatParser Logo" width="32" height="32" style={{ borderRadius: '8px' }} />
-            </div>
-            <span className="landing__nav-logo-text">Chat<span className="logo-gradient">Parser</span></span>
-          </Link>
-
-          <div className="landing__nav-links">
-            <Link to="/" className="landing__nav-link">Home</Link>
-            <Link to="/chat" className="landing__nav-link">Chats</Link>
-            <Link to="/privacy" className="landing__nav-link active">Privacy</Link>
-            <Link to="/about" className="landing__nav-link">About</Link>
-          </div>
-
-          <div className="landing__nav-actions">
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
+      <NavBar />
 
       <main className="privacy-page__content">
         <header className="privacy-page__header">

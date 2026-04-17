@@ -15,12 +15,18 @@
 
 /* Hero Section */
 .about__hero {
-  padding: var(--space-16) var(--space-6) var(--space-12);
+  padding: 110px var(--space-6) var(--space-12);
   text-align: center;
   position: relative;
   overflow: hidden;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 768px) {
+  .about__hero {
+    padding-top: 85px;
+  }
 }
 
 .about__hero-content {
