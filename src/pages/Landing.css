@@ -1131,6 +1131,10 @@
 }
 
 .landing__footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
   transition: color var(--transition-fast);
