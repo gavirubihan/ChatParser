@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { NavBar } from '../components/NavBar';
 import { Footer } from '../components/Footer';
 import './About.css';

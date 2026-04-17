@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UploadZone } from '../components/UploadZone';
 import { NavBar } from '../components/NavBar';
 import type { ProcessResult } from '../lib/zipHandler';
