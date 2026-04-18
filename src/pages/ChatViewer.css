@@ -20,6 +20,7 @@
   height: 100vh;
   overflow: hidden;
   transition: margin-left var(--transition-base);
+  position: relative;
 }
 
 @media (max-width: 768px) {
@@ -109,6 +110,64 @@
   box-shadow: 0 6px 20px rgba(0, 168, 132, 0.45);
 }
 
+/* Animations for welcome screen */
+@keyframes chat-welcome-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chat-welcome-fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chat-viewer__welcome-icon {
+  margin-bottom: var(--space-2);
+  opacity: 0;
+  animation: chat-welcome-fade-in-scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.chat-viewer__welcome-title {
+  font-size: var(--font-size-3xl);
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  opacity: 0;
+  animation: chat-welcome-fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.chat-viewer__welcome-sub {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  opacity: 0;
+  animation: chat-welcome-fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.chat-viewer__welcome-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-2);
+  opacity: 0;
+  animation: chat-welcome-fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
 /* =============================================
    Header
    ============================================= */
@@ -117,10 +176,16 @@
   align-items: center;
   gap: var(--space-3);
   padding: 10px var(--space-4);
-  background: var(--header-bg);
+  background: color-mix(in srgb, var(--header-bg) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--header-border);
   flex-shrink: 0;
-  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   transition: background var(--transition-slow);
 }
 

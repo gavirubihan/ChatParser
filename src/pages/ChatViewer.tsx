@@ -42,7 +42,6 @@ export const ChatViewer: React.FC = () => {
   const [shareProgress, setShareProgress] = useState(0);
   const isHandlingShareRef = useRef(false);
 
-
   // Refs
   const chatListRef = useRef<ChatListHandle>(null);
 
@@ -317,7 +316,7 @@ export const ChatViewer: React.FC = () => {
               style={{
                 backgroundImage: 'var(--bg-chat-pattern)',
                 backgroundColor: 'var(--bg-chat)',
-              }}
+              } as React.CSSProperties}
             >
               {messagesLoading ? (
                 <div className="chat-viewer__msg-loading">

@@ -102,20 +102,22 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
   // Scroll to bottom on initial mount
   useEffect(() => {
     if (items.length > 0) {
-      virtuosoRef.current?.scrollToIndex(items.length - 1, { align: 'end' });
+      // Add +1 offset because of the spacer item at the start of the VList
+      virtuosoRef.current?.scrollToIndex(items.length, { align: 'end' });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // intentionally run only once on mount
 
   useImperativeHandle(ref, () => ({
     scrollToBottom() {
-      // Newest message is at the end of the array
-      virtuosoRef.current?.scrollToIndex(items.length - 1, { align: 'end', smooth: true });
+      // Add +1 offset because of the spacer item
+      virtuosoRef.current?.scrollToIndex(items.length, { align: 'end', smooth: true });
     },
     scrollToMessage(messageId: string) {
       const idx = items.findIndex(x => x.kind === 'message' && x.message.id === messageId);
       if (idx !== -1) {
-        virtuosoRef.current?.scrollToIndex(idx, { align: 'center', smooth: true });
+        // Add +1 offset because of the spacer item
+        virtuosoRef.current?.scrollToIndex(idx + 1, { align: 'center', smooth: true });
       }
     },
   }), [items]);
@@ -178,6 +180,7 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
         style={{ height: '100%', overflowX: 'hidden' }}
         shift={true}
       >
+        <div style={{ height: '70px', flexShrink: 0 }} aria-hidden="true" />
         {items.map((item, index) => renderItem(item, index))}
       </VList>
     </div>
