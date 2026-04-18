@@ -52,6 +52,10 @@ Supports WhatsApp exports from all regions including 12h and 24h timestamp forma
 - About: https://chatparser.online/about
 - Contact: https://chatparser.online/contact
 - Open Source: https://github.com/gavirubihan/ChatParser
+- EverybodyWiki: https://en.everybodywiki.com/Chatparser
+- Product Hunt: https://www.producthunt.com/products/chatparser
+- Neovise Guide: https://neovise.me/how-to-view-exported-whatsapp-chats-easily/
+- LinkedIn Launch: https://www.linkedin.com/posts/gavirubihan_whatsapp-chat-viewer-online-free-private-share-7447882691116691456-RRsQ
 
 ## Legal & Authorship
 © 2026 ChatParser. A product by Neovise (https://neovise.me).
