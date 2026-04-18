@@ -6,7 +6,6 @@ import { Sidebar } from '../components/Sidebar';
 import { SearchPanel } from '../components/SearchPanel';
 import { MediaViewer } from '../components/MediaViewer';
 import { UploadZone } from '../components/UploadZone';
-import { ThemeToggle } from '../components/ThemeToggle';
 import { useMessages, useAllSessions } from '../hooks/useChat';
 import { useSearch } from '../hooks/useSearch';
 import { processFile, type ProcessResult } from '../lib/zipHandler';
@@ -291,7 +290,6 @@ export const ChatViewer: React.FC = () => {
                     />
                   </svg>
                 </button>
-                <ThemeToggle />
               </div>
             </header>
 
