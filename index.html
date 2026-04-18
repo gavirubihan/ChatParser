@@ -79,11 +79,36 @@
       ]
     }
   </script>
+
+
+  <!-- Structured Data: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["WebApplication", "SoftwareApplication"],
+    "name": "ChatParser",
+    "url": "https://chatparser.online",
+    "description": "Free WhatsApp chat viewer to open exported chats instantly. Upload .txt or .zip files and explore your chat history privately in your browser.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "featureList": "View WhatsApp chats, Upload .txt and .zip files, Private browser-only processing, No server uploads",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Neovise",
+      "url": "https://neovise.me"
+    }
+  }
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
-</body>
+  </body>
 
 </html>

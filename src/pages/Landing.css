@@ -1050,9 +1050,7 @@
 .landing__footer-copy {
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  line-height: 1.6;
 }
 
 .landing__footer-settings-btn {
