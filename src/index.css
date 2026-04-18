@@ -112,7 +112,7 @@
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Z-Index */
-  --z-sidebar: 100;
+  --z-sidebar: 350;
   --z-header: 200;
   --z-overlay: 300;
   --z-modal: 400;

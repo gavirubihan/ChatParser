@@ -176,7 +176,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: 10px var(--space-4);
-  background: color-mix(in srgb, var(--header-bg) 85%, transparent);
+  background: color-mix(in srgb, var(--header-bg) 95%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--header-border);
