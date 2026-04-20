@@ -1,5 +1,7 @@
+import { BOT_CACHE } from './src/bot-cache/index';
+
 export const config = {
-  matcher: ['/', '/about', '/privacy', '/contact', '/chat']
+  matcher: ['/', '/about', '/privacy', '/contact']
 }
 
 const BOT_AGENTS = [
@@ -17,19 +19,25 @@ const BOT_AGENTS = [
 ];
 
 export default async function middleware(request: Request) {
+  const url = new URL(request.url);
   const ua = request.headers.get('user-agent')?.toLowerCase() ?? '';
   const isBot = BOT_AGENTS.some(bot => ua.includes(bot));
 
-  if (isBot) {
-    // request.url is the full actual URL strings (e.g., https://chatparser.com/about)
-    const prerenderUrl = `https://service.prerender.io/${request.url}`;
+  // Normalize pathname: remove trailing slash (except for root) to match BOT_CACHE keys
+  let pathname = url.pathname;
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    pathname = pathname.slice(0, -1);
+  }
+
+  // If it's a bot and we have a cached version of this page
+  if (isBot && BOT_CACHE[pathname]) {
+    console.log(`[Middleware] Serving cached HTML for bot: ${pathname}`);
     
-    // Reverse proxy the request directly to prerender.io since we are on the Edge
-    return fetch(prerenderUrl, {
-      headers: {
-        'X-Prerender-Token': process.env.PRERENDER_TOKEN ?? '',
-        // Always good practice to forward the bot's User-Agent to Prerender
-        'User-Agent': request.headers.get('user-agent') ?? '',
+    return new Response(BOT_CACHE[pathname], {
+      headers: { 
+        'Content-Type': 'text/html; charset=utf-8',
+        'X-Bot-Prerender': 'local-cache',
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600'
       }
     });
   }
