@@ -2,10 +2,10 @@
  * SEO Bot Cache Index
  * Generated automatically by scripts/update-bot-cache.js
  */
-import { html as homeHtml } from './home';
-import { html as aboutHtml } from './about';
-import { html as privacyHtml } from './privacy';
-import { html as contactHtml } from './contact';
+import { html as homeHtml } from './home.js';
+import { html as aboutHtml } from './about.js';
+import { html as privacyHtml } from './privacy.js';
+import { html as contactHtml } from './contact.js';
 
 export const BOT_CACHE: Record<string, string> = {
   "/": homeHtml,

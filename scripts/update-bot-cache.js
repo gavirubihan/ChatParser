@@ -70,7 +70,7 @@ export const html = ${JSON.stringify(cleanedHtml)};
  * SEO Bot Cache Index
  * Generated automatically by scripts/update-bot-cache.js
  */
-${pageNames.map(p => `import { html as ${p.name}Html } from './${p.name}';`).join('\n')}
+${pageNames.map(p => `import { html as ${p.name}Html } from './${p.name}.js';`).join('\n')}
 
 export const BOT_CACHE: Record<string, string> = {
 ${pageNames.map(p => `  "${p.pathname}": ${p.name}Html,`).join('\n')}

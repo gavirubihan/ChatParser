@@ -1,4 +1,4 @@
-import { BOT_CACHE } from './src/bot-cache/index';
+import { BOT_CACHE } from './src/bot-cache/index.js';
 
 export const config = {
   matcher: ['/', '/about', '/privacy', '/contact']
