@@ -22,6 +22,7 @@ export default async function middleware(request: Request) {
   const url = new URL(request.url);
   const ua = request.headers.get('user-agent')?.toLowerCase() ?? '';
   const isBot = BOT_AGENTS.some(bot => ua.includes(bot));
+  const bypass = request.headers.get('X-SEO-Bypass') === 'true';
 
   // Normalize pathname: remove trailing slash (except for root) to match BOT_CACHE keys
   let pathname = url.pathname;
@@ -29,8 +30,8 @@ export default async function middleware(request: Request) {
     pathname = pathname.slice(0, -1);
   }
 
-  // If it's a bot and we have a cached version of this page
-  if (isBot && BOT_CACHE[pathname]) {
+  // If it's a bot, we have a cache, AND we are NOT bypassing
+  if (isBot && BOT_CACHE[pathname] && !bypass) {
     console.log(`[Middleware] Serving cached HTML for bot: ${pathname}`);
     
     return new Response(BOT_CACHE[pathname], {

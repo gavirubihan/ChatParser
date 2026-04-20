@@ -152,18 +152,6 @@ const FAQS = [
   }
 ];
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": FAQS.map(faq => ({
-    "@type": "Question",
-    "name": faq.q,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": faq.a
-    }
-  }))
-};
 
 export const Landing: React.FC = () => {
   const navigate = useNavigate();
@@ -442,11 +430,6 @@ export const Landing: React.FC = () => {
       {/* ===== FOOTER ===== */}
       <Footer />
 
-      {/* Structured SEO Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
     </div>
   );
 };

@@ -12,13 +12,19 @@ const PAGES = {
 const BOT_USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 
 const CACHE_DIR = path.resolve('src/bot-cache');
+const INDEX_HTML_PATH = path.resolve('index.html');
 
 if (!fs.existsSync(CACHE_DIR)) {
   fs.mkdirSync(CACHE_DIR);
 }
 
+// Extract base structured data from index.html as a fallback
+const indexHtml = fs.readFileSync(INDEX_HTML_PATH, 'utf-8');
+const structuredDataMatch = indexHtml.match(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi);
+const baseStructuredData = structuredDataMatch ? structuredDataMatch.join('\n') : '';
+
 async function updateCache() {
-  console.log('🚀 Starting SEO Bot Cache Update (Separate Files)...');
+  console.log('🚀 Starting SEO Bot Cache Update (Structured Data Aware)...');
   
   const pageNames = [];
 
@@ -27,15 +33,22 @@ async function updateCache() {
     console.log(`\n📄 Fetching rendered HTML for: ${url}...`);
 
     try {
-      const html = execSync(`curl.exe -s -A "${BOT_USER_AGENT}" ${url}`, { encoding: 'utf-8' });
+      // Use bypass header if middleware is already live
+      const html = execSync(`curl.exe -s -H "X-SEO-Bypass: true" -A "${BOT_USER_AGENT}" ${url}`, { encoding: 'utf-8' });
 
       if (!html || html.length < 500) {
         throw new Error('Received suspiciously small HTML.');
       }
 
-      // Cleanup
-      const cleanedHtml = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+      // Cleanup: Remove all scripts EXCEPT for structured data (LD+JSON)
+      let cleanedHtml = html.replace(/<script\b(?![^>]*application\/ld\+json)[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
       
+      // Safeguard: If structured data is missing (due to stale cache fetch), inject from index.html
+      if (!cleanedHtml.includes('application/ld+json') && pathname === '/') {
+        console.log('⚠️ Structured data missing in fetch. Injecting from index.html...');
+        cleanedHtml = cleanedHtml.replace('</head>', `${baseStructuredData}\n</head>`);
+      }
+
       const filePath = path.join(CACHE_DIR, `${name}.ts`);
       const content = `/**
  * Pre-rendered HTML for ${pathname}
@@ -65,8 +78,7 @@ ${pageNames.map(p => `  "${p.pathname}": ${p.name}Html,`).join('\n')}
 `;
 
   fs.writeFileSync(path.join(CACHE_DIR, 'index.ts'), indexContent);
-  console.log('\n✨ DONE! src/bot-cache/ index and files updated.');
-  console.log('You can now push this to Vercel.');
+  console.log('\n✨ DONE! Bot cache updated with Structured Data preserved.');
 }
 
 updateCache();
