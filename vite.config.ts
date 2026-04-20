@@ -2,15 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
-import prerender from 'vite-plugin-prerender-esm-fix'
 
 export default defineConfig({
   plugins: [
     react(),
-    prerender({
-      staticDir: path.join(__dirname, 'dist'),
-      routes: ['/', '/privacy', '/about', '/contact'],
-    }),
     VitePWA({
       strategies: 'injectManifest',
       srcDir: 'src',
