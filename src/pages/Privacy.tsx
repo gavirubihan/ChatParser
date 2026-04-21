@@ -1,19 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { NavBar } from '../components/NavBar';
 import { Footer } from '../components/Footer';
+import { useSEO } from '../hooks/useSEO';
 import './Privacy.css';
 
 
 export const Privacy: React.FC = () => {
-  // (Scroll to top now handled globally by ScrollToTop component in App.tsx)
-  useEffect(() => {
-    document.title = 'Privacy Policy | ChatParser';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute('content', 'Read our Privacy Policy. ChatParser is a private WhatsApp chat viewer that processes all your data locally in your browser without any cloud uploads.');
-    }
-  }, []);
+  useSEO({
+    title: 'Privacy Policy | ChatParser',
+    description: 'Read our Privacy Policy. ChatParser is a private WhatsApp chat viewer that processes all your data locally in your browser without any cloud uploads.',
+    canonical: '/privacy'
+  });
 
   return (
     <div className="privacy-page">

@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UploadZone } from '../components/UploadZone';
 import { NavBar } from '../components/NavBar';
 import type { ProcessResult } from '../lib/zipHandler';
 import { createSampleChat } from '../lib/sampleData';
 import { Footer } from '../components/Footer';
+import { useSEO } from '../hooks/useSEO';
 import './Landing.css';
 
 
@@ -159,13 +160,23 @@ export const Landing: React.FC = () => {
   const howRef = useRef<HTMLDivElement>(null);
   const [isGeneratingDemo, setIsGeneratingDemo] = React.useState(false);
 
-  useEffect(() => {
-    document.title = 'WhatsApp Chat Viewer Online (Free & Private) | ChatParser';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute('content', 'Free WhatsApp chat viewer to open exported chats instantly. Upload .txt or .zip files and explore your chat history privately in your browser.');
+  useSEO({
+    title: 'WhatsApp Chat Viewer Online (Free & Private) | ChatParser',
+    description: 'Free WhatsApp chat viewer to open exported chats instantly. Upload .txt or .zip files and explore your chat history privately in your browser.',
+    canonical: '/',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": FAQS.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
     }
-  }, []);
+  });
 
   const handleUploadSuccess = (result: ProcessResult) => {
     navigate(`/chat/${result.sessionId}`);

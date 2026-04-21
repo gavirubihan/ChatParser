@@ -1,50 +1,13 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSEO } from '../hooks/useSEO';
 import './NotFound.css';
 
 export const NotFound: React.FC = () => {
-  useEffect(() => {
-    // 1. Manage robots tag
-    const existingRobots = document.querySelector('meta[name="robots"]');
-    const originalRobots = existingRobots ? existingRobots.getAttribute('content') : null;
-    
-    if (existingRobots) {
-      existingRobots.setAttribute('content', 'noindex, nofollow');
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = 'robots';
-      meta.content = 'noindex, nofollow';
-      meta.id = 'temp-robots';
-      document.head.appendChild(meta);
-    }
-
-    // 2. Manage canonical tag
-    const existingCanonical = document.querySelector('link[rel="canonical"]');
-    const originalCanonical = existingCanonical ? existingCanonical.getAttribute('href') : null;
-    if (existingCanonical) {
-      existingCanonical.setAttribute('href', ''); // Disable canonical for 404
-    }
-
-    // 3. Update page title
-    const prevTitle = document.title;
-    document.title = 'Page Not Found | ChatParser';
-
-    return () => {
-      // Restore original tags
-      if (existingRobots && originalRobots) {
-        existingRobots.setAttribute('content', originalRobots);
-      } else {
-        const temp = document.getElementById('temp-robots');
-        if (temp) temp.remove();
-      }
-
-      if (existingCanonical && originalCanonical) {
-        existingCanonical.setAttribute('href', originalCanonical);
-      }
-
-      document.title = prevTitle;
-    };
-  }, []);
+  useSEO({
+    title: 'Page Not Found | ChatParser',
+    canonical: '',
+    noindex: true
+  });
 
   return (
     <div className="not-found">

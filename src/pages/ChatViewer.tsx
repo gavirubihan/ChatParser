@@ -11,6 +11,7 @@ import { useSearch } from '../hooks/useSearch';
 import { processFile, type ProcessResult } from '../lib/zipHandler';
 
 import { getSenderColor } from '../lib/colorUtils';
+import { useSEO } from '../hooks/useSEO';
 import './ChatViewer.css';
 
 export const ChatViewer: React.FC = () => {
@@ -23,14 +24,11 @@ export const ChatViewer: React.FC = () => {
   const { messages, loading: messagesLoading } = useMessages(sessionId ?? null);
   const currentSession = sessions.find(s => s.id === sessionId);
 
-  useEffect(() => {
-    document.title = 'WhatsApp Chat Viewer | ChatParser';
-
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute('content', 'Securely view and search your WhatsApp chat exports. Private, local-first chat viewing with full media support.');
-    }
-  }, [currentSession]);
+  useSEO({
+    title: currentSession ? `${currentSession.name} - Chat Viewer | ChatParser` : 'WhatsApp Chat Viewer | ChatParser',
+    description: 'Securely view and search your WhatsApp chat exports. Private, local-first chat viewing with full media support.',
+    canonical: '/chat'
+  });
 
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false);

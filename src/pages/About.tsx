@@ -1,20 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavBar } from '../components/NavBar';
 import { Footer } from '../components/Footer';
+import { useSEO } from '../hooks/useSEO';
 import './About.css';
 
 
 export const About: React.FC = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.title = 'About Us | ChatParser';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute('content', 'Learn more about ChatParser, the mission behind our private WhatsApp viewer, and how we handle massive chat exports with high performance.');
-    }
-  }, []);
+  useSEO({
+    title: 'About Us | ChatParser',
+    description: 'Learn more about ChatParser, the mission behind our private WhatsApp viewer, and how we handle massive chat exports with high performance.',
+    canonical: '/about'
+  });
 
   return (
     <div className="about">

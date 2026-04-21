@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavBar } from '../components/NavBar';
 import { Footer } from '../components/Footer';
 import { FeedbackForm } from '../components/FeedbackForm';
+import { useSEO } from '../hooks/useSEO';
 import './Contact.css';
 
 export const Contact: React.FC = () => {
-  useEffect(() => {
-    document.title = 'Contact & Support | ChatParser';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute('content', 'Get in touch with the ChatParser team. Send us feedback, report bugs, or reach out to us directly via email at contact@chatparser.online.');
-    }
-  }, []);
+  useSEO({
+    title: 'Contact & Support | ChatParser',
+    description: 'Get in touch with the ChatParser team. Send us feedback, report bugs, or reach out to us directly via email at contact@chatparser.online.',
+    canonical: '/contact'
+  });
 
   return (
     <div className="contact-page">
