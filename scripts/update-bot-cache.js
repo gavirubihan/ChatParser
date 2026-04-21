@@ -141,7 +141,7 @@ async function main() {
   serverProcess.kill();
 
   // Generate exporting Barrel Module
-  const indexContent = `/**\n * SEO Bot Cache Index\n */\n${PAGES.map(p => `import { html as ${p.name}Html } from './${p.name}.ts';`).join('\n')}\n\nexport const BOT_CACHE: Record<string, string> = {\n${PAGES.map(p => `  "${p.pathname}": ${p.name}Html,`).join('\n')}\n};\n`;
+  const indexContent = `/**\n * SEO Bot Cache Index\n */\n${PAGES.map(p => `import { html as ${p.name}Html } from './${p.name}.js';`).join('\n')}\n\nexport const BOT_CACHE: Record<string, string> = {\n${PAGES.map(p => `  "${p.pathname}": ${p.name}Html,`).join('\n')}\n};\n`;
   fs.writeFileSync(path.join(CACHE_DIR, 'index.ts'), indexContent);
   
   console.log('\n✨ DONE! Static bot cache built from live application locally.');
