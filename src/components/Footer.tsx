@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="landing__footer-col">
-          <h4 className="landing__footer-col-title">Quick Links</h4>
+          <h3 className="landing__footer-col-title">Quick Links</h3>
           <div className="landing__footer-links">
             <Link to="/" className="landing__footer-link">Home</Link>
             <Link to="/chat" className="landing__footer-link">Chats</Link>
@@ -27,7 +27,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="landing__footer-col">
-          <h4 className="landing__footer-col-title">Connect</h4>
+          <h3 className="landing__footer-col-title">Connect</h3>
           <div className="landing__footer-links">
             <a href="mailto:contact@chatparser.online" className="landing__footer-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="landing__footer-col">
-          <h4 className="landing__footer-col-title">Settings</h4>
+          <h3 className="landing__footer-col-title">Settings</h3>
           <div className="landing__footer-links">
             <button
               className="landing__footer-settings-btn"
