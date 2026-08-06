@@ -3,15 +3,15 @@
   <!-- Core Landing Page -->
   <url>
     <loc>https://chatparser.online/</loc>
-    <lastmod>2026-04-21T15:33:04Z</lastmod>
+    <lastmod>2026-08-06T10:30:00Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-  
+
   <!-- About Page -->
   <url>
     <loc>https://chatparser.online/about</loc>
-    <lastmod>2026-04-21T15:33:04Z</lastmod>
+    <lastmod>2026-08-06T10:30:00Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -19,32 +19,16 @@
   <!-- Privacy Policy -->
   <url>
     <loc>https://chatparser.online/privacy</loc>
-    <lastmod>2026-04-21T15:33:04Z</lastmod>
+    <lastmod>2026-08-06T10:30:00Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-  </url>
-
-  <!-- Chat Viewer Entry -->
-  <url>
-    <loc>https://chatparser.online/chat</loc>
-    <lastmod>2026-04-21T15:33:04Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
   </url>
 
   <!-- Contact Page -->
   <url>
     <loc>https://chatparser.online/contact</loc>
-    <lastmod>2026-04-21T15:33:04Z</lastmod>
+    <lastmod>2026-08-06T10:30:00Z</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- LLMs Text -->
-  <url>
-    <loc>https://chatparser.online/llms.txt</loc>
-    <lastmod>2026-04-21T15:33:04Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.4</priority>
   </url>
 </urlset>

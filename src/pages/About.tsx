@@ -12,7 +12,11 @@ export const About: React.FC = () => {
   useSEO({
     title: 'About Us | ChatParser',
     description: 'Learn more about ChatParser, the mission behind our private WhatsApp viewer, and how we handle massive chat exports with high performance.',
-    canonical: '/about'
+    canonical: '/about',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://chatparser.online/' },
+      { name: 'About', item: 'https://chatparser.online/about' },
+    ],
   });
 
   return (
@@ -22,11 +26,11 @@ export const About: React.FC = () => {
 
       <main className="about__main">
         {/* ===== HERO ===== */}
-        <section className="about__hero">
+        <section className="about__hero" aria-labelledby="about-hero-title">
           <div className="landing__blob landing__blob--1" />
           <div className="about__hero-content">
             <div className="about__label animate-fade-in">Our Mission</div>
-            <h1 className="about__hero-title animate-fade-in-up">
+            <h1 id="about-hero-title" className="about__hero-title animate-fade-in-up">
               Relive your memories, <br />
               <span className="landing__whatsapp-gradient">privately.</span>
             </h1>
@@ -38,12 +42,12 @@ export const About: React.FC = () => {
         </section>
 
         {/* ===== PRIVACY SECTION ===== */}
-        <section className="about__section">
+        <section className="about__section" aria-labelledby="about-privacy-title">
           <div className="about__section-inner">
             <div className="about__grid">
               <div className="about__content">
                 <div className="about__label">The Privacy Pillar</div>
-                <h2 className="about__title">Your Data, Your Device. Always.</h2>
+                <h2 id="about-privacy-title" className="about__title">Your Data, Your Device. Always.</h2>
                 <p className="about__text">
                   Unlike other tools, ChatParser uses a <strong>Zero-Server Architecture</strong>. This means that when you "upload" a chat,
                   nothing actually leaves your computer.
@@ -70,12 +74,12 @@ export const About: React.FC = () => {
         </section>
 
         {/* ===== TECH SECTION ===== */}
-        <section className="about__section" style={{ background: 'var(--bg-surface)' }}>
+        <section className="about__section" style={{ background: 'var(--bg-surface)' }} aria-labelledby="about-tech-title">
           <div className="about__section-inner">
             <div className="about__grid" style={{ direction: 'rtl' }}>
               <div className="about__content" style={{ direction: 'ltr' }}>
                 <div className="about__label">Engineering</div>
-                <h2 className="about__title">High Performance for High Memory.</h2>
+                <h2 id="about-tech-title" className="about__title">High Performance for High Memory.</h2>
                 <p className="about__text">
                   Digital lifetimes are long. Some of the chats we support contain over 500,000 messages and thousands of media files.
                 </p>

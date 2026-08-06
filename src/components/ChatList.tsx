@@ -5,13 +5,13 @@ import { ChatBubble } from './ChatBubble';
 import { getSenderColor } from '../lib/colorUtils';
 import { DateSeparator } from './DateSeparator';
 import { formatDate } from '../lib/mediaUtils';
-import { AdsterraAd } from './AdsterraAd';
+import { AAdsAd } from './AAdsAd';
 import './ChatList.css';
 
 // =============================================
 // Configuration
 // =============================================
-const AD_URL = import.meta.env.VITE_ADSTERRA_URL;
+const AD_UNIT_ID = import.meta.env.VITE_AADS_UNIT_ID;
 const AD_INTERVAL = 40; // Every 40 messages
 
 // =============================================
@@ -128,7 +128,7 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
     }
 
     if (item.kind === 'ad') {
-      return <AdsterraAd adUrl={AD_URL} side={item.side} key={item.key} />;
+      return <AAdsAd unitId={AD_UNIT_ID} side={item.side} key={item.key} />;
     }
 
     const { message } = item;

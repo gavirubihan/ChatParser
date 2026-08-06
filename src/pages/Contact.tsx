@@ -9,7 +9,11 @@ export const Contact: React.FC = () => {
   useSEO({
     title: 'Contact & Support | ChatParser',
     description: 'Get in touch with the ChatParser team. Send us feedback, report bugs, or reach out to us directly via email at contact@chatparser.online.',
-    canonical: '/contact'
+    canonical: '/contact',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://chatparser.online/' },
+      { name: 'Contact', item: 'https://chatparser.online/contact' },
+    ],
   });
 
   return (
@@ -18,11 +22,11 @@ export const Contact: React.FC = () => {
 
       <main className="contact-page__main">
         {/* ===== HERO ===== */}
-        <section className="contact-page__hero">
+        <section className="contact-page__hero" aria-labelledby="contact-hero-title">
           <div className="landing__blob landing__blob--2" />
           <div className="contact-page__hero-content">
             <div className="about__label animate-fade-in">Support & Feedback</div>
-            <h1 className="about__hero-title animate-fade-in-up">
+            <h1 id="contact-hero-title" className="about__hero-title animate-fade-in-up">
               Get in <span className="landing__whatsapp-gradient">Touch.</span>
             </h1>
             <p className="about__hero-subtitle animate-fade-in-up delay-100">
@@ -46,7 +50,7 @@ export const Contact: React.FC = () => {
                       <polyline points="22,6 12,13 2,6" />
                     </svg>
                   </div>
-                  <h3>Email Us Directly</h3>
+                  <h2>Email Us Directly</h2>
                   <p>
                     For general inquiries, partnerships, or to send us sample chat exports for debugging, you can email us at:
                   </p>
@@ -61,7 +65,7 @@ export const Contact: React.FC = () => {
                       <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                     </svg>
                   </div>
-                  <h3>Privacy First</h3>
+                  <h2>Privacy First</h2>
                   <p>
                     Remember, ChatParser runs entirely in your browser. We do <strong>not</strong> have access to your parsed chat history unless you explicitly attach and email a sample file to us.
                   </p>
@@ -71,7 +75,7 @@ export const Contact: React.FC = () => {
               {/* Right Column: Feedback Form */}
               <div className="contact-page__form-container animate-fade-in-up delay-200">
                 <div className="contact-page__form-glass">
-                  <h2>Send a Message</h2>
+                  <h3>Send a Message</h3>
                   <FeedbackForm />
                 </div>
               </div>

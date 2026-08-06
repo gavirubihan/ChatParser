@@ -1,14 +1,20 @@
 import { useEffect } from 'react';
 
+interface BreadcrumbItem {
+  name: string;
+  item?: string;
+}
+
 interface SEOProps {
   title: string;
   description?: string;
   canonical?: string;
   noindex?: boolean;
-  schema?: Record<string, any>;
+  schema?: Record<string, unknown>;
+  breadcrumbs?: BreadcrumbItem[];
 }
 
-export function useSEO({ title, description, canonical, noindex, schema }: SEOProps) {
+export function useSEO({ title, description, canonical, noindex, schema, breadcrumbs }: SEOProps) {
   useEffect(() => {
     // 1. Update Title
     document.title = title;
@@ -26,7 +32,8 @@ export function useSEO({ title, description, canonical, noindex, schema }: SEOPr
     const canonicalTag = document.querySelector('link[rel="canonical"]');
     if (canonicalTag && canonical !== undefined) {
       if (canonical === '') {
-        canonicalTag.setAttribute('href', '');
+        // Empty string means "no canonical" — remove the href so bots ignore it
+        canonicalTag.removeAttribute('href');
       } else {
         const fullUrl = `https://chatparser.online${canonical}`;
         canonicalTag.setAttribute('href', fullUrl);
@@ -56,19 +63,51 @@ export function useSEO({ title, description, canonical, noindex, schema }: SEOPr
       }
     }
 
-    // 5. Update Structured Data
-    let schemaScript: HTMLScriptElement | null = null;
+    // 5. Inject Structured Data (page-level schema)
+    // Use a data attribute to avoid stacking duplicate scripts on re-renders
+    const PAGE_SCHEMA_ID = 'seo-page-schema';
+    const existing = document.getElementById(PAGE_SCHEMA_ID);
+    if (existing) existing.remove();
+
+    const scripts: HTMLScriptElement[] = [];
+
     if (schema) {
-      schemaScript = document.createElement('script');
+      const schemaScript = document.createElement('script');
       schemaScript.type = 'application/ld+json';
+      schemaScript.id = PAGE_SCHEMA_ID;
       schemaScript.textContent = JSON.stringify(schema);
       document.head.appendChild(schemaScript);
+      scripts.push(schemaScript);
+    }
+
+    // 6. Inject BreadcrumbList schema
+    const BREADCRUMB_SCHEMA_ID = 'seo-breadcrumb-schema';
+    const existingBreadcrumb = document.getElementById(BREADCRUMB_SCHEMA_ID);
+    if (existingBreadcrumb) existingBreadcrumb.remove();
+
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      const breadcrumbScript = document.createElement('script');
+      breadcrumbScript.type = 'application/ld+json';
+      breadcrumbScript.id = BREADCRUMB_SCHEMA_ID;
+      breadcrumbScript.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((crumb, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: crumb.name,
+          ...(crumb.item ? { item: crumb.item } : {}),
+        })),
+      });
+      document.head.appendChild(breadcrumbScript);
+      scripts.push(breadcrumbScript);
     }
 
     return () => {
-      if (schemaScript) {
-        schemaScript.remove();
-      }
+      scripts.forEach(s => s.remove());
+      // Also clean up breadcrumb if no schema was provided but breadcrumb was
+      const bc = document.getElementById(BREADCRUMB_SCHEMA_ID);
+      if (bc) bc.remove();
     };
-  }, [title, description, canonical, noindex, schema]);
+  }, [title, description, canonical, noindex, schema, breadcrumbs]);
 }

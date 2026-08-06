@@ -10,7 +10,11 @@ export const Privacy: React.FC = () => {
   useSEO({
     title: 'Privacy Policy | ChatParser',
     description: 'Read our Privacy Policy. ChatParser is a private WhatsApp chat viewer that processes all your data locally in your browser without any cloud uploads.',
-    canonical: '/privacy'
+    canonical: '/privacy',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://chatparser.online/' },
+      { name: 'Privacy Policy', item: 'https://chatparser.online/privacy' },
+    ],
   });
 
   return (
@@ -23,7 +27,7 @@ export const Privacy: React.FC = () => {
           <span className="privacy-page__last-updated">Last Updated: April 10, 2026</span>
           <h1 className="privacy-page__title">Privacy Policy</h1>
           <p className="privacy-page__text">
-            At ChatParser (owned by <a href="https://neovise.me" target="_blank" rel="noopener" style={{ color: 'inherit', textDecoration: 'underline' }}>neovise.me</a>), your privacy is our core value. This policy explains how we handle your data and what services we use to improve your experience.
+            At ChatParser (owned by <a href="https://neovise.me" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>neovise.me</a>), your privacy is our core value. This policy explains how we handle your data and what services we use to improve your experience.
           </p>
         </header>
 

@@ -5,7 +5,6 @@ import './NotFound.css';
 export const NotFound: React.FC = () => {
   useSEO({
     title: 'Page Not Found | ChatParser',
-    canonical: '',
     noindex: true
   });
 
