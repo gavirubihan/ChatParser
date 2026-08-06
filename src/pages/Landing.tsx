@@ -364,21 +364,20 @@ export const Landing: React.FC = () => {
             <p className="landing__section-subtitle">
               A complete WhatsApp chat viewer with all the features that matter.
             </p>
-            <div className="landing__feature-grid" role="list">
+            <ul className="landing__feature-grid" role="list">
               {FEATURES.map((f, i) => (
-                <article
+                <li
                   key={f.title}
                   className={`landing__feature-card animate-fade-in-up delay-${Math.min(i * 100, 500)}`}
-                  role="listitem"
                 >
                   <div className="landing__feature-icon" style={{ '--feature-color': f.color } as React.CSSProperties}>
                     {f.icon}
                   </div>
                   <h3 className="landing__feature-title">{f.title}</h3>
                   <p className="landing__feature-desc">{f.desc}</p>
-                </article>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 

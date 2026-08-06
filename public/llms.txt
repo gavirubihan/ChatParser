@@ -1,63 +1,59 @@
 # ChatParser
 
-> A private and seamless way to view WhatsApp chat exports.
+> A free, 100% private, browser-based viewer for WhatsApp chat exports (.txt or .zip).
 
-ChatParser is a free, 100% private, open-source, browser-based tool for parsing and viewing 
-WhatsApp chat exports (TXT or ZIP).
+ChatParser transforms raw WhatsApp export files into a beautiful, familiar chat interface — entirely inside your browser. No servers. No uploads. No accounts.
 
 ## Core Philosophy
-We transform raw WhatsApp exports into a premium, interactive experience that 
-feels like the original app.
 
-IMPORTANT (Zero-Server Architecture): ChatParser operates entirely locally. 
-Your chat data never leaves your device. All parsing, media rendering, and 
-database storage (IndexedDB) occur within your browser's memory. No chat data 
-is ever uploaded to any external server.
-
-## Who It's For
-Anyone who has exported a WhatsApp chat and wants to view, search, or revisit 
-their messages without installing software or trusting a third-party server.
+ChatParser uses a Zero-Server Architecture: all parsing, media rendering, and storage happen locally inside your browser's memory. Your chat data never leaves your device.
 
 ## Features
-- 100% Private: Local-first architecture ensures complete data privacy.
-- High Performance: Handles 500k+ messages with 60FPS virtual scrolling.
-- Full Media Support: Native playback for images, videos, audio, and documents.
-- Smart Search: Filter by date, message type, or instant text search.
-- PWA Ready: Installable on phone or desktop, with Share Target API integration.
-- Offline Capable: Works entirely offline once loaded.
+
+- 100% Private: Local-first architecture ensures complete data privacy
+- High Performance: Handles 500k+ messages with 60FPS virtual scrolling
+- Full Media Support: Native playback for images, videos, audio, and documents
+- Smart Search: Filter by date, message type, or instant text search
+- Group Chat Support: Coloured sender names and avatars for every participant
+- PWA Ready: Installable on phone or desktop, with Share Target API integration
+- Offline Capable: Works entirely offline once loaded
+- Dark & Light Mode: Fully themed, respects system preference
+
+## How It Works
+
+1. Export: Open any chat in WhatsApp → Menu → More → Export Chat
+2. Include Media: Choose "Include Media" to generate a ZIP file (recommended)
+3. Upload: Drag & drop your `.zip` or `.txt` file into ChatParser
+4. Relive: Browse your memories in a beautiful, high-speed interface
 
 ## Limitations
+
 - Only supports WhatsApp export format (.txt or .zip)
 - Does not support WhatsApp backup files (.crypt12, .crypt14, msgstore.db)
 - Media files must be exported from WhatsApp as a ZIP to appear in the viewer
 
-## How It Works
-1. Export: Open any chat in WhatsApp → Menu → More → Export Chat.
-2. Include Media: Choose "Include Media" to generate a ZIP file (recommended).
-3. Upload: Drag & drop your `.zip` or `.txt` file into ChatParser.
-4. Relive: Browse your memories in a beautiful, high-speed interface.
-
-## Supported Locales
-Supports WhatsApp exports from all regions including 12h and 24h timestamp formats.
-
 ## Tech Stack
+
 - Frontend: React 19, TypeScript
 - Build Tool: Vite 8
-- Core Libraries: IndexedDB (idb), JSZip, Virtua (for list virtualization)
+- Core Libraries: IndexedDB (idb), JSZip, Virtua (virtual list rendering)
 - Deployment: Vercel
 
+## Pages
+
+- [Home](https://chatparser.online/): Upload and view your WhatsApp chat exports
+- [About](https://chatparser.online/about): Learn about the mission and technology
+- [Privacy Policy](https://chatparser.online/privacy): How ChatParser handles your data
+- [Contact](https://chatparser.online/contact): Get in touch with the team
+
 ## Resources
-- Live Application: https://chatparser.online
-- Privacy Policy: https://chatparser.online/privacy
-- About: https://chatparser.online/about
-- Contact: https://chatparser.online/contact
-- Open Source: https://github.com/gavirubihan/ChatParser
-- EverybodyWiki: https://en.everybodywiki.com/Chatparser
-- Product Hunt: https://www.producthunt.com/products/chatparser
-- Neovise Guide: https://neovise.me/how-to-view-exported-whatsapp-chats-easily/
-- LinkedIn Launch: https://www.linkedin.com/posts/gavirubihan_whatsapp-chat-viewer-online-free-private-share-7447882691116691456-RRsQ
 
-## Legal & Authorship
-© 2026 ChatParser. A product by Neovise (https://neovise.me).
+- [GitHub Repository](https://github.com/gavirubihan/ChatParser): Open-source codebase
+- [Product Hunt](https://www.producthunt.com/products/chatparser): ChatParser on Product Hunt
+- [EverybodyWiki](https://en.everybodywiki.com/Chatparser): ChatParser wiki article
+- [Neovise Guide](https://neovise.me/how-to-view-exported-whatsapp-chats-easily/): Step-by-step usage guide
+- [LinkedIn Announcement](https://www.linkedin.com/posts/gavirubihan_whatsapp-chat-viewer-online-free-private-share-7447882691116691456-RRsQ): Official launch post
 
-Last Updated: April 2026
+## Legal
+
+© 2026 ChatParser. A product by [Neovise](https://neovise.me). Last updated: August 2026.
