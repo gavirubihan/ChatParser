@@ -1,0 +1,482 @@
+/* =============================================
+   Selection Action Modal
+   ============================================= */
+
+/* Full-screen backdrop */
+.sam-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 900;
+  display: flex;
+  align-items: flex-end;        /* mobile: sheet from bottom */
+  justify-content: center;
+  animation: samFadeIn 0.18s ease both;
+}
+
+@keyframes samFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (min-width: 520px) {
+  .sam-backdrop {
+    align-items: center;        /* desktop: centered */
+  }
+}
+
+/* Modal card */
+.sam-modal {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  overflow: hidden;
+  animation: samSlideUp 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes samSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 520px) {
+  .sam-modal {
+    border-radius: var(--radius-xl);
+    animation: samScaleIn 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    max-height: 80dvh;
+  }
+
+  @keyframes samScaleIn {
+    from { opacity: 0; transform: scale(0.94) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+}
+
+/* ── Header ── */
+.sam-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.sam-header__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  color: var(--brand-primary);
+  flex-shrink: 0;
+}
+
+.sam-header__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sam-header__count {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sam-header__sub {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.sam-close,
+.sam-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.sam-close:hover,
+.sam-back:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+/* ── Action button list ── */
+.sam-actions {
+  padding: 8px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.sam-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  width: 100%;
+}
+
+.sam-action-btn:hover {
+  border-color: var(--border-default);
+  background: var(--bg-surface-3);
+}
+
+.sam-action-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.sam-action-btn--bookmark .sam-action-btn__icon { background: rgba(129,140,248,0.1); color: #818cf8; }
+.sam-action-btn--note .sam-action-btn__icon  { background: rgba(0,168,132,0.1);  color: var(--brand-primary); }
+.sam-action-btn--delete .sam-action-btn__icon { background: rgba(239,68,68,0.08); color: var(--status-error); }
+
+.sam-action-btn--bookmark:hover { border-color: rgba(129,140,248,0.3); }
+.sam-action-btn--note:hover  { border-color: rgba(0,168,132,0.3); }
+.sam-action-btn--delete:hover { border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.04); }
+
+.sam-action-btn__label {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sam-action-btn--delete .sam-action-btn__label {
+  color: var(--status-error);
+}
+
+.sam-action-btn__arrow {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* Divider */
+.sam-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 4px 0;
+}
+
+/* Delete confirm inline */
+.sam-confirm-delete {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.sam-confirm-delete span {
+  font-size: var(--font-size-sm);
+  color: var(--status-error);
+  font-weight: 500;
+}
+
+.sam-confirm-delete__btns {
+  display: flex;
+  gap: 8px;
+}
+
+.sam-confirm-delete__cancel,
+.sam-confirm-delete__confirm {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.sam-confirm-delete__cancel {
+  background: var(--bg-surface-3);
+  color: var(--text-secondary);
+}
+.sam-confirm-delete__cancel:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+.sam-confirm-delete__confirm {
+  background: var(--status-error);
+  color: white;
+}
+.sam-confirm-delete__confirm:hover {
+  opacity: 0.9;
+}
+
+/* ── Direct Delete Dialog View ── */
+.sam-delete-view {
+  display: flex;
+  flex-direction: column;
+}
+
+.sam-header__icon--delete {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.sam-delete-body {
+  padding: 18px 20px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sam-delete-msg {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sam-delete-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: #ef4444;
+  line-height: 1.4;
+}
+.sam-delete-warning svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.sam-delete-footer {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px 20px;
+}
+
+.sam-btn--delete-confirm {
+  background: #ef4444;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.sam-btn--delete-confirm:hover {
+  background: #dc2626;
+  opacity: 1;
+}
+
+/* ── Configure step ── */
+.sam-configure {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.sam-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sam-label__optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.sam-label__required {
+  color: var(--status-error);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sam-input {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.sam-input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.1);
+}
+
+.sam-input::placeholder {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.sam-field-hint {
+  font-size: 11px;
+  color: var(--status-error);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.sam-textarea {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  line-height: 1.55;
+  resize: none;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.sam-textarea:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.1);
+}
+
+.sam-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.sam-char-count {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: right;
+}
+
+.sam-configure__footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.sam-btn {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  text-align: center;
+}
+
+.sam-btn--cancel {
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
+  flex: 0 0 80px;
+}
+.sam-btn--cancel:hover {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+
+.sam-btn--confirm {
+  color: white;
+  flex: 1;
+}
+.sam-btn--confirm:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.sam-btn--confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =============================================
+   Dark Mode Overrides
+   ============================================= */
+[data-theme="dark"] .sam-modal {
+  background: #111b21;
+  border: 1px solid #222d34;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+}
+
+[data-theme="dark"] .sam-header {
+  border-bottom-color: #222d34;
+}
+
+[data-theme="dark"] .sam-action-btn {
+  background: #202c33;
+}
+
+[data-theme="dark"] .sam-action-btn:hover {
+  background: #2a3942;
+  border-color: #374248;
+}
+
+[data-theme="dark"] .sam-divider {
+  background: #222d34;
+}
+
+[data-theme="dark"] .sam-input,
+[data-theme="dark"] .sam-textarea {
+  background: #202c33;
+  border-color: #2a3942;
+  color: #e9edef;
+}
+
+[data-theme="dark"] .sam-btn--cancel {
+  background: #202c33;
+  color: #8696a0;
+}
+
+[data-theme="dark"] .sam-btn--cancel:hover {
+  background: #2a3942;
+  color: #e9edef;
+}

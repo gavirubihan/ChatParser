@@ -18,6 +18,12 @@ ChatParser uses a Zero-Server Architecture: all parsing, media rendering, and st
 - PWA Ready: Installable on phone or desktop, with Share Target API integration
 - Offline Capable: Works entirely offline once loaded
 - Dark & Light Mode: Fully themed, respects system preference
+- Bookmarks: Bookmark individual messages for quick reference; bookmarks persist across sessions
+- Notes: Attach personal notes to any message; notes are private and stored locally
+- Grouped Bookmarks & Notes: Collect multiple related messages into a named group (bookmark group or note group) displayed as a single collapsible card in the Saved panel
+- Multi-Select: Long-press or right-click to enter selection mode; select multiple messages at once to bookmark, note, or delete them in bulk
+- Delete from View: Remove individual or selected messages from the chat view without affecting the original export file; supports instant undo via a toast notification
+- Copy to Clipboard: Copy message text or media captions directly to clipboard via the context menu with instant toast feedback
 
 ## How It Works
 
@@ -56,4 +62,4 @@ ChatParser uses a Zero-Server Architecture: all parsing, media rendering, and st
 
 ## Legal
 
-© 2026 ChatParser. A product by [Neovise](https://neovise.me). Last updated: August 2026.
+© 2026 ChatParser. A product by [Neovise](https://neovise.me). Last updated: September 2026.

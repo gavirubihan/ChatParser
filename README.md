@@ -51,6 +51,10 @@ We transform those raw exports into a premium, interactive experience that feels
 | :--- | :--- | :--- |
 | Filter by date, message type, or instant text search across years of history. | Beautiful Light and Dark modes that respect your system settings. | Install on your phone or desktop and share files directly to it. |
 
+| 🔖 Bookmarks & Notes | 🗂️ Grouped Collections | ✅ Multi-Select & Delete |
+| :--- | :--- | :--- |
+| Bookmark important messages or attach private notes to any message — all stored locally, never uploaded. | Group related bookmarks or notes into named collections shown as a single collapsible card in the Saved panel. | Select multiple messages with a single tap to bookmark, note, or delete them from view in bulk. Deleted messages support instant undo. |
+
 ---
 
 ## 📂 How It Works
@@ -97,5 +101,5 @@ npm run build
 </p>
 
 <p align="center">
-  © 2026 ChatParser · Owned by <a href="https://neovise.me">neovise.me</a> · <a href="https://chatparser.online">Live Site</a>
+  © 2026 ChatParser · Owned by <a href="https://neovise.me">neovise.me</a> · <a href="https://chatparser.online">Live Site</a> · Last updated: September 2026
 </p>

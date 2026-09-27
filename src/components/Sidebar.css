@@ -395,3 +395,54 @@
     opacity: 0.8;
   }
 }
+
+/* =============================================
+   Deleting state (optimistic delete in progress)
+   ============================================= */
+.sidebar__session--deleting {
+  opacity: 0.5;
+  pointer-events: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar__session--deleting::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--brand-primary-rgb, 99, 102, 241), 0.08) 50%,
+    transparent 100%
+  );
+  animation: sidebar-delete-sweep 1.2s ease-in-out infinite;
+}
+
+@keyframes sidebar-delete-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.sidebar__session-deleting-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.sidebar__mini-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: mini-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes mini-spin {
+  to { transform: rotate(360deg); }
+}

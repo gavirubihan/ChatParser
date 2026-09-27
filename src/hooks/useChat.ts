@@ -9,8 +9,8 @@ import type { ChatMessage } from '../lib/chatParser';
 export function useAllSessions() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteProgress, setDeleteProgress] = useState(0);
+  // Track which session IDs are being deleted in the background
+  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -25,18 +25,25 @@ export function useAllSessions() {
   useEffect(() => { load(); }, [load]);
 
   const removeSession = useCallback(async (id: string) => {
-    setIsDeleting(true);
-    setDeleteProgress(0);
+    // Optimistic update — remove instantly from UI
+    setSessions(prev => prev.filter(s => s.id !== id));
+    setDeletingIds(prev => new Set([...prev, id]));
     try {
-      await deleteSession(id, (p) => setDeleteProgress(p));
-      setSessions(prev => prev.filter(s => s.id !== id));
+      await deleteSession(id, () => {});
+    } catch {
+      // On failure, reload to restore accurate state
+      const data = await getAllSessions();
+      setSessions(data);
     } finally {
-      setIsDeleting(false);
-      setDeleteProgress(0);
+      setDeletingIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   }, []);
 
-  return { sessions, loading, isDeleting, deleteProgress, reload: load, removeSession };
+  return { sessions, loading, isDeleting: false, deleteProgress: 0, deletingIds, reload: load, removeSession };
 }
 
 // =============================================

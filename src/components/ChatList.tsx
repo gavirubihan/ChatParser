@@ -1,7 +1,8 @@
-import { useRef, useMemo, forwardRef, useImperativeHandle, useEffect } from 'react';
+import React, { useRef, useMemo, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { VList, type VListHandle } from 'virtua';
 import type { ChatMessage } from '../lib/chatParser';
 import { ChatBubble } from './ChatBubble';
+import type { ChatBubbleActions } from './ChatBubble';
 import { getSenderColor } from '../lib/colorUtils';
 import { DateSeparator } from './DateSeparator';
 import { formatDate } from '../lib/mediaUtils';
@@ -64,6 +65,16 @@ interface ChatListProps {
   searchQuery?: string;
   highlightedMessageId?: string;
   onMediaClick?: (mediaKey: string, type: string, url?: string | null) => void;
+  // Message actions
+  getMessageActions?: (messageId: string) => ChatBubbleActions;
+  onMessageContextMenu?: (messageId: string, x: number, y: number) => void;
+  // Selection mode
+  selectionMode?: boolean;
+  onSelectMessage?: (messageId: string) => void;
+  // Pending deletions (being animated out)
+  pendingDeletions?: Set<string>;
+  // Already-deleted messages (rendered as zero-height to avoid VList re-layout)
+  deletedIds?: Set<string>;
 }
 
 export interface ChatListHandle {
@@ -85,14 +96,23 @@ function inferOwnSender(participants: string[]): string {
 // =============================================
 // ChatList Component
 // =============================================
-export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
-  messages,
-  participants,
-  isGroup,
-  searchQuery,
-  highlightedMessageId,
-  onMediaClick,
-}, ref) => {
+export const ChatList = forwardRef<ChatListHandle, ChatListProps>((
+  {
+    messages,
+    participants,
+    isGroup,
+    searchQuery,
+    highlightedMessageId,
+    onMediaClick,
+    getMessageActions,
+    onMessageContextMenu,
+    selectionMode,
+    onSelectMessage,
+    pendingDeletions,
+    deletedIds,
+  },
+  ref
+) => {
   const virtuosoRef = useRef<VListHandle>(null);
 
   // Items in chronological order (oldest first, newest last = bottom)
@@ -132,6 +152,20 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
     }
 
     const { message } = item;
+
+    // Already deleted: render zero-height invisible div so VList item count stays stable
+    // (avoids layout/overlap issues from item removal)
+    if (deletedIds?.has(message.id) && !pendingDeletions?.has(message.id)) {
+      return (
+        <div
+          key={message.id}
+          id={`msg-${message.id}`}
+          style={{ height: 0, overflow: 'hidden', margin: 0, padding: 0 }}
+          aria-hidden="true"
+        />
+      );
+    }
+
     const isOwn = message.sender === ownSender;
 
     const prevItem = items[index - 1];
@@ -141,8 +175,14 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
       prevItem.message.sender !== message.sender
     );
 
+    const bubbleActions = getMessageActions ? getMessageActions(message.id) : undefined;
+
     return (
-      <div key={message.id} id={`msg-${message.id}`}>
+      <div
+        key={message.id}
+        id={`msg-${message.id}`}
+        className={pendingDeletions?.has(message.id) ? 'chat-bubble-wrapper--deleting' : undefined}
+      >
         <ChatBubble
           message={message}
           isOwn={isOwn}
@@ -152,6 +192,10 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
           isHighlighted={message.id === highlightedMessageId}
           onMediaClick={onMediaClick}
           senderColor={getSenderColor(message.sender)}
+          actions={bubbleActions}
+          onContextMenu={selectionMode ? undefined : onMessageContextMenu}
+          selectionMode={selectionMode}
+          onSelect={onSelectMessage}
         />
       </div>
     );
@@ -188,3 +232,7 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>(({
 });
 
 ChatList.displayName = 'ChatList';
+
+// Wrap in memo so ChatList only re-renders when its props actually change.
+// This prevents re-renders triggered by unrelated ChatViewer state (toasts, context menu, etc.)
+export const MemoizedChatList = React.memo(ChatList) as typeof ChatList;

@@ -51,3 +51,35 @@
   font-weight: 400 !important;
   opacity: 0.7;
 }
+
+/* =============================================
+   Delete-from-view animation
+   ============================================= */
+.chat-bubble-wrapper--deleting {
+  animation: bubble-delete-out 280ms cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  pointer-events: none;
+  overflow: hidden;
+  /* Prevent layout shift during height collapse */
+  transform-origin: center top;
+}
+
+@keyframes bubble-delete-out {
+  0% {
+    opacity: 1;
+    max-height: 400px;
+    transform: scale(1);
+    margin-bottom: 0;
+  }
+  40% {
+    opacity: 0;
+    transform: scale(0.97) translateX(8px);
+  }
+  100% {
+    opacity: 0;
+    max-height: 0;
+    transform: scale(0.95) translateX(8px);
+    margin-bottom: -4px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

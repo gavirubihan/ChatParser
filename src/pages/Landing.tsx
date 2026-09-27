@@ -10,7 +10,16 @@ import './Landing.css';
 
 
 // Feature cards data
-const FEATURES = [
+interface FeatureItem {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+  color: string;
+  badge?: string;
+  tags?: string[];
+}
+
+const FEATURES: FeatureItem[] = [
   {
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -30,6 +39,20 @@ const FEATURES = [
     title: 'Smart Search',
     desc: 'Search by keyword, filter by date, or instantly isolate media types like Images, Voice, and Documents.',
     color: '#3b82f6',
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+        <line x1="9" y1="8" x2="15" y2="8" />
+        <line x1="9" y1="12" x2="13" y2="12" />
+      </svg>
+    ),
+    badge: 'New',
+    title: 'Bookmarks, Notes & Groups',
+    desc: 'Bookmark important messages, attach private notes, group them into collections, multi-select in bulk, and curate your chat view.',
+    tags: ['Bookmarks', 'Notes', 'Groups', 'Multi-Select'],
+    color: '#6366f1',
   },
   {
     icon: (
@@ -134,6 +157,10 @@ const FAQS = [
   {
     q: "Is this tool free and open source?",
     a: "Yes, ChatParser is completely free and 100% open source. You can inspect the codebase for complete peace of mind, or run it on your own hardware."
+  },
+  {
+    q: "Can I bookmark messages or add notes?",
+    a: "Yes! You can bookmark important messages, attach private notes to any message, group them into organized collections, multi-select in bulk, and curate your chat view with instant undo. Everything is stored locally in your browser."
   },
   {
     q: "How do I export a WhatsApp chat history?",
@@ -370,11 +397,21 @@ export const Landing: React.FC = () => {
                   key={f.title}
                   className={`landing__feature-card animate-fade-in-up delay-${Math.min(i * 100, 500)}`}
                 >
-                  <div className="landing__feature-icon" style={{ '--feature-color': f.color } as React.CSSProperties}>
-                    {f.icon}
+                  <div className="landing__feature-header">
+                    <div className="landing__feature-icon" style={{ '--feature-color': f.color } as React.CSSProperties}>
+                      {f.icon}
+                    </div>
+                    {f.badge && <span className="landing__feature-badge">{f.badge}</span>}
                   </div>
                   <h3 className="landing__feature-title">{f.title}</h3>
                   <p className="landing__feature-desc">{f.desc}</p>
+                  {f.tags && f.tags.length > 0 && (
+                    <div className="landing__feature-tags">
+                      {f.tags.map(tag => (
+                        <span key={tag} className="landing__feature-tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

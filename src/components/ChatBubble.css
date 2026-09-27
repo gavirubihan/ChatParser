@@ -418,3 +418,130 @@
   background: rgba(38, 58, 70, 0.9);
   border-color: var(--border-default);
 }
+
+/* =============================================
+   Action Meta Icons (bookmark & note) inside footer
+   ============================================= */
+.chat-bubble__meta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  opacity: 0.85;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.chat-bubble__meta-icon svg {
+  display: block;
+}
+
+.chat-bubble__meta-icon--bookmark {
+  color: #6366f1;
+}
+
+[data-theme="dark"] .chat-bubble__meta-icon--bookmark {
+  color: #818cf8;
+}
+
+.chat-bubble__meta-icon--note {
+  color: #00a884;
+}
+
+[data-theme="dark"] .chat-bubble__meta-icon--note {
+  color: #2dd4bf;
+}
+
+.chat-bubble--own .chat-bubble__meta-icon--bookmark {
+  color: #4338ca;
+}
+
+[data-theme="dark"] .chat-bubble--own .chat-bubble__meta-icon--bookmark {
+  color: #a5b4fc;
+}
+
+.chat-bubble--own .chat-bubble__meta-icon--note {
+  color: #008069;
+}
+
+[data-theme="dark"] .chat-bubble--own .chat-bubble__meta-icon--note {
+  color: #2dd4bf;
+}
+
+/* =============================================
+   Selection Mode — row highlight
+   ============================================= */
+.chat-bubble__wrapper--selectable {
+  cursor: pointer;
+}
+
+.chat-bubble__wrapper--selected {
+  background: rgba(0, 168, 132, 0.09);
+  transition: background var(--transition-fast);
+}
+
+[data-theme="dark"] .chat-bubble__wrapper--selected {
+  background: rgba(0, 168, 132, 0.14);
+}
+
+/* =============================================
+   WhatsApp-style circular checkbox
+   ─ sits OUTSIDE the bubble, slides in on mount
+   ─ --other variant: left side of wrapper
+   ─ --own variant  : right side of wrapper (flex-row-reverse puts it on the right)
+   ============================================= */
+.chat-bubble__sel-check {
+  /* circle */
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border-strong);
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  /* align-self: flex-end aligns it with the avatar (wrapper uses align-items: flex-end) */
+  align-self: flex-end;
+  margin-bottom: 4px; /* matches avatar margin-bottom */
+  /* slide in from side */
+  animation: selCheckSlide 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+
+/* For "other" messages (left-aligned), checkbox is on the left */
+.chat-bubble__sel-check--other {
+  margin-right: 6px;
+  transform-origin: left center;
+}
+
+/* For "own" messages (right-aligned / flex-row-reverse), checkbox is on the right */
+.chat-bubble__sel-check--own {
+  margin-left: 6px;
+  transform-origin: right center;
+}
+
+@keyframes selCheckSlide {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Checked state */
+.chat-bubble__sel-check--checked {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.18);
+}
+
+.chat-bubble__sel-check:hover:not(.chat-bubble__sel-check--checked) {
+  border-color: var(--brand-primary);
+  background: rgba(0, 168, 132, 0.08);
+}
+
+/* Context-menu cursor hint on non-selected bubbles */
+.chat-bubble__wrapper:not(.chat-bubble__wrapper--selectable):hover .chat-bubble {
+  cursor: context-menu;
+}

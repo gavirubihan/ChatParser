@@ -1,0 +1,322 @@
+/* =============================================
+   Message Context Menu
+   Uses only design-system CSS custom properties
+   ============================================= */
+
+.context-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 801;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  min-width: 220px;
+  max-width: 260px;
+  animation: ctxMenuIn 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctxMenuIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Header */
+.context-menu__header {
+  padding: 9px 14px 7px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* Items list */
+.context-menu__items {
+  padding: 4px 0;
+}
+
+/* Single item row */
+.context-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 9px 14px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-align: left;
+}
+
+.context-menu__item:hover {
+  background: var(--bg-surface-2);
+}
+
+.context-menu__item:active {
+  background: var(--bg-surface-3);
+}
+
+/* Icon circle */
+.context-menu__item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.context-menu__item:hover .context-menu__item-icon {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+
+.context-menu__item-label {
+  flex: 1;
+  line-height: 1;
+}
+
+/* Active dot indicator */
+.context-menu__item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--brand-primary);
+  flex-shrink: 0;
+}
+
+/* ── Copy ── */
+.context-menu__item--copy .context-menu__item-icon {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+.context-menu__item--copy:hover .context-menu__item-icon {
+  background: rgba(59, 130, 246, 0.18) !important;
+  color: #2563eb !important;
+}
+
+/* ── Bookmark ── */
+.context-menu__item--bookmark .context-menu__item-icon {
+  background: rgba(99, 102, 241, 0.1);
+  color: #818cf8;
+}
+.context-menu__item--bookmark:hover .context-menu__item-icon {
+  background: rgba(99, 102, 241, 0.18) !important;
+  color: #6366f1 !important;
+}
+.context-menu__item--bookmark .context-menu__item-dot {
+  background: #818cf8;
+}
+
+/* ── Note ── */
+.context-menu__item--note .context-menu__item-icon {
+  background: rgba(0, 168, 132, 0.1);
+  color: var(--brand-primary);
+}
+.context-menu__item--note:hover .context-menu__item-icon {
+  background: rgba(0, 168, 132, 0.18) !important;
+  color: var(--brand-primary-dark) !important;
+}
+.context-menu__item--note .context-menu__item-dot {
+  background: var(--brand-primary);
+}
+
+/* ── Danger ── */
+.context-menu__item--danger {
+  color: var(--status-error);
+}
+.context-menu__item--danger .context-menu__item-icon {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--status-error);
+}
+.context-menu__item--danger:hover {
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+.context-menu__item--danger:hover .context-menu__item-icon {
+  background: rgba(239, 68, 68, 0.14) !important;
+  color: var(--status-error) !important;
+}
+
+/* ── Divider before danger ── */
+.context-menu__item--danger {
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 4px;
+  padding-top: 12px;
+}
+
+/* =============================================
+   Note Input Section
+   ============================================= */
+.context-menu__note-section {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.context-menu__note-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.context-menu__note-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.context-menu__note-back:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+.context-menu__note-textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  line-height: 1.55;
+  resize: none;
+  min-height: 76px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.context-menu__note-textarea:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.1);
+}
+
+.context-menu__note-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.context-menu__note-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.context-menu__note-btn {
+  padding: 6px 13px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  line-height: 1.5;
+}
+
+.context-menu__note-btn--remove {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--status-error);
+  margin-right: auto;
+}
+.context-menu__note-btn--remove:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.context-menu__note-btn--cancel {
+  background: var(--bg-surface-2);
+  color: var(--text-secondary);
+}
+.context-menu__note-btn--cancel:hover {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+
+.context-menu__note-btn--save {
+  background: var(--brand-primary);
+  color: var(--text-on-brand);
+}
+.context-menu__note-btn--save:hover:not(:disabled) {
+  background: var(--brand-primary-dark);
+}
+.context-menu__note-btn--save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =============================================
+   Dark Mode Overrides
+   ============================================= */
+[data-theme="dark"] .context-menu {
+  background: #233138;
+  border-color: #2a3942;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .context-menu__header {
+  border-bottom-color: #222d34;
+  color: #8696a0;
+}
+
+[data-theme="dark"] .context-menu__item:hover {
+  background: #182229;
+}
+
+[data-theme="dark"] .context-menu__item-icon {
+  background: #182229;
+  color: #8696a0;
+}
+
+[data-theme="dark"] .context-menu__item:hover .context-menu__item-icon {
+  background: #2a3942;
+  color: #e9edef;
+}
+
+[data-theme="dark"] .context-menu__item--danger {
+  border-top-color: #222d34;
+}
+
+[data-theme="dark"] .context-menu__note-back:hover {
+  background: #182229;
+}
+
+[data-theme="dark"] .context-menu__note-textarea {
+  background: #182229;
+  border-color: #2a3942;
+  color: #e9edef;
+}
+
+[data-theme="dark"] .context-menu__note-btn--cancel {
+  background: #182229;
+  color: #8696a0;
+}
+
+[data-theme="dark"] .context-menu__note-btn--cancel:hover {
+  background: #2a3942;
+  color: #e9edef;
+}

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import type { ChatMessage } from '../lib/chatParser';
 import { getMediaUrl, getCachedMediaUrl } from '../lib/mediaUtils';
 import { formatTime } from '../lib/mediaUtils';
 import './ChatBubble.css';
-
 
 import { getSenderColor } from '../lib/colorUtils';
 
@@ -194,6 +193,12 @@ MediaContent.displayName = 'MediaContent';
 // =============================================
 // Chat Bubble
 // =============================================
+export interface ChatBubbleActions {
+  isBookmarked: boolean;
+  isSelected: boolean;
+  hasNote: boolean;
+}
+
 interface ChatBubbleInnerProps {
   message: ChatMessage;
   isOwn: boolean;
@@ -203,7 +208,16 @@ interface ChatBubbleInnerProps {
   isHighlighted?: boolean;
   onMediaClick?: (mediaKey: string, type: string, url?: string | null) => void;
   senderColor?: string;
+  // Context menu / actions
+  actions?: ChatBubbleActions;
+  onContextMenu?: (messageId: string, x: number, y: number) => void;
+  // Selection mode — when active, tap row to toggle; checkbox shown
+  selectionMode?: boolean;
+  onSelect?: (messageId: string) => void;
 }
+
+// Long-press threshold (ms)
+const LONG_PRESS_DELAY = 500;
 
 export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
   message,
@@ -214,6 +228,10 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
   isHighlighted,
   onMediaClick,
   senderColor,
+  actions,
+  onContextMenu,
+  selectionMode,
+  onSelect,
 }) => {
   const isSystem = message.type === 'system';
   const isDeleted = message.type === 'deleted';
@@ -221,12 +239,56 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
   const isAudio = message.type === 'audio';
   const hasText = message.type === 'text' || isDeleted;
 
-  // Extract caption: text that accompanies a media attachment
-  // WhatsApp stores captions as continuation lines after the attachment reference
+  // Long-press support for touch devices
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    if (!onContextMenu || isSystem || selectionMode) return;
+    e.preventDefault();
+    onContextMenu(message.id, e.clientX, e.clientY);
+  }, [onContextMenu, message.id, isSystem, selectionMode]);
+
+  // In selectionMode a click on the row toggles selection
+  const handleRowClick = useCallback(() => {
+    if (selectionMode && onSelect) onSelect(message.id);
+  }, [selectionMode, onSelect, message.id]);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (selectionMode) return; // handled by onClick in selectionMode
+    if (!onContextMenu || isSystem) return;
+    const touch = e.touches[0];
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+    longPressTimer.current = setTimeout(() => {
+      if (touchStartPos.current) {
+        onContextMenu(message.id, touchStartPos.current.x, touchStartPos.current.y);
+      }
+    }, LONG_PRESS_DELAY);
+  }, [onContextMenu, message.id, isSystem, selectionMode]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    touchStartPos.current = null;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!touchStartPos.current || !longPressTimer.current) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartPos.current.x);
+    const dy = Math.abs(touch.clientY - touchStartPos.current.y);
+    if (dx > 10 || dy > 10) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
+
+  // Extract caption
   const caption = isMedia ? (() => {
     const attachmentPattern = /<attached:\s*.+?>|.+?\s*\(file attached\)/i;
     const stripped = message.content.replace(attachmentPattern, '').trim();
-    // Also strip "image omitted" style placeholders
     const omittedPattern = /^(image|video|audio|sticker|gif|document|voice message)\s+omitted$/i;
     if (omittedPattern.test(stripped) || !stripped) return null;
     return stripped;
@@ -240,8 +302,44 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
     );
   }
 
+  const isSelected = actions?.isSelected ?? false;
+
   return (
-    <div className={`chat-bubble__wrapper${isOwn ? ' chat-bubble__wrapper--own' : ''}${isHighlighted ? ' chat-bubble__wrapper--highlighted' : ''}`}>
+    <div
+      className={[
+        'chat-bubble__wrapper',
+        isOwn ? 'chat-bubble__wrapper--own' : '',
+        isHighlighted ? 'chat-bubble__wrapper--highlighted' : '',
+        isSelected ? 'chat-bubble__wrapper--selected' : '',
+        selectionMode ? 'chat-bubble__wrapper--selectable' : '',
+      ].filter(Boolean).join(' ')}
+      onContextMenu={handleContextMenu}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
+      onClick={selectionMode ? handleRowClick : undefined}
+    >
+      {/* ── WhatsApp-style selection checkbox ────────────────── */}
+      {selectionMode && !isSystem && (
+        <button
+          className={[
+            'chat-bubble__sel-check',
+            isOwn ? 'chat-bubble__sel-check--own' : 'chat-bubble__sel-check--other',
+            isSelected ? 'chat-bubble__sel-check--checked' : '',
+          ].filter(Boolean).join(' ')}
+          onClick={e => { e.stopPropagation(); onSelect?.(message.id); }}
+          aria-label={isSelected ? 'Deselect message' : 'Select message'}
+          aria-pressed={isSelected}
+          tabIndex={0}
+        >
+          {isSelected && (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+        </button>
+      )}
+
       {/* Avatar for group chats */}
       {isGroup && !isOwn && (
         <div
@@ -253,8 +351,13 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
         </div>
       )}
 
-      <div 
-        className={`chat-bubble${isOwn ? ' chat-bubble--own' : ' chat-bubble--other'}${isDeleted ? ' chat-bubble--deleted' : ''}${isMedia && !hasText && !caption ? ' chat-bubble--media-only' : ''}`}
+      <div
+        className={[
+          'chat-bubble',
+          isOwn ? 'chat-bubble--own' : 'chat-bubble--other',
+          isDeleted ? 'chat-bubble--deleted' : '',
+          isMedia && !hasText && !caption ? 'chat-bubble--media-only' : '',
+        ].filter(Boolean).join(' ')}
         data-clarity-mask="True"
       >
         {/* Sender name in group */}
@@ -267,7 +370,7 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
         {/* Content */}
         {isMedia || isAudio ? (
           <>
-            <MediaContent message={message} onMediaClick={onMediaClick} />
+            <MediaContent message={message} onMediaClick={selectionMode ? undefined : onMediaClick} />
             {caption && (
               <div className="chat-bubble__text chat-bubble__caption">
                 {searchQuery ? highlightText(caption, searchQuery) : caption}
@@ -289,8 +392,23 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
           </div>
         )}
 
-        {/* Timestamp & ticks */}
+        {/* Timestamp & ticks with inline action icons */}
         <div className="chat-bubble__footer">
+          {actions?.isBookmarked && (
+            <span className="chat-bubble__meta-icon chat-bubble__meta-icon--bookmark" title="Bookmarked" aria-label="Bookmarked">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              </svg>
+            </span>
+          )}
+          {actions?.hasNote && (
+            <span className="chat-bubble__meta-icon chat-bubble__meta-icon--note" title="Has note" aria-label="Has note">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </span>
+          )}
           <span className="chat-bubble__time">{formatTime(message.timestamp)}</span>
           {isOwn && (
             <span className="chat-bubble__ticks" aria-label="Delivered" title="Delivered">

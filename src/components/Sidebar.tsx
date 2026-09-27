@@ -14,6 +14,7 @@ interface SidebarProps {
   onUploadClick: () => void;
   isOpen: boolean;
   onClose: () => void;
+  deletingIds?: Set<string>;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -23,6 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onUploadClick,
   isOpen,
   onClose,
+  deletingIds = new Set(),
 }) => {
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
@@ -122,7 +124,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {filtered.map(session => (
             <div
               key={session.id}
-              className={`sidebar__session ${activeSessionId === session.id ? 'sidebar__session--active' : ''}`}
+              className={`sidebar__session ${
+                activeSessionId === session.id ? 'sidebar__session--active' : ''
+              } ${deletingIds.has(session.id) ? 'sidebar__session--deleting' : ''}`}
               onClick={() => handleSelect(session.id)}
               role="listitem"
               tabIndex={0}
@@ -160,8 +164,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
               </div>
 
-              {/* Delete */}
-              {confirmDelete === session.id ? (
+              {/* Delete / confirm / deleting spinner */}
+              {deletingIds.has(session.id) ? (
+                <div className="sidebar__session-deleting-spinner" aria-label="Deleting..." title="Deleting...">
+                  <div className="sidebar__mini-spinner" />
+                </div>
+              ) : confirmDelete === session.id ? (
                 <div className="sidebar__session-confirm" onClick={e => e.stopPropagation()}>
                   <span className="sidebar__confirm-text">Delete?</span>
                   <button

@@ -415,3 +415,291 @@
   background: var(--bg-surface-2);
   color: var(--text-primary);
 }
+
+/* =============================================
+   Saved-messages Panel Overlay (mobile)
+   ============================================= */
+.chat-viewer__panel-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 440;
+  animation: fadeIn var(--transition-base) ease both;
+}
+
+@media (max-width: 768px) {
+  .chat-viewer__panel-overlay {
+    display: block;
+  }
+}
+
+/* =============================================
+   Action Button Badge
+   ============================================= */
+.chat-viewer__action-btn--saved,
+.chat-viewer__action-btn[id="bookmarks-btn"] {
+  position: relative;
+}
+
+.chat-viewer__action-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--brand-primary);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  pointer-events: none;
+  border: 1.5px solid var(--header-bg);
+}
+
+/* Ensure action buttons allow relative positioning for badge */
+.chat-viewer__action-btn {
+  position: relative;
+}
+
+/* =============================================
+   Selection Action Bar (Within chat-viewer__main)
+   ============================================= */
+.selection-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--header-bg) 95%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--header-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 18px;
+  min-height: 56px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  animation: selBarIn 0.22s cubic-bezier(0.16, 1, 0.36, 1) both;
+}
+
+@keyframes selBarIn {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.selection-bar__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.selection-bar__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+.selection-bar__close:hover {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+.selection-bar__close:active {
+  transform: scale(0.95);
+}
+
+.selection-bar__count {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.selection-bar__count strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.selection-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.selection-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.selection-bar__btn:active {
+  transform: scale(0.96);
+}
+
+/* Bookmark button */
+.selection-bar__btn--bookmark {
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.2);
+}
+.selection-bar__btn--bookmark:hover {
+  background: rgba(129, 140, 248, 0.16);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #6366f1;
+}
+
+/* Note button */
+.selection-bar__btn--note {
+  color: var(--brand-primary);
+  background: rgba(0, 168, 132, 0.08);
+  border-color: rgba(0, 168, 132, 0.2);
+}
+.selection-bar__btn--note:hover {
+  background: rgba(0, 168, 132, 0.16);
+  border-color: rgba(0, 168, 132, 0.4);
+  color: var(--brand-primary-hover, #008f6f);
+}
+
+/* Divider */
+.selection-bar__divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border-default);
+  margin: 0 2px;
+}
+
+/* Delete button */
+.selection-bar__btn--delete {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+.selection-bar__btn--delete:hover {
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #dc2626;
+}
+
+.selection-bar__btn-label {
+  display: inline;
+}
+
+/* On mobile / narrow screens, collapse buttons into circular icon-only buttons */
+@media (max-width: 580px) {
+  .selection-bar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .selection-bar__btn {
+    padding: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-full);
+  }
+  .selection-bar__btn-label {
+    display: none;
+  }
+}
+
+/* Float scroll-to-bottom FAB above selection bar when selection is active */
+.chat-viewer__main:has(.selection-bar) .chat-viewer__scroll-btn {
+  bottom: 74px;
+}
+
+/* =============================================
+   Undo Toast Notification
+   ============================================= */
+.chat-viewer__toast {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-full);
+  padding: 8px 16px 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  animation: toastSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  white-space: nowrap;
+}
+
+.chat-viewer__main:has(.selection-bar) ~ .chat-viewer__toast,
+.chat-viewer:has(.selection-bar) .chat-viewer__toast {
+  bottom: 76px;
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.chat-viewer__toast-text {
+  color: var(--text-primary);
+}
+
+.chat-viewer__toast-undo {
+  color: var(--brand-primary);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  background: rgba(0, 168, 132, 0.12);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+}
+
+.chat-viewer__toast-undo:hover {
+  background: rgba(0, 168, 132, 0.22);
+  color: var(--brand-primary-light, #25d366);
+}
+
+[data-theme="dark"] .chat-viewer__toast {
+  background: #202c33;
+  border-color: #2a3942;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+}
