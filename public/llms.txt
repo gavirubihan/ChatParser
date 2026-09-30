@@ -14,7 +14,7 @@ ChatParser uses a Zero-Server Architecture: all parsing, media rendering, and st
 - High Performance: Handles 500k+ messages with 60FPS virtual scrolling
 - Full Media Support: Native playback for images, videos, audio, and documents
 - Smart Search: Filter by date, message type, or instant text search
-- Multi-Language & Locale Support: Natively parses WhatsApp chat exports in English, Spanish (Español), Arabic (العربية), and Urdu (اردو) from both Android and iOS devices. Automatically handles localized date/time patterns, 12h/24h formats, native numerals (Arabic-Indic ٠-٩ and Urdu ۰-۹ digits), right-to-left (RTL) directional markers, and localized system notifications
+- Multi-Language & Locale Support: Natively parses WhatsApp chat exports in English, Spanish (Español), Arabic (العربية), Urdu (اردو), and Portuguese (Português) from both Android and iOS devices. Automatically handles localized date/time patterns (including Brazilian 12h time markers "da tarde", "da noite", "da manhã"), 12h/24h formats, native numerals (Arabic-Indic ٠-٩ and Urdu ۰-۹ digits), right-to-left (RTL) directional markers, and localized system notifications
 - Group Chat Support: Coloured sender names and avatars for every participant
 - PWA Ready: Installable on phone or desktop, with Share Target API integration
 - Offline Capable: Works entirely offline once loaded
@@ -28,9 +28,9 @@ ChatParser uses a Zero-Server Architecture: all parsing, media rendering, and st
 
 ## Supported Languages & Platforms
 
-- Languages: English, Spanish (Español), Arabic (العربية), Urdu (اردو)
+- Languages: English, Spanish (Español), Arabic (العربية), Urdu (اردو), Portuguese (Português do Brasil)
 - Platforms: Android and iOS exports (.txt and .zip archives)
-- Formats: 12-hour (AM/PM, ص/م, a. m./p. m.) and 24-hour clocks, ASCII and Arabic-Indic numerals, with or without media attachments
+- Formats: 12-hour (AM/PM, ص/م, a. m./p. m., da tarde/noite/manhã) and 24-hour clocks, ASCII and Arabic-Indic numerals, with or without media attachments
 
 ## How It Works
 

@@ -81,7 +81,7 @@ const TIME_24 = `\\d{1,2}:\\d{2}(?::\\d{2})?`;
 //   English:  "8:32 AM", "8:32 am", "8:32 PM"
 //   Spanish:  "8:32 a. m.", "4:59 p. m."  (dots + spaces between letters)
 //   Arabic:   "8:32 ص", "4:59 م"
-const TIME_12 = `\\d{1,2}:\\d{2}(?::\\d{2})?\\s*(?:[AaPp]\\.?\\s*[Mm]\\.?|[AaPp][Mm]|[\u0635\u0645]\\.?)`;
+const TIME_12 = `\\d{1,2}:\\d{2}(?::\\d{2})?\\s*(?:[AaPp]\\.?\\s*[Mm]\\.?|[AaPp][Mm]|[\\u0635\\u0645]\\.?|da\\s+(?:tarde|noite|manh[a\\u00e3]|madrugada))`;
 
 // =============================================
 // Core Regex Patterns (applied to cleaned lines)
@@ -205,14 +205,15 @@ function normalizeTime(time: string): string {
   const lower = s.toLowerCase();
 
   // Detect AM/PM across all locale styles:
-  //   English: "am" / "pm" (with or without leading space)
-  //   Spanish: "a. m." / "p. m." (dots + spaces, as exported by es-US WhatsApp)
-  //   Arabic:  "ص" (AM) / "م" (PM)
-  const isPM = /p\.?\s*m\.?/i.test(lower) || /\u0645/i.test(lower);
-  const isAM = /a\.?\s*m\.?/i.test(lower) || /\u0635/i.test(lower);
+  //   English:             "am" / "pm" (with or without leading space)
+  //   Spanish:             "a. m." / "p. m." (dots + spaces, as exported by es-US WhatsApp)
+  //   Arabic:              "ص" (AM) / "م" (PM)
+  //   Portuguese (Brazil): "da tarde" / "da noite" (PM), "da manhã" / "da madrugada" (AM)
+  const isPM = /p\.?\s*m\.?/i.test(lower) || /\u0645/i.test(lower) || /da\s+(?:tarde|noite)/i.test(lower);
+  const isAM = /a\.?\s*m\.?/i.test(lower) || /\u0635/i.test(lower) || /da\s+(?:manh[a\u00e3]|madrugada)/i.test(lower);
 
-  // Strip the entire AM/PM token (handles "am", "pm", "a. m.", "p. m.", "ص", "م", etc.)
-  const cleaned = s.replace(/[ap]\.?\s*m\.?|[\u0635\u0645]\.?/gi, '').trim();
+  // Strip the entire AM/PM token (handles "am", "pm", "a. m.", "p. m.", "ص", "م", "da tarde", etc.)
+  const cleaned = s.replace(/[ap]\.?\s*m\.?|[\u0635\u0645]\.?|da\s+(?:tarde|noite|manh[a\u00e3]|madrugada)/gi, '').trim();
   const parts = cleaned.split(':');
 
   let hours = parseInt(parts[0], 10);

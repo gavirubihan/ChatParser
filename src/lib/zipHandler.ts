@@ -112,7 +112,7 @@ export async function processZipFile(
   });
 
   // Probe each .txt file to find the actual chat file
-  const WHATSAPP_DATE_PROBE = /^\s*\[?[\d\u0660-\u0669\u06f0-\u06f9]{1,2}[/.-][\d\u0660-\u0669\u06f0-\u06f9]{1,2}[/.-][\d\u0660-\u0669\u06f0-\u06f9]{2,4}/;
+  const WHATSAPP_DATE_PROBE = /^\s*\[?[\d\u0660-\u0669\u06f0-\u06f9]{1,4}[/.-][\d\u0660-\u0669\u06f0-\u06f9]{1,2}[/.-][\d\u0660-\u0669\u06f0-\u06f9]{1,4}/;
 
   const txtEntries = allEntries.filter(e =>
     e.relativePath.toLowerCase().endsWith('.txt') &&
