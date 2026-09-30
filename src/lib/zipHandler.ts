@@ -2,6 +2,9 @@ import JSZip from 'jszip';
 import { parseWhatsAppChat, type ParsedChat } from './chatParser';
 import { saveSession, saveMessages, saveMedia } from './storage';
 import type { ChatSession } from './storage';
+import { UNIVERSAL } from './localePatterns';
+
+const INVISIBLE_CHARS = /[\u200e\u200f\uFEFF\u202a-\u202e\u2066-\u2069]/g;
 
 // =============================================
 // Utility: Generate UUID
@@ -60,9 +63,12 @@ export async function processTxtFile(file: File): Promise<ProcessResult> {
   const startDate = new Date(Math.min(...timestamps));
   const endDate = new Date(Math.max(...timestamps));
 
-  // Derive chat name from filename
-  const rawName = fileBaseName(file.name);
-  const name = rawName.replace(/whatsapp chat with|chat with|whatsapp/gi, '').trim() || 
+  // Derive chat name from filename — strip locale-specific prefixes (see localePatterns.ts)
+  const rawName = fileBaseName(file.name).replace(INVISIBLE_CHARS, '').trim();
+  const name = rawName
+    .replace(UNIVERSAL.filenamePrefixes, '')
+    .replace(/^[\s\-_–—:]+|[\s\-_–—:]+$/g, '')
+    .trim() ||
                (isGroup ? 'Group Chat' : participants.join(' & '));
 
   const session: ChatSession = {
@@ -105,10 +111,8 @@ export async function processZipFile(
     }
   });
 
-  // Find the chat .txt file:
-  // WhatsApp ZIPs can contain multiple .txt files (e.g. Binder2.txt, group notes, etc.)
-  // We must PROBE each one and pick the file that actually contains WhatsApp chat format.
-  const WHATSAPP_DATE_PROBE = /^\s*[\u200e\u200f]?\[?\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}/;
+  // Probe each .txt file to find the actual chat file
+  const WHATSAPP_DATE_PROBE = /^\s*\[?[\d\u0660-\u0669\u06f0-\u06f9]{1,2}[/.-][\d\u0660-\u0669\u06f0-\u06f9]{1,2}[/.-][\d\u0660-\u0669\u06f0-\u06f9]{2,4}/;
 
   const txtEntries = allEntries.filter(e =>
     e.relativePath.toLowerCase().endsWith('.txt') &&
@@ -116,13 +120,13 @@ export async function processZipFile(
     !e.relativePath.startsWith('.')
   );
 
-  // Sort: prefer WhatsApp-named files first, then _chat.txt, then shortest path
+  // Sort: prefer WhatsApp-named files first (locale-aware), then _chat.txt, then shortest path
   txtEntries.sort((a, b) => {
     const aL = a.relativePath.toLowerCase();
     const bL = b.relativePath.toLowerCase();
-    // Exact WhatsApp export naming
-    const aWA = aL.includes('whatsapp chat') || aL.includes('whatsapp-chat');
-    const bWA = bL.includes('whatsapp chat') || bL.includes('whatsapp-chat');
+    // Match any known locale heuristic from localePatterns.ts
+    const aWA = UNIVERSAL.zipHeuristics.some(h => aL.includes(h));
+    const bWA = UNIVERSAL.zipHeuristics.some(h => bL.includes(h));
     if (aWA && !bWA) return -1;
     if (bWA && !aWA) return 1;
     if (aL.endsWith('_chat.txt')) return -1;
@@ -142,9 +146,12 @@ export async function processZipFile(
       let raw = await candidate.entry.async('string');
       // Strip BOM
       if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1);
-      // Test first 20 lines for WhatsApp date patterns
+      // Test first 20 lines for WhatsApp date patterns (cleaning invisible chars first)
       const testLines = raw.split('\n').slice(0, 20);
-      const hasMatch = testLines.some(line => WHATSAPP_DATE_PROBE.test(line));
+      const hasMatch = testLines.some(line => {
+        const cleaned = line.replace(INVISIBLE_CHARS, '').trim();
+        return WHATSAPP_DATE_PROBE.test(cleaned);
+      });
       if (hasMatch) {
         chatFileName = candidate.relativePath;
         chatText = raw;
@@ -221,8 +228,12 @@ export async function processZipFile(
   const startDate = new Date(Math.min(...timestamps));
   const endDate = new Date(Math.max(...timestamps));
 
-  const rawName = fileBaseName(file.name);
-  const name = rawName.replace(/whatsapp chat with|chat with|whatsapp/gi, '').trim() ||
+  // Derive chat name from filename — strip locale-specific prefixes (see localePatterns.ts)
+  const rawName = fileBaseName(file.name).replace(INVISIBLE_CHARS, '').trim();
+  const name = rawName
+    .replace(UNIVERSAL.filenamePrefixes, '')
+    .replace(/^[\s\-_–—:]+|[\s\-_–—:]+$/g, '')
+    .trim() ||
                (isGroup ? 'Group Chat' : participants.join(' & '));
 
   const session: ChatSession = {

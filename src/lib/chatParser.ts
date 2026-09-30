@@ -1,8 +1,12 @@
 // =============================================
 // WhatsApp Chat Parser — Robust Multi-Format
-// Supports: Android & iOS, 12h & 24h, All locales
+// Supports: Android & iOS, 12h & 24h
+// Locale patterns: see src/lib/localePatterns.ts
 // Handles: \u200e LRM, \uFEFF BOM, all dash variants
+//          Dotted AM/PM: "a. m." / "p. m." (es-US)
 // =============================================
+
+import { UNIVERSAL_FLAT } from './localePatterns';
 
 export type MessageType =
   | 'text'
@@ -15,7 +19,8 @@ export type MessageType =
   | 'system'
   | 'gif'
   | 'contact'
-  | 'location';
+  | 'location'
+  | 'omitted';
 
 export interface ChatMessage {
   id: string;
@@ -45,6 +50,21 @@ export interface ParsedChat {
 // \u2066–\u2069 = directional isolate chars
 const INVISIBLE_CHARS = /[\u200e\u200f\uFEFF\u202a-\u202e\u2066-\u2069]/g;
 
+// Arabic-Indic digits U+0660–U+0669 and Extended Arabic-Indic / Urdu digits U+06F0–U+06F9
+// used by Android/iOS Arabic WhatsApp exports.
+// Map them to ASCII 0-9 so date/time regexes (which use \d) work correctly.
+function normaliseArabicDigits(s: string): string {
+  return s
+    .replace(/[\u0660-\u0669]/g, c => String(c.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, c => String(c.charCodeAt(0) - 0x06F0));
+}
+
+// Arabic comma U+060C (،) is used by iOS Arabic as the date/time separator:
+// "[‏28‏/9‏/2026، 12:05:43]" — replace with ASCII comma so the regex matches.
+function normaliseArabicPunctuation(s: string): string {
+  return s.replace(/\u060C/g, ',');
+}
+
 // Dash variants: hyphen, en-dash, em-dash, minus sign
 const DASH = '[-\u2013\u2014\u2212]';
 
@@ -57,8 +77,11 @@ const DATE_PAT = `\\d{1,4}${DATE_SEP}\\d{1,2}${DATE_SEP}\\d{1,4}`;
 // Time part 24h: HH:MM or HH:MM:SS
 const TIME_24 = `\\d{1,2}:\\d{2}(?::\\d{2})?`;
 
-// Time part 12h: H:MM am/pm or H:MM:SS am/pm (with optional space)
-const TIME_12 = `\\d{1,2}:\\d{2}(?::\\d{2})?\\s*[AaPp][Mm]`;
+// Time part 12h — covers all known WhatsApp locale variants:
+//   English:  "8:32 AM", "8:32 am", "8:32 PM"
+//   Spanish:  "8:32 a. m.", "4:59 p. m."  (dots + spaces between letters)
+//   Arabic:   "8:32 ص", "4:59 م"
+const TIME_12 = `\\d{1,2}:\\d{2}(?::\\d{2})?\\s*(?:[AaPp]\\.?\\s*[Mm]\\.?|[AaPp][Mm]|[\u0635\u0645]\\.?)`;
 
 // =============================================
 // Core Regex Patterns (applied to cleaned lines)
@@ -107,16 +130,28 @@ const MEDIA_PATTERNS: { pattern: RegExp; type: MessageType }[] = [
   { pattern: /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z)(\s|$)/i, type: 'document' },
 ];
 
-const ATTACHMENT_PLACEHOLDER = /<attached:\s*(.+?)>|(.+?)\s*\(file attached\)/i;
-const OMITTED_PLACEHOLDER = /(image|video|audio|sticker|gif|document|voice message)\s+omitted/i;
-const DELETED_MSG = /<this message was deleted>|this message was deleted|you deleted this message/i;
-const LOCATION_MSG = /location:\s*https?:\/\//i;
+// =============================================
+// Locale-aware content-type patterns
+// All patterns imported from localePatterns.ts
+// =============================================
+const ATTACHMENT_PLACEHOLDER = UNIVERSAL_FLAT.attachment;
+const OMITTED_PLACEHOLDER     = UNIVERSAL_FLAT.omitted;
+const DELETED_MSG             = UNIVERSAL_FLAT.deleted;
+const LOCATION_MSG            = UNIVERSAL_FLAT.location;
+// Matches WhatsApp system-notice text attributed to a sender in some locales/platforms
+// (e.g. iOS Spanish puts encryption & disappearing-message notices under the user's name).
+const SYSTEM_CONTENT_MSG      = UNIVERSAL_FLAT.systemContent;
 
 // =============================================
 // Clean a line: strip invisible chars & trim
+// Also normalise Arabic-Indic digits and Arabic punctuation
 // =============================================
 function cleanLine(line: string): string {
-  return line.replace(INVISIBLE_CHARS, '').trim();
+  return normaliseArabicPunctuation(
+    normaliseArabicDigits(
+      line.replace(INVISIBLE_CHARS, '')
+    )
+  ).trim();
 }
 
 // =============================================
@@ -124,7 +159,7 @@ function cleanLine(line: string): string {
 // =============================================
 function parseDate(datePart: string, timePart: string): Date {
   // Normalize all separators to /
-  const d = datePart.replace(/[.\-]/g, '/').trim();
+  const d = datePart.replace(/[.-]/g, '/').trim();
   const t = timePart.trim();
   const parts = d.split('/');
 
@@ -168,10 +203,16 @@ function parseDate(datePart: string, timePart: string): Date {
 function normalizeTime(time: string): string {
   const s = time.trim();
   const lower = s.toLowerCase();
-  const isPM = lower.endsWith('pm') || lower.includes(' pm');
-  const isAM = lower.endsWith('am') || lower.includes(' am');
 
-  const cleaned = s.replace(/\s*[ap]m\s*/i, '').trim();
+  // Detect AM/PM across all locale styles:
+  //   English: "am" / "pm" (with or without leading space)
+  //   Spanish: "a. m." / "p. m." (dots + spaces, as exported by es-US WhatsApp)
+  //   Arabic:  "ص" (AM) / "م" (PM)
+  const isPM = /p\.?\s*m\.?/i.test(lower) || /\u0645/i.test(lower);
+  const isAM = /a\.?\s*m\.?/i.test(lower) || /\u0635/i.test(lower);
+
+  // Strip the entire AM/PM token (handles "am", "pm", "a. m.", "p. m.", "ص", "م", etc.)
+  const cleaned = s.replace(/[ap]\.?\s*m\.?|[\u0635\u0645]\.?/gi, '').trim();
   const parts = cleaned.split(':');
 
   let hours = parseInt(parts[0], 10);
@@ -193,10 +234,13 @@ function detectMessageType(content: string): { type: MessageType; fileName?: str
   if (DELETED_MSG.test(c)) return { type: 'deleted' };
   if (LOCATION_MSG.test(c)) return { type: 'location' };
 
-  // "<attached: filename.jpg>" or "filename.jpg (file attached)"
+  // Attachment placeholder: "<attached: f>", "<adjunto: f>", "f (file attached)", "f (archivo adjunto)"
+  // IMPORTANT: UNIVERSAL_FLAT merges patterns from all platforms/locales into one regex,
+  // so the filename may land in ANY capture group depending on which pattern matched.
+  // We scan all groups and take the first defined one.
   const attachedMatch = c.match(ATTACHMENT_PLACEHOLDER);
   if (attachedMatch) {
-    const fileName = (attachedMatch[1] || attachedMatch[2] || '').trim();
+    const fileName = (attachedMatch.slice(1).find(g => g !== undefined) ?? '').trim();
 
     // WhatsApp uniquely names sticker exports "STK-..." (Android) or "...-STICKER-..." (iOS)
     // Also, natively WhatsApp uses .webp strictly for stickers.
@@ -211,16 +255,10 @@ function detectMessageType(content: string): { type: MessageType; fileName?: str
     return { type: 'document', fileName };
   }
 
-  // "image omitted" / "video omitted" style (WhatsApp web)
+  // Omitted media placeholder: "<Media omitted>", "image omitted", "<تم استبعاد الوسائط>", etc.
   const omittedMatch = c.match(OMITTED_PLACEHOLDER);
   if (omittedMatch) {
-    const t = omittedMatch[1].toLowerCase().replace(/\s+/g, '_');
-    const typeMap: Record<string, MessageType> = {
-      image: 'image', video: 'video', audio: 'audio',
-      sticker: 'sticker', gif: 'gif', document: 'document',
-      voice_message: 'audio',
-    };
-    return { type: typeMap[t] ?? 'document' };
+    return { type: 'omitted' };
   }
 
   return { type: 'text' };
@@ -318,9 +356,16 @@ export function parseWhatsAppChat(text: string, sessionId: string): ParsedChat {
 
     const timestamp = parseDate(currentParsed.date, currentParsed.time);
     const sender = currentParsed.sender ?? 'System';
-    const isSystem = currentParsed.isSystem || !currentParsed.sender;
 
-    if (sender && sender !== 'System') {
+    // A message is system if:
+    //   (a) the line had no sender (standard Android/iOS system lines), OR
+    //   (b) the content matches a known system-notification pattern
+    //       (some locales/platforms attribute notices to the user's sender name).
+    const isSystem = currentParsed.isSystem
+      || !currentParsed.sender
+      || SYSTEM_CONTENT_MSG.test(content);
+
+    if (sender && sender !== 'System' && !isSystem) {
       participantSet.add(sender);
     }
 
@@ -332,7 +377,7 @@ export function parseWhatsAppChat(text: string, sessionId: string): ParsedChat {
       id: generateId(sessionId),
       sessionId,
       timestamp,
-      sender,
+      sender: isSystem ? 'System' : sender,
       content,
       type,
       fileName,

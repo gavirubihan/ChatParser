@@ -281,7 +281,7 @@ const PanelMessageCard: React.FC<{
   const typeIcons: Record<string, string> = {
     image: '🖼️', video: '🎥', audio: '🎵', document: '📄',
     sticker: '🎭', gif: '🎞️', contact: '👤', location: '📍',
-    deleted: '🚫', system: 'ℹ️',
+    deleted: '🚫', system: 'ℹ️', omitted: '🖼️',
   };
 
   const icon = typeIcons[message.type] ?? null;

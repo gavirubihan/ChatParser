@@ -13,7 +13,7 @@ import { useMessages, useAllSessions } from '../hooks/useChat';
 import { useSearch } from '../hooks/useSearch';
 import { useMessageActions } from '../hooks/useMessageActions';
 import { processFile, type ProcessResult } from '../lib/zipHandler';
-
+import { UNIVERSAL_FLAT } from '../lib/localePatterns';
 import { getSenderColor } from '../lib/colorUtils';
 import { useSEO } from '../hooks/useSEO';
 import './ChatViewer.css';
@@ -127,8 +127,7 @@ export const ChatViewer: React.FC = () => {
     if (!msg) return;
 
     let textToCopy = msg.content;
-    const attachmentPattern = /<attached:\s*.+?>|.+?\s*\(file attached\)/i;
-    const stripped = textToCopy.replace(attachmentPattern, '').trim();
+    const stripped = textToCopy.replace(UNIVERSAL_FLAT.attachment, '').trim();
     if (stripped) {
       textToCopy = stripped;
     }

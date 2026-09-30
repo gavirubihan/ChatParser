@@ -139,8 +139,8 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onSuccess, compact = fal
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                   </svg>
                   <span>
-                    Currently supporting exports from devices with <strong>English system language</strong> only. Chat messages can be in any language. 
-                    To help us support your language, please submit a sample chat export (.zip or .txt) via 
+                    Supports exports from devices in <strong>English, Spanish, Arabic, and Urdu</strong> system languages (messages can be in any language). 
+                    To request another system language, please submit a sample chat export (.zip or .txt) via{' '}
                     <button 
                       className="upload-zone__feedback-link"
                       onClick={(e) => {

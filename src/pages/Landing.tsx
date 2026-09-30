@@ -43,6 +43,20 @@ const FEATURES: FeatureItem[] = [
   {
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
+    badge: 'New',
+    title: 'Multi-Language & Locales',
+    desc: 'Seamless compatibility with exports in English, Spanish (Español), Arabic (العربية), and Urdu (اردو). Automatically detects localized timestamps, native numerals, and RTL formatting.',
+    tags: ['English', 'Español', 'العربية', 'اردو', 'RTL'],
+    color: '#059669',
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
         <line x1="9" y1="8" x2="15" y2="8" />
         <line x1="9" y1="12" x2="13" y2="12" />
@@ -148,7 +162,11 @@ const FAQS = [
   },
   {
     q: "Can I view both Android and iOS exports?",
-    a: "Yes, the viewer is fully compatible with chat exports from both Android and iOS WhatsApp applications. We support both plain .txt files and media .zip archives."
+    a: "Yes! ChatParser is fully compatible with chat exports from both Android and iOS across multiple languages (English, Spanish, Arabic, Urdu). We support both plain .txt files and media .zip archives."
+  },
+  {
+    q: "Which languages and system locales are supported?",
+    a: "ChatParser natively supports WhatsApp chat exports in English, Spanish (Español), Arabic (العربية), and Urdu (اردو) across both Android and iOS devices. This includes automatic recognition of localized date/time patterns, 12h/24h clocks, Arabic-Indic numerals (٠-٩ and ۰-۹), right-to-left (RTL) directional marks, and translated system notices."
   },
   {
     q: "Are images, videos, and voice notes supported?",

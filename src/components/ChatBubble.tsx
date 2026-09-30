@@ -3,8 +3,9 @@ import type { ChatMessage } from '../lib/chatParser';
 import { getMediaUrl, getCachedMediaUrl } from '../lib/mediaUtils';
 import { formatTime } from '../lib/mediaUtils';
 import './ChatBubble.css';
-
+import { UNIVERSAL_FLAT } from '../lib/localePatterns';
 import { getSenderColor } from '../lib/colorUtils';
+import { ContactViewer } from './ContactViewer';
 
 function highlightText(text: string, query: string): React.ReactNode {
   if (!query.trim()) return text;
@@ -16,6 +17,51 @@ function highlightText(text: string, query: string): React.ReactNode {
     ) : part
   );
 }
+
+
+// =============================================
+// Contact Bubble (needs its own component for useState)
+// =============================================
+const ContactBubble: React.FC<{ message: ChatMessage; url: string | null; loading: boolean }> = ({ message, url, loading }) => {
+  const [contactOpen, setContactOpen] = useState(false);
+  if (loading) return (
+    <div className="chat-bubble__document">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.7">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+      </svg>
+      <span className="chat-bubble__document-name">{message.fileName ?? 'Contact'}</span>
+    </div>
+  );
+  return (
+    <>
+      <div className="chat-bubble__document">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.7">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+        </svg>
+        <span className="chat-bubble__document-name">{message.fileName ?? 'Contact'}</span>
+        {url && (
+          <button
+            className="chat-bubble__document-download"
+            onClick={e => { e.stopPropagation(); setContactOpen(true); }}
+            aria-label="View contact"
+            title="View contact"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        )}
+      </div>
+      {contactOpen && url && (
+        <ContactViewer
+          fileName={message.fileName ?? 'contact.vcf'}
+          url={url}
+          onClose={() => setContactOpen(false)}
+        />
+      )}
+    </>
+  );
+};
 
 // =============================================
 // Media Content Renderer
@@ -164,24 +210,24 @@ const MediaContent: React.FC<{
   }
 
   if (message.type === 'contact') {
-    return (
-      <div className="chat-bubble__contact">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.7">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-        </svg>
-        <span>{message.fileName ?? 'Contact'}</span>
-      </div>
-    );
+    return <ContactBubble message={message} url={url} loading={loading} />;
   }
 
   if (message.type === 'location') {
+    // Extract the actual https:// URL from content like "ubicación: https://..." or "location: https://..."
+    const locationUrlMatch = message.content.match(/https?:\/\/\S+/i);
+    const locationUrl = locationUrlMatch ? locationUrlMatch[0] : null;
     return (
       <div className="chat-bubble__location">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
         </svg>
         <span>Location shared</span>
-        <a href={message.content} target="_blank" rel="noopener noreferrer" className="chat-bubble__location-link">View on Map</a>
+        {locationUrl ? (
+          <a href={locationUrl} target="_blank" rel="noopener noreferrer" className="chat-bubble__location-link">View on Map</a>
+        ) : (
+          <span className="chat-bubble__location-link" style={{ opacity: 0.5 }}>No link available</span>
+        )}
       </div>
     );
   }
@@ -235,9 +281,10 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
 }) => {
   const isSystem = message.type === 'system';
   const isDeleted = message.type === 'deleted';
+  const isOmitted = message.type === 'omitted';
   const isMedia = ['image', 'video', 'sticker', 'gif', 'document', 'contact', 'location'].includes(message.type);
   const isAudio = message.type === 'audio';
-  const hasText = message.type === 'text' || isDeleted;
+  const hasText = message.type === 'text' || isDeleted || isOmitted;
 
   // Long-press support for touch devices
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -285,12 +332,10 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
     }
   }, []);
 
-  // Extract caption
+  // Extract caption — strip the attachment/omitted token (all locales via localePatterns.ts)
   const caption = isMedia ? (() => {
-    const attachmentPattern = /<attached:\s*.+?>|.+?\s*\(file attached\)/i;
-    const stripped = message.content.replace(attachmentPattern, '').trim();
-    const omittedPattern = /^(image|video|audio|sticker|gif|document|voice message)\s+omitted$/i;
-    if (omittedPattern.test(stripped) || !stripped) return null;
+    const stripped = message.content.replace(UNIVERSAL_FLAT.attachment, '').trim();
+    if (UNIVERSAL_FLAT.omitted.test(stripped) || !stripped) return null;
     return stripped;
   })() : null;
 
@@ -377,6 +422,29 @@ export const ChatBubble: React.FC<ChatBubbleInnerProps> = React.memo(({
               </div>
             )}
           </>
+        ) : isOmitted ? (
+          <div className="chat-bubble__omitted">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="chat-bubble__omitted-icon"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+              <line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" strokeWidth="2" />
+            </svg>
+            <span className="chat-bubble__omitted-text">
+              {searchQuery ? highlightText(message.content, searchQuery) : message.content}
+            </span>
+          </div>
         ) : (
           <div className={`chat-bubble__text${isDeleted ? ' chat-bubble__text--deleted' : ''}`}>
             {isDeleted ? (

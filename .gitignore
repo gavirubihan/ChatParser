@@ -28,3 +28,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Private locale patterns source (encrypted version is committed as localePatterns.enc)
+src/lib/localePatterns.ts

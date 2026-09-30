@@ -394,6 +394,28 @@
 }
 
 /* =============================================
+   Omitted Media Placeholder
+   ============================================= */
+.chat-bubble__omitted {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px 0;
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  opacity: 0.88;
+}
+
+.chat-bubble__omitted-icon {
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.chat-bubble__omitted-text {
+  word-break: break-word;
+}
+
+/* =============================================
    System Message
    ============================================= */
 .chat-bubble__system-wrapper {
