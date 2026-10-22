@@ -45,24 +45,6 @@ export const ChatViewer: React.FC = () => {
     canonical: '/chat'
   });
 
-  // AdMaven Interstitial: inject once when user visits /chat
-  useEffect(() => {
-    const scriptSrc = import.meta.env.VITE_ADMAVEN_SCRIPT_URL;
-    if (!scriptSrc) return; // env var not set — skip
-
-    const finalUrl = scriptSrc.startsWith('//') ? `https:${scriptSrc}` : scriptSrc;
-
-    const script = document.createElement('script');
-    script.setAttribute('data-cfasync', 'false');
-    script.async = true;
-    script.src = finalUrl;
-    document.head.appendChild(script);
-
-    return () => {
-      script.remove();
-    };
-  }, []);
-
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
