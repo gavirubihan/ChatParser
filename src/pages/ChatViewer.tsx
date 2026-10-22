@@ -45,17 +45,11 @@ export const ChatViewer: React.FC = () => {
     canonical: '/chat'
   });
 
-  // AdMaven Interstitial: inject once when user opens a real chat session (/chat/:sessionId)
-  // - sessionId is undefined on bare /chat, so ad never fires without a chat open
-  // - ref guard prevents re-injection when switching between chats
-  const adInjectedRef = useRef(false);
+  // AdMaven Interstitial: inject once when user visits /chat
   useEffect(() => {
-    if (!sessionId) return;            // bare /chat — skip
-    if (adInjectedRef.current) return; // already injected — skip
     const scriptSrc = import.meta.env.VITE_ADMAVEN_SCRIPT_URL;
-    if (!scriptSrc) return;            // env var not set — skip
+    if (!scriptSrc) return; // env var not set — skip
 
-    adInjectedRef.current = true;
     const finalUrl = scriptSrc.startsWith('//') ? `https:${scriptSrc}` : scriptSrc;
 
     const script = document.createElement('script');
@@ -66,9 +60,8 @@ export const ChatViewer: React.FC = () => {
 
     return () => {
       script.remove();
-      adInjectedRef.current = false;
     };
-  }, [sessionId]);
+  }, []);
 
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false);

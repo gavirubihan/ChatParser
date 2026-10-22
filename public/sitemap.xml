@@ -3,7 +3,7 @@
   <!-- Core Landing Page -->
   <url>
     <loc>https://chatparser.online/</loc>
-    <lastmod>2026-10-22T11:38:45Z</lastmod>
+    <lastmod>2026-10-22T13:24:06Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,7 +11,7 @@
   <!-- About Page -->
   <url>
     <loc>https://chatparser.online/about</loc>
-    <lastmod>2026-10-22T11:38:45Z</lastmod>
+    <lastmod>2026-10-22T13:24:06Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -19,7 +19,7 @@
   <!-- Privacy Policy -->
   <url>
     <loc>https://chatparser.online/privacy</loc>
-    <lastmod>2026-10-22T11:38:45Z</lastmod>
+    <lastmod>2026-10-22T13:24:06Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -27,7 +27,7 @@
   <!-- Contact Page -->
   <url>
     <loc>https://chatparser.online/contact</loc>
-    <lastmod>2026-10-22T11:38:45Z</lastmod>
+    <lastmod>2026-10-22T13:24:06Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
