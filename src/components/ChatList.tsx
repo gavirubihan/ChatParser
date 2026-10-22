@@ -6,22 +6,14 @@ import type { ChatBubbleActions } from './ChatBubble';
 import { getSenderColor } from '../lib/colorUtils';
 import { DateSeparator } from './DateSeparator';
 import { formatDate } from '../lib/mediaUtils';
-import { AAdsAd } from './AAdsAd';
 import './ChatList.css';
-
-// =============================================
-// Configuration
-// =============================================
-const AD_UNIT_ID = import.meta.env.VITE_AADS_UNIT_ID;
-const AD_INTERVAL = 40; // Every 40 messages
 
 // =============================================
 // List Item Types
 // =============================================
 type ListItem =
   | { kind: 'date'; label: string; key: string }
-  | { kind: 'message'; message: ChatMessage; key: string }
-  | { kind: 'ad'; key: string; side: 'left' | 'right' };
+  | { kind: 'message'; message: ChatMessage; key: string };
 
 // =============================================
 // Build Flat Item List (insert date separators)
@@ -29,7 +21,6 @@ type ListItem =
 function buildItems(messages: ChatMessage[]): ListItem[] {
   const items: ListItem[] = [];
   let lastDateLabel = '';
-  let msgCounter = 0;
 
   for (const msg of messages) {
     const label = formatDate(msg.timestamp);
@@ -38,17 +29,6 @@ function buildItems(messages: ChatMessage[]): ListItem[] {
       lastDateLabel = label;
     }
     items.push({ kind: 'message', message: msg, key: msg.id });
-    msgCounter++;
-
-    // Inject ad every AD_INTERVAL messages
-    if (msgCounter % AD_INTERVAL === 0) {
-      const adIndex = Math.floor(msgCounter / AD_INTERVAL);
-      items.push({
-        kind: 'ad',
-        key: `ad-${msg.id}`,
-        side: adIndex % 2 === 0 ? 'right' : 'left'
-      });
-    }
   }
 
   return items;
@@ -147,9 +127,6 @@ export const ChatList = forwardRef<ChatListHandle, ChatListProps>((
       return <DateSeparator key={item.key} label={item.label} />;
     }
 
-    if (item.kind === 'ad') {
-      return <AAdsAd unitId={AD_UNIT_ID} side={item.side} key={item.key} />;
-    }
 
     const { message } = item;
 

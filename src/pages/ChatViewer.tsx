@@ -45,6 +45,26 @@ export const ChatViewer: React.FC = () => {
     canonical: '/chat'
   });
 
+  // AdMaven Interstitial ad: injected once on mount — only runs on /chat/:sessionId routes
+  // (bare /chat has no sessionId so this block never runs without a valid chat open)
+  useEffect(() => {
+    const scriptSrc = import.meta.env.VITE_ADMAVEN_SCRIPT_URL;
+    if (!scriptSrc) return; // No ad if env var is not set
+
+    const finalUrl = scriptSrc.startsWith('//') ? `https:${scriptSrc}` : scriptSrc;
+
+    const script = document.createElement('script');
+    script.setAttribute('data-cfasync', 'false');
+    script.async = true;
+    script.src = finalUrl;
+    document.body.appendChild(script);
+
+    return () => {
+      script.remove();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount — script registers its own internal click handlers
+
   // UI state
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -611,6 +631,7 @@ export const ChatViewer: React.FC = () => {
             )}
           </>
         )}
+
       </main>
 
       {/* Media Viewer Modal */}
