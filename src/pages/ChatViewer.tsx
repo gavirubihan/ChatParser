@@ -62,7 +62,7 @@ export const ChatViewer: React.FC = () => {
     script.setAttribute('data-cfasync', 'false');
     script.async = true;
     script.src = finalUrl;
-    document.body.appendChild(script);
+    document.head.appendChild(script);
 
     return () => {
       script.remove();
