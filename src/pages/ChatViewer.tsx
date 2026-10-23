@@ -9,6 +9,7 @@ import { UploadZone } from '../components/UploadZone';
 import { MessageContextMenu } from '../components/MessageContextMenu';
 import { MessageActionsPanel } from '../components/MessageActionsPanel';
 import { SelectionActionModal } from '../components/SelectionActionModal';
+import { AAdsInterstitial } from '../components/AAdsInterstitial';
 import { useMessages, useAllSessions } from '../hooks/useChat';
 import { useSearch } from '../hooks/useSearch';
 import { useMessageActions } from '../hooks/useMessageActions';
@@ -53,6 +54,23 @@ export const ChatViewer: React.FC = () => {
   const [isProcessingShared, setIsProcessingShared] = useState(false);
   const [shareProgress, setShareProgress] = useState(0);
   const isHandlingShareRef = useRef(false);
+
+  // Ad trigger state: flips to true when a chat session with parsed messages is loaded
+  const [adTrigger, setAdTrigger] = useState(false);
+  const lastAdSessionRef = useRef<string | null>(null);
+
+  const hasMessages = rawMessages.length > 0; // why: boolean doesn't change when the count ticks up
+
+  useEffect(() => {
+    if (!sessionId || !hasMessages || lastAdSessionRef.current === sessionId) return;
+
+    const t = window.setTimeout(() => {
+      lastAdSessionRef.current = sessionId; // why: mark as "handled" only when the timer actually fires
+      setAdTrigger(true);
+    }, 2500);
+
+    return () => window.clearTimeout(t);
+  }, [sessionId, hasMessages]);
 
   // Context menu
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
@@ -224,6 +242,9 @@ export const ChatViewer: React.FC = () => {
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Modal owns the keyboard while open: suppress background search and actions
+      if (document.querySelector('.aads-interstitial__overlay')) return;
+
       if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
         e.preventDefault();
         setSearchOpen(true);
@@ -735,6 +756,12 @@ export const ChatViewer: React.FC = () => {
           <span className="chat-viewer__toast-text">{infoToast}</span>
         </div>
       )}
+
+      {/* A-ADS Interstitial: Trigger on value after chat parse finishes */}
+      <AAdsInterstitial
+        trigger={adTrigger}
+        onClose={() => setAdTrigger(false)}
+      />
     </div>
   );
 };
