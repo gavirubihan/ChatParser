@@ -68,11 +68,19 @@
   align-items: center;
 }
 
+.about__grid--reverse > :first-child {
+  order: 2;
+}
+
 @media (max-width: 900px) {
   .about__grid {
     grid-template-columns: 1fr;
     gap: var(--space-8);
     text-align: center;
+  }
+
+  .about__grid--reverse > :first-child {
+    order: unset;
   }
 }
 

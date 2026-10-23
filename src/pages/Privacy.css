@@ -96,6 +96,68 @@
   font-weight: 600;
 }
 
+/* Links & Clickable Elements */
+.privacy-page__content a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast), opacity var(--transition-fast);
+  word-break: break-word;
+}
+
+.privacy-page__content a:hover {
+  color: var(--brand-primary-dark);
+  text-decoration-thickness: 2px;
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .privacy-page__content a {
+  color: var(--brand-primary-light);
+}
+
+[data-theme="dark"] .privacy-page__content a:hover {
+  color: #38ef7d;
+}
+
+/* Email Pill Link */
+.privacy-page__email-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--brand-primary) !important;
+  text-decoration: none !important;
+  background: var(--bg-surface-2);
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  margin-top: var(--space-2);
+  transition: all var(--transition-fast) ease;
+}
+
+.privacy-page__email-link:hover {
+  background: var(--bg-surface-3);
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  color: var(--brand-primary-dark) !important;
+}
+
+[data-theme="dark"] .privacy-page__email-link {
+  background: var(--bg-surface-2);
+  border-color: var(--border-default);
+  color: var(--brand-primary-light) !important;
+}
+
+[data-theme="dark"] .privacy-page__email-link:hover {
+  background: var(--bg-surface-3);
+  border-color: var(--brand-primary-light);
+  color: #38ef7d !important;
+}
+
 @media (max-width: 768px) {
   .privacy-page__content {
     padding-top: 85px;

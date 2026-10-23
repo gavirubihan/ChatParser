@@ -408,7 +408,7 @@ export const ChatViewer: React.FC = () => {
               </button>
 
               {/* Chat info */}
-              <div className="chat-viewer__header-info">
+              <div className="chat-viewer__header-info" data-clarity-mask="true">
                 <div
                   className="chat-viewer__header-avatar"
                   style={{
@@ -512,6 +512,7 @@ export const ChatViewer: React.FC = () => {
             {/* Chat body */}
             <div
               className="chat-viewer__body"
+              data-clarity-mask="true"
               style={{
                 backgroundImage: 'var(--bg-chat-pattern)',
                 backgroundColor: 'var(--bg-chat)',
