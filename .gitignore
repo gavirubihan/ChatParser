@@ -31,3 +31,6 @@ dist-ssr
 
 # Private locale patterns source (encrypted version is committed as localePatterns.enc)
 src/lib/localePatterns.ts
+
+.vercel
+.env*
